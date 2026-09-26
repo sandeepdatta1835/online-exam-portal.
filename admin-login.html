@@ -1,19 +1,255 @@
-if(
-    adminId === "admin" &&
-    adminPassword === "Admin@123"
-){
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    sessionStorage.setItem(
-        "adminLoggedIn",
-        "true"
-    );
+<title>Admin Login | Online Exam Portal</title>
 
-    sessionStorage.setItem(
-        "adminId",
-        adminId
-    );
-
-    window.location.href =
-        "admin-panel.html";
-
+<style>
+*{
+    box-sizing:border-box;
 }
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.login-container{
+    width:100%;
+    max-width:420px;
+    padding:20px;
+}
+
+.login-card{
+    background:#ffffff;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 5px 25px rgba(0,0,0,0.12);
+}
+
+.icon{
+    text-align:center;
+    font-size:50px;
+    margin-bottom:10px;
+}
+
+h1{
+    text-align:center;
+    color:#173b7a;
+    margin:0;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+    margin:8px 0 25px;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+input{
+    width:100%;
+    padding:13px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:16px;
+    margin-bottom:18px;
+}
+
+input:focus{
+    outline:none;
+    border-color:#173b7a;
+}
+
+.login-btn{
+    width:100%;
+    padding:13px;
+    background:#173b7a;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.login-btn:hover{
+    background:#102d60;
+}
+
+.error{
+    display:none;
+    background:#f8d7da;
+    color:#842029;
+    padding:12px;
+    border-radius:6px;
+    margin-bottom:18px;
+    text-align:center;
+}
+
+.back{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#173b7a;
+    text-decoration:none;
+}
+
+.info{
+    margin-top:20px;
+    padding:12px;
+    background:#fff3cd;
+    color:#664d03;
+    border-radius:6px;
+    font-size:13px;
+    line-height:1.5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <div class="icon">🔐</div>
+
+        <h1>Admin Login</h1>
+
+        <div class="subtitle">
+            Online Exam Portal
+        </div>
+
+        <div id="errorMessage" class="error">
+            Invalid Admin ID or Password.
+        </div>
+
+        <form id="adminLoginForm">
+
+            <label for="adminId">
+                Admin ID
+            </label>
+
+            <input
+                type="text"
+                id="adminId"
+                placeholder="Enter Admin ID"
+                required
+            >
+
+            <label for="adminPassword">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="adminPassword"
+                placeholder="Enter Password"
+                required
+            >
+
+            <button
+                type="submit"
+                class="login-btn"
+            >
+                Login
+            </button>
+
+        </form>
+
+        <div class="info">
+            Admin access is restricted. Please use your authorized
+            administrator credentials.
+        </div>
+
+        <a href="index.html" class="back">
+            ← Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/*
+=========================================
+TEMPORARY TEST LOGIN
+=========================================
+
+IMPORTANT:
+This is NOT secure authentication.
+The real version will use Google Apps Script
+and Google Sheets.
+*/
+
+const ADMIN_ID = "admin";
+const ADMIN_PASSWORD = "Admin@123";
+
+
+document
+.getElementById("adminLoginForm")
+.addEventListener("submit", function(event){
+
+    event.preventDefault();
+
+    const adminId =
+        document
+        .getElementById("adminId")
+        .value
+        .trim();
+
+    const adminPassword =
+        document
+        .getElementById("adminPassword")
+        .value;
+
+    const errorMessage =
+        document
+        .getElementById("errorMessage");
+
+
+    if(
+        adminId === ADMIN_ID &&
+        adminPassword === ADMIN_PASSWORD
+    ){
+
+        sessionStorage.setItem(
+            "adminLoggedIn",
+            "true"
+        );
+
+        sessionStorage.setItem(
+            "adminId",
+            adminId
+        );
+
+        window.location.replace(
+            "admin-panel.html"
+        );
+
+    }else{
+
+        errorMessage.style.display = "block";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
