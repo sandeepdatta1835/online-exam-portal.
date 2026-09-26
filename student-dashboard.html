@@ -1,969 +1,800 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Student Dashboard | Online Learning & Examination Portal</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f7fb;
-            color: #222;
-            line-height: 1.6;
-        }
-
-        /* ================= HEADER ================= */
-
-        header {
-            background: #0d47a1;
-            color: white;
-            padding: 15px 5%;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        nav {
-            display: flex;
-            gap: 18px;
-            flex-wrap: wrap;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        nav a:hover {
-            text-decoration: underline;
-        }
-
-        /* ================= MAIN ================= */
-
-        .main {
-            max-width: 1200px;
-            margin: auto;
-            padding: 35px 15px 50px;
-        }
-
-        /* ================= WELCOME ================= */
-
-        .welcome-box {
-            background: linear-gradient(135deg, #0d47a1, #1976d2);
-            color: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 25px;
-        }
-
-        .welcome-box h1 {
-            font-size: 28px;
-            margin-bottom: 5px;
-        }
-
-        .welcome-box p {
-            font-size: 14px;
-            opacity: 0.95;
-        }
-
-        /* ================= PROFILE ================= */
-
-        .profile-card {
-            background: white;
-            border-radius: 14px;
-            padding: 22px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
-        }
-
-        .profile-title {
-            color: #0d47a1;
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 18px;
-        }
-
-        .profile-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-        }
-
-        .profile-item {
-            background: #f5f8fc;
-            padding: 14px;
-            border-radius: 9px;
-        }
-
-        .profile-item small {
-            display: block;
-            color: #777;
-            font-size: 12px;
-            margin-bottom: 3px;
-        }
-
-        .profile-item strong {
-            font-size: 14px;
-            color: #333;
-        }
-
-        /* ================= STATISTICS ================= */
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
-            text-align: center;
-        }
-
-        .stat-icon {
-            font-size: 28px;
-            margin-bottom: 7px;
-        }
-
-        .stat-number {
-            font-size: 25px;
-            font-weight: bold;
-            color: #0d47a1;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 13px;
-        }
-
-        /* ================= SECTION ================= */
-
-        .section {
-            margin-bottom: 30px;
-        }
-
-        .section-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .section-title h2 {
-            color: #0d47a1;
-            font-size: 22px;
-        }
-
-        .section-title a {
-            color: #0d47a1;
-            font-size: 13px;
-            text-decoration: none;
-        }
-
-        /* ================= EXAM CARDS ================= */
-
-        .exam-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-        }
-
-        .exam-card {
-            background: white;
-            border-radius: 13px;
-            padding: 20px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
-            border-top: 4px solid #0d47a1;
-        }
-
-        .exam-card h3 {
-            color: #0d47a1;
-            font-size: 17px;
-            margin-bottom: 8px;
-        }
-
-        .exam-card p {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .exam-info {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin: 13px 0;
-        }
-
-        .badge {
-            background: #e3f2fd;
-            color: #0d47a1;
-            padding: 5px 8px;
-            border-radius: 5px;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        .start-btn {
-            display: block;
-            width: 100%;
-            text-align: center;
-            padding: 11px;
-            background: #0d47a1;
-            color: white;
-            text-decoration: none;
-            border-radius: 7px;
-            font-size: 14px;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-        }
-
-        .start-btn:hover {
-            background: #083579;
-        }
-
-        /* ================= QUICK ACTIONS ================= */
-
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-        }
-
-        .action-card {
-            background: white;
-            border-radius: 12px;
-            padding: 22px 15px;
-            text-align: center;
-            text-decoration: none;
-            color: #222;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
-            transition: 0.2s;
-        }
-
-        .action-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .action-icon {
-            font-size: 30px;
-            margin-bottom: 8px;
-        }
-
-        .action-card h3 {
-            color: #0d47a1;
-            font-size: 15px;
-            margin-bottom: 4px;
-        }
-
-        .action-card p {
-            color: #777;
-            font-size: 12px;
-        }
-
-        /* ================= RECENT RESULTS ================= */
-
-        .result-table-box {
-            background: white;
-            border-radius: 13px;
-            padding: 20px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 600px;
-        }
-
-        th {
-            background: #0d47a1;
-            color: white;
-            padding: 12px;
-            text-align: left;
-            font-size: 13px;
-        }
-
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
-            font-size: 13px;
-        }
-
-        .result-pass {
-            color: #2e7d32;
-            font-weight: bold;
-        }
-
-        .result-pending {
-            color: #ef6c00;
-            font-weight: bold;
-        }
-
-        /* ================= NOTICE ================= */
-
-        .notice-box {
-            background: #fff8e1;
-            border-left: 5px solid #ffb300;
-            border-radius: 7px;
-            padding: 16px;
-            font-size: 13px;
-            color: #555;
-        }
-
-        .notice-box strong {
-            color: #333;
-        }
-
-        /* ================= LOGOUT ================= */
-
-        .logout-section {
-            text-align: center;
-            margin-top: 15px;
-        }
-
-        .logout-btn {
-            display: inline-block;
-            background: #c62828;
-            color: white;
-            padding: 11px 28px;
-            border-radius: 7px;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .logout-btn:hover {
-            background: #a51f1f;
-        }
-
-        /* ================= FOOTER ================= */
-
-        footer {
-            background: #102a43;
-            color: white;
-            text-align: center;
-            padding: 22px 15px;
-            font-size: 13px;
-        }
-
-        footer p {
-            margin: 3px 0;
-        }
-
-        /* ================= MODAL ================= */
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.55);
-            padding: 20px;
-        }
-
-        .modal-content {
-            background: white;
-            max-width: 430px;
-            margin: 12vh auto;
-            border-radius: 14px;
-            padding: 25px;
-            text-align: center;
-        }
-
-        .modal-content h2 {
-            color: #0d47a1;
-            margin-bottom: 10px;
-        }
-
-        .modal-content p {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .modal-buttons button {
-            flex: 1;
-            padding: 11px;
-            border: none;
-            border-radius: 7px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .cancel-btn {
-            background: #eee;
-            color: #333;
-        }
-
-        .confirm-btn {
-            background: #c62828;
-            color: white;
-        }
-
-        /* ================= MOBILE ================= */
-
-        @media (max-width: 900px) {
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .exam-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .action-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .profile-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 700px) {
-
-            header {
-                padding: 13px 15px;
-            }
-
-            .nav-container {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .logo {
-                font-size: 17px;
-                text-align: center;
-            }
-
-            nav {
-                justify-content: center;
-                gap: 8px 12px;
-            }
-
-            nav a {
-                font-size: 12px;
-            }
-
-            .main {
-                padding: 25px 12px 40px;
-            }
-
-            .welcome-box {
-                padding: 23px 18px;
-            }
-
-            .welcome-box h1 {
-                font-size: 23px;
-            }
-
-            .profile-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .exam-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .action-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .section-title h2 {
-                font-size: 19px;
-            }
-        }
-
-        @media (max-width: 450px) {
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .action-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .modal-buttons {
-                flex-direction: column;
-            }
-        }
-    </style>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Dashboard | Online Exam Portal</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#222;
+}
+
+header{
+    background:#0d47a1;
+    color:white;
+    padding:16px 5%;
+}
+
+.nav{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.logo{
+    font-size:20px;
+    font-weight:bold;
+}
+
+nav{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    font-size:13px;
+}
+
+.main{
+    max-width:1200px;
+    margin:auto;
+    padding:30px 15px 50px;
+}
+
+.welcome{
+    background:linear-gradient(135deg,#0d47a1,#1976d2);
+    color:white;
+    padding:28px;
+    border-radius:14px;
+    margin-bottom:22px;
+}
+
+.welcome h1{
+    font-size:27px;
+    margin-bottom:5px;
+}
+
+.welcome p{
+    font-size:14px;
+}
+
+.card{
+    background:white;
+    border-radius:13px;
+    padding:22px;
+    margin-bottom:22px;
+    box-shadow:0 4px 15px rgba(0,0,0,.07);
+}
+
+.card h2{
+    color:#0d47a1;
+    margin-bottom:18px;
+    font-size:21px;
+}
+
+.profile{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+}
+
+.profile-item{
+    background:#f5f8fc;
+    padding:14px;
+    border-radius:8px;
+}
+
+.profile-item small{
+    display:block;
+    color:#777;
+    font-size:12px;
+    margin-bottom:4px;
+}
+
+.profile-item strong{
+    font-size:14px;
+}
+
+.subject-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.subject{
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:18px;
+    background:#fafcff;
+}
+
+.subject h3{
+    color:#0d47a1;
+    font-size:17px;
+    margin-bottom:7px;
+}
+
+.subject p{
+    color:#666;
+    font-size:13px;
+}
+
+.empty{
+    background:#fff8e1;
+    border-left:4px solid #ffb300;
+    padding:15px;
+    border-radius:6px;
+    color:#555;
+    font-size:14px;
+}
+
+.actions{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.action{
+    background:white;
+    border-radius:10px;
+    padding:20px 12px;
+    text-align:center;
+    text-decoration:none;
+    color:#222;
+    box-shadow:0 4px 15px rgba(0,0,0,.07);
+}
+
+.action-icon{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.action h3{
+    color:#0d47a1;
+    font-size:15px;
+    margin-bottom:4px;
+}
+
+.action p{
+    color:#777;
+    font-size:12px;
+}
+
+.logout{
+    text-align:center;
+    margin-top:10px;
+}
+
+.logout button{
+    background:#c62828;
+    color:white;
+    border:0;
+    border-radius:7px;
+    padding:12px 30px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+footer{
+    background:#102a43;
+    color:white;
+    text-align:center;
+    padding:22px;
+    font-size:13px;
+}
+
+@media(max-width:900px){
+
+    .profile{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .subject-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .actions{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:600px){
+
+    .nav{
+        flex-direction:column;
+    }
+
+    .logo{
+        text-align:center;
+        font-size:17px;
+    }
+
+    nav{
+        justify-content:center;
+    }
+
+    .profile{
+        grid-template-columns:1fr;
+    }
+
+    .subject-grid{
+        grid-template-columns:1fr;
+    }
+
+    .actions{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .welcome h1{
+        font-size:22px;
+    }
+
+}
+
+</style>
+
 </head>
 
 <body>
 
 
-<!-- ================= HEADER ================= -->
-
 <header>
 
-    <div class="nav-container">
+<div class="nav">
 
-        <div class="logo">
-            Online Learning & Examination Portal
-        </div>
+<div class="logo">
+🎓 Online Exam Portal
+</div>
 
-        <nav>
+<nav>
 
-            <a href="index.html">
-                Home
-            </a>
+<a href="index.html">Home</a>
 
-            <a href="question-papers.html">
-                Question Papers
-            </a>
+<a href="question-papers.html">
+Question Papers
+</a>
 
-            <a href="subjects.html">
-                Subjects
-            </a>
+<a href="subjects.html">
+Subjects
+</a>
 
-            <a href="online-exam.html">
-                Online Exam
-            </a>
+<a href="online-exam.html">
+Online Exam
+</a>
 
-            <a href="submit-answer.html">
-                Submit Answer
-            </a>
+<a href="submit-answer.html">
+Submit Answer
+</a>
 
-        </nav>
+</nav>
 
-    </div>
+</div>
 
 </header>
 
 
-<!-- ================= MAIN ================= -->
-
 <main class="main">
 
 
-    <!-- ================= WELCOME ================= -->
+<!-- WELCOME -->
 
-    <section class="welcome-box">
+<section class="welcome">
 
-        <h1>
-            Welcome, Student 👋
-        </h1>
+<h1 id="welcomeName">
+Welcome, Student 👋
+</h1>
 
-        <p>
-            Welcome to your Student Dashboard. Access your subjects,
-            examinations, question papers and results from one place.
-        </p>
+<p>
+This is your personal student dashboard.
+Access your subjects, examinations, question papers and results.
+</p>
 
-    </section>
+</section>
 
 
-    <!-- ================= PROFILE ================= -->
+<!-- PROFILE -->
 
-    <section class="profile-card">
+<section class="card">
 
-        <div class="profile-title">
-            👤 Student Profile
-        </div>
+<h2>👤 My Profile</h2>
 
-        <div class="profile-grid">
+<div class="profile">
 
-            <div class="profile-item">
 
-                <small>
-                    Student Name
-                </small>
+<div class="profile-item">
 
-                <strong id="studentName">
-                    Student
-                </strong>
+<small>Student Name</small>
 
-            </div>
+<strong id="studentName">
+-
+</strong>
 
+</div>
 
-            <div class="profile-item">
 
-                <small>
-                    Enrollment Number
-                </small>
+<div class="profile-item">
 
-                <strong id="enrollmentNumber">
-                    Not Connected
-                </strong>
+<small>Student ID</small>
 
-            </div>
+<strong id="studentId">
+-
+</strong>
 
+</div>
 
-            <div class="profile-item">
 
-                <small>
-                    Course / Board
-                </small>
+<div class="profile-item">
 
-                <strong>
-                    Not Connected
-                </strong>
+<small>Enrollment Number</small>
 
-            </div>
+<strong id="enrollment">
+-
+</strong>
 
+</div>
 
-            <div class="profile-item">
 
-                <small>
-                    Registered Mobile
-                </small>
+<div class="profile-item">
 
-                <strong>
-                    Not Connected
-                </strong>
+<small>Board</small>
 
-            </div>
+<strong id="board">
+-
+</strong>
 
+</div>
 
-            <div class="profile-item">
 
-                <small>
-                    Email
-                </small>
+<div class="profile-item">
 
-                <strong>
-                    Not Connected
-                </strong>
+<small>Class</small>
 
-            </div>
+<strong id="studentClass">
+-
+</strong>
 
+</div>
 
-            <div class="profile-item">
 
-                <small>
-                    Account Status
-                </small>
+<div class="profile-item">
 
-                <strong style="color:#2e7d32;">
-                    Active
-                </strong>
+<small>Mobile</small>
 
-            </div>
+<strong id="mobile">
+-
+</strong>
 
-        </div>
+</div>
 
-    </section>
 
+<div class="profile-item">
 
-    <!-- ================= STATISTICS ================= -->
+<small>Email</small>
 
-    <section class="stats-grid">
+<strong id="email">
+-
+</strong>
 
-        <div class="stat-card">
+</div>
 
-            <div class="stat-icon">
-                📚
-            </div>
 
-            <div class="stat-number">
-                0
-            </div>
+<div class="profile-item">
 
-            <div class="stat-label">
-                My Subjects
-            </div>
+<small>Account Status</small>
 
-        </div>
+<strong style="color:#2e7d32;">
+Active
+</strong>
 
+</div>
 
-        <div class="stat-card">
 
-            <div class="stat-icon">
-                📝
-            </div>
+</div>
 
-            <div class="stat-number">
-                0
-            </div>
+</section>
 
-            <div class="stat-label">
-                Available Exams
-            </div>
 
-        </div>
+<!-- SUBJECTS -->
 
+<section class="card">
 
-        <div class="stat-card">
+<h2>📚 My Assigned Subjects</h2>
 
-            <div class="stat-icon">
-                ✅
-            </div>
+<div
+id="subjectsContainer"
+class="subject-grid"
+>
 
-            <div class="stat-number">
-                0
-            </div>
+</div>
 
-            <div class="stat-label">
-                Exams Completed
-            </div>
+</section>
 
-        </div>
 
+<!-- ACTIONS -->
 
-        <div class="stat-card">
+<section class="card">
 
-            <div class="stat-icon">
-                🏆
-            </div>
+<h2>⚡ Quick Actions</h2>
 
-            <div class="stat-number">
-                0
-            </div>
+<div class="actions">
 
-            <div class="stat-label">
-                Results
-            </div>
 
-        </div>
+<a
+href="online-exam.html"
+class="action"
+>
 
-    </section>
+<div class="action-icon">
+📝
+</div>
 
+<h3>Online Exam</h3>
 
-    <!-- ================= AVAILABLE EXAMS ================= -->
+<p>
+View available examinations
+</p>
 
-    <section class="section">
+</a>
 
-        <div class="section-title">
 
-            <h2>
-                📝 Available Examinations
-            </h2>
+<a
+href="question-papers.html"
+class="action"
+>
 
-            <a href="online-exam.html">
-                View All
-            </a>
+<div class="action-icon">
+📄
+</div>
 
-        </div>
+<h3>Question Papers</h3>
 
+<p>
+View question papers
+</p>
 
-        <div class="exam-grid">
+</a>
 
 
-            <!-- EXAM 1 -->
+<a
+href="submit-answer.html"
+class="action"
+>
 
-            <div class="exam-card">
+<div class="action-icon">
+📤
+</div>
 
-                <h3>
-                    NIOS 202 English
-                </h3>
+<h3>Submit Answer</h3>
 
-                <p>
-                    Secondary Level
-                </p>
+<p>
+Upload your answer sheet
+</p>
 
-                <div class="exam-info">
+</a>
 
-                    <span class="badge">
-                        20 Questions
-                    </span>
 
-                    <span class="badge">
-                        30 Minutes
-                    </span>
+<a
+href="result.html"
+class="action"
+>
 
-                    <span class="badge">
-                        20 Marks
-                    </span>
+<div class="action-icon">
+🏆
+</div>
 
-                </div>
+<h3>My Results</h3>
 
-                <button
-                    class="start-btn"
-                    onclick="startExam('NIOS 202 English')"
-                >
-                    Start Exam
-                </button>
+<p>
+View published results
+</p>
 
-            </div>
+</a>
 
 
-            <!-- EXAM 2 -->
+</div>
 
-            <div class="exam-card">
+</section>
 
-                <h3>
-                    NIOS 212 Science & Technology
-                </h3>
 
-                <p>
-                    Secondary Level
-                </p>
+<!-- NOTICE -->
 
-                <div class="exam-info">
+<section class="card">
 
-                    <span class="badge">
-                        25 Questions
-                    </span>
+<h2>📢 Important Notice</h2>
 
-                    <span class="badge">
-                        45 Minutes
-                    </span>
+<div class="empty">
 
-                    <span class="badge">
-                        50 Marks
-                    </span>
+<strong>
+Your account is connected to the Online Exam Portal.
+</strong>
 
-                </div>
+<br><br>
 
-                <button
-                    class="start-btn"
-                    onclick="startExam('NIOS 212 Science & Technology')"
-                >
-                    Start Exam
-                </button>
+Subjects assigned by the administrator will appear in
+<strong>My Assigned Subjects</strong>.
 
-            </div>
+</div>
 
+</section>
 
-            <!-- EXAM 3 -->
 
-            <div class="exam-card">
+<!-- LOGOUT -->
 
-                <h3>
-                    ICSE Class 9 Physics
-                </h3>
+<div class="logout">
 
-                <p>
-                    ICSE Board
-                </p>
+<button onclick="logoutStudent()">
+Logout
+</button>
 
-                <div class="exam-info">
+</div>
 
-                    <span class="badge">
-                        40 Questions
-                    </span>
 
-                    <span class="badge">
-                        60 Minutes
-                    </span>
+</main>
 
-                    <span class="badge">
-                        80 Marks
-                    </span>
 
-                </div>
+<footer>
 
-                <button
-                    class="start-btn"
-                    onclick="startExam('ICSE Class 9 Physics')"
-                >
-                    Start Exam
-                </button>
+<p>
+Online Learning & Examination Portal
+</p>
 
-            </div>
+<p>
+Student Dashboard
+</p>
 
+</footer>
 
-        </div>
 
-    </section>
+<script>
 
 
-    <!-- ================= QUICK ACTIONS ================= -->
+/* ==================================
+   CHECK STUDENT LOGIN
+================================== */
 
-    <section class="section">
+const studentId =
+localStorage.getItem("studentId");
 
-        <div class="section-title">
 
-            <h2>
-                ⚡ Quick Actions
-            </h2>
+if(!studentId){
 
-        </div>
+    window.location.href =
+        "login.html";
 
+}
 
-        <div class="action-grid">
 
+/* ==================================
+   GET STORED STUDENT DATA
+================================== */
 
-            <a
-                href="subjects.html"
-                class="action-card"
-            >
+const studentName =
+localStorage.getItem("studentName") || "-";
 
-                <div class="action-icon">
-                    📚
-                </div>
+const enrollment =
+localStorage.getItem("enrollment") || "-";
 
-                <h3>
-                    My Subjects
-                </h3>
+const mobile =
+localStorage.getItem("mobile") || "-";
 
-                <p>
-                    View available subjects
-                </p>
+const email =
+localStorage.getItem("email") || "-";
 
-            </a>
+const board =
+localStorage.getItem("board") || "-";
 
+const studentClass =
+localStorage.getItem("studentClass") || "-";
 
-            <a
-                href="question-papers.html"
-                class="action-card"
-            >
 
-                <div class="action-icon">
-                    📄
-                </div>
+/* ==================================
+   DISPLAY PROFILE
+================================== */
 
-                <h3>
-                    Question Papers
-                </h3>
+document
+.getElementById("studentName")
+.textContent =
+studentName;
 
-                <p>
-                    View and download papers
-                </p>
 
-            </a>
+document
+.getElementById("welcomeName")
+.textContent =
+"Welcome, " +
+studentName +
+" 👋";
 
 
-            <a
-                href="submit-answer.html"
-                class="action-card"
-            >
+document
+.getElementById("studentId")
+.textContent =
+studentId;
 
-                <div class="action-icon">
-                    📤
-            
+
+document
+.getElementById("enrollment")
+.textContent =
+enrollment;
+
+
+document
+.getElementById("board")
+.textContent =
+board;
+
+
+document
+.getElementById("studentClass")
+.textContent =
+studentClass;
+
+
+document
+.getElementById("mobile")
+.textContent =
+mobile;
+
+
+document
+.getElementById("email")
+.textContent =
+email;
+
+
+/* ==================================
+   DISPLAY ASSIGNED SUBJECTS
+================================== */
+
+function loadSubjects(){
+
+    const container =
+        document.getElementById(
+            "subjectsContainer"
+        );
+
+
+    let subjects = [];
+
+
+    try{
+
+        subjects =
+            JSON.parse(
+                localStorage.getItem(
+                    "studentSubjects"
+                ) || "[]"
+            );
+
+    }catch(error){
+
+        subjects = [];
+
+    }
+
+
+    if(
+        !Array.isArray(subjects) ||
+        subjects.length === 0
+    ){
+
+        container.innerHTML =
+
+            '<div class="empty" style="grid-column:1/-1;">' +
+
+            'No subjects have been assigned to your account yet.' +
+
+            '</div>';
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    subjects.forEach(function(subject){
+
+        const box =
+            document.createElement("div");
+
+        box.className =
+            "subject";
+
+
+        const title =
+            document.createElement("h3");
+
+        title.textContent =
+            subject;
+
+
+        const description =
+            document.createElement("p");
+
+        description.textContent =
+            "Assigned Subject";
+
+
+        box.appendChild(title);
+
+        box.appendChild(description);
+
+        container.appendChild(box);
+
+    });
+
+}
+
+
+loadSubjects();
+
+
+/* ==================================
+   LOGOUT
+================================== */
+
+function logoutStudent(){
+
+    localStorage.removeItem(
+        "studentId"
+    );
+
+    localStorage.removeItem(
+        "studentName"
+    );
+
+    localStorage.removeItem(
+        "enrollment"
+    );
+
+    localStorage.removeItem(
+        "mobile"
+    );
+
+    localStorage.removeItem(
+        "email"
+    );
+
+    localStorage.removeItem(
+        "board"
+    );
+
+    localStorage.removeItem(
+        "studentClass"
+    );
+
+    localStorage.removeItem(
+        "studentSubjects"
+    );
+
+
+    window.location.href =
+        "login.html";
+
+}
+
+</script>
+
+</body>
+
+</html>
