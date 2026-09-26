@@ -3,281 +3,897 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Panel | Online Exam Portal</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f7fb;
+    color: #333;
+}
+
+header {
+    background: #102a43;
+    color: white;
+    padding: 15px 20px;
+}
+
+.header-container {
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.admin-name {
+    font-size: 14px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 25px 15px;
+}
+
+.welcome {
+    background: white;
+    padding: 22px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+}
+
+.welcome h1 {
+    color: #102a43;
+    margin-bottom: 8px;
+}
+
+.welcome p {
+    color: #666;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+    color: #102a43;
+    margin-bottom: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.form-group {
+    margin-bottom: 5px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #173f8a;
+}
+
+.create-btn {
+    margin-top: 20px;
+    padding: 13px 22px;
+    background: #173f8a;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.create-btn:hover {
+    background: #102a43;
+}
+
+.message {
+    display: none;
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 7px;
+    font-size: 14px;
+}
+
+.student-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.student-table th,
+.student-table td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    font-size: 14px;
+}
+
+.student-table th {
+    background: #f0f4f8;
+    color: #102a43;
+}
+
+.copy-btn {
+    background: #2e7d32;
+    color: white;
+    border: none;
+    padding: 7px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.delete-btn {
+    background: #c62828;
+    color: white;
+    border: none;
+    padding: 7px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.no-students {
+    text-align: center;
+    color: #777;
+    padding: 20px;
+}
+
+.logout-btn {
+    background: #c62828;
+    color: white;
+    border: none;
+    padding: 9px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+.info {
+    background: #e8f1ff;
+    border-left: 4px solid #173f8a;
+    padding: 14px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    font-size: 14px;
+}
 
-    <title>Admin Panel | Online Learning & Examination Portal</title>
+@media(max-width:700px) {
 
+    .header-container {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
 
-    <style>
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    .student-table {
+        min-width: 850px;
+    }
 
+    .table-wrapper {
+        overflow-x: auto;
+    }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f7fb;
-            color: #222;
-        }
+    .card {
+        padding: 18px;
+    }
 
+}
 
-        /* ================= HEADER ================= */
+</style>
 
-        header {
-            background: #102a43;
-            color: white;
-            padding: 14px 5%;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+</head>
 
 
-        .header-container {
-            max-width: 1250px;
-            margin: auto;
+<body>
 
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
 
+<header>
 
-        .logo {
-            font-size: 19px;
-            font-weight: bold;
-        }
+    <div class="header-container">
 
+        <div class="logo">
+            Online Exam Portal - Admin
+        </div>
 
-        .admin-name {
-            font-size: 14px;
-        }
+        <div>
 
+            <span class="admin-name">
+                Administrator
+            </span>
 
-        .logout-btn {
-            background: #d32f2f;
-            color: white;
+            &nbsp;
 
-            border: none;
-            border-radius: 6px;
+            <button
+                class="logout-btn"
+                onclick="logout()"
+            >
+                Logout
+            </button>
 
-            padding: 9px 14px;
+        </div>
 
-            cursor: pointer;
-            font-weight: bold;
+    </div>
 
-            margin-left: 10px;
-        }
+</header>
 
 
-        .logout-btn:hover {
-            background: #b71c1c;
-        }
+<div class="container">
 
 
-        /* ================= LAYOUT ================= */
+    <div class="welcome">
 
-        .page-container {
-            max-width: 1250px;
-            margin: auto;
+        <h1>
+            Admin Panel
+        </h1>
 
-            padding: 25px 15px 50px;
-        }
+        <p>
+            Welcome Administrator. You can create and manage student accounts here.
+        </p>
 
+    </div>
 
-        /* ================= WELCOME ================= */
 
-        .welcome-box {
-            background: white;
+    <div class="info">
 
-            padding: 24px;
+        <strong>Testing Version:</strong>
 
-            border-radius: 12px;
+        Student accounts are currently stored in this browser.
 
-            box-shadow:
-                0 4px 15px rgba(0, 0, 0, 0.07);
+        Later we will connect the website to
+        Google Sheets and Google Apps Script.
 
-            margin-bottom: 25px;
-        }
+    </div>
 
 
-        .welcome-box h1 {
-            color: #102a43;
-            font-size: 27px;
-            margin-bottom: 7px;
-        }
+    <!-- CREATE STUDENT -->
 
+    <div class="card">
 
-        .welcome-box p {
-            color: #666;
-            font-size: 14px;
-        }
+        <h2>
+            👨‍🎓 Create New Student
+        </h2>
 
 
-        /* ================= STAT CARDS ================= */
+        <form id="studentForm">
 
-        .stats-grid {
-            display: grid;
 
-            grid-template-columns:
-                repeat(4, 1fr);
+            <div class="form-grid">
 
-            gap: 15px;
 
-            margin-bottom: 28px;
-        }
+                <div class="form-group">
 
+                    <label>
+                        Student Name *
+                    </label>
 
-        .stat-card {
-            background: white;
+                    <input
+                        type="text"
+                        id="studentName"
+                        placeholder="Enter student name"
+                        required
+                    >
 
-            padding: 20px;
+                </div>
 
-            border-radius: 12px;
 
-            box-shadow:
-                0 4px 15px rgba(0, 0, 0, 0.07);
-        }
+                <div class="form-group">
 
+                    <label>
+                        Student ID *
+                    </label>
 
-        .stat-icon {
-            font-size: 27px;
-            margin-bottom: 10px;
-        }
+                    <input
+                        type="text"
+                        id="studentId"
+                        placeholder="Example: STU001"
+                        required
+                    >
 
+                </div>
 
-        .stat-card h3 {
-            font-size: 27px;
-            color: #102a43;
 
-            margin-bottom: 5px;
-        }
+                <div class="form-group">
 
+                    <label>
+                        Password *
+                    </label>
 
-        .stat-card p {
-            color: #777;
-            font-size: 13px;
-        }
+                    <input
+                        type="text"
+                        id="studentPassword"
+                        placeholder="Example: Student@123"
+                        required
+                    >
 
+                </div>
 
-        /* ================= SECTION ================= */
 
-        .section-title {
-            font-size: 21px;
+                <div class="form-group">
 
-            color: #102a43;
+                    <label>
+                        Enrollment Number
+                    </label>
 
-            margin-bottom: 15px;
-        }
+                    <input
+                        type="text"
+                        id="enrollment"
+                        placeholder="Enter enrollment number"
+                    >
 
+                </div>
 
-        /* ================= ADMIN GRID ================= */
 
-        .admin-grid {
-            display: grid;
+                <div class="form-group">
 
-            grid-template-columns:
-                repeat(3, 1fr);
+                    <label>
+                        Mobile Number
+                    </label>
 
-            gap: 18px;
+                    <input
+                        type="tel"
+                        id="mobile"
+                        placeholder="Enter mobile number"
+                    >
 
-            margin-bottom: 30px;
-        }
+                </div>
 
 
-        .admin-card {
-            background: white;
+                <div class="form-group">
 
-            border-radius: 12px;
+                    <label>
+                        Email
+                    </label>
 
-            padding: 23px;
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter email"
+                    >
 
-            box-shadow:
-                0 4px 15px rgba(0, 0, 0, 0.07);
+                </div>
 
-            transition: 0.2s;
-        }
 
+                <div class="form-group">
 
-        .admin-card:hover {
-            transform: translateY(-3px);
+                    <label>
+                        Course / Board
+                    </label>
 
-            box-shadow:
-                0 7px 20px rgba(0, 0, 0, 0.11);
-        }
+                    <input
+                        type="text"
+                        id="course"
+                        placeholder="Example: NIOS"
+                    >
 
+                </div>
 
-        .admin-card-icon {
-            font-size: 32px;
 
-            margin-bottom: 12px;
-        }
+                <div class="form-group">
 
+                    <label>
+                        Class
+                    </label>
 
-        .admin-card h3 {
-            color: #102a43;
+                    <input
+                        type="text"
+                        id="studentClass"
+                        placeholder="Example: Class 10"
+                    >
 
-            margin-bottom: 8px;
+                </div>
 
-            font-size: 18px;
-        }
 
+            </div>
 
-        .admin-card p {
-            color: #666;
 
-            font-size: 13px;
+            <button
+                type="submit"
+                class="create-btn"
+            >
+                ➕ Create Student
+            </button>
 
-            line-height: 1.5;
 
-            margin-bottom: 16px;
-        }
+            <div
+                id="message"
+                class="message"
+            ></div>
 
 
-        .card-btn {
-            display: inline-block;
+        </form>
 
-            background: #102a43;
+    </div>
 
-            color: white;
 
-            text-decoration: none;
+    <!-- STUDENT LIST -->
 
-            border: none;
+    <div class="card">
 
-            border-radius: 7px;
+        <h2>
+            👥 Student Accounts
+        </h2>
 
-            padding: 10px 15px;
 
-            font-size: 13px;
+        <div class="table-wrapper">
 
-            font-weight: bold;
+            <table class="student-table">
 
-            cursor: pointer;
-        }
+                <thead>
 
+                    <tr>
 
-        .card-btn:hover {
-            background: #0d47a1;
-        }
+                        <th>No.</th>
 
+                        <th>Name</th>
 
-        /* ================= RECENT ACTIVITY ================= */
+                        <th>Student ID</th>
 
-        .activity-box {
-            background: white;
+                        <th>Password</th>
 
-            border-radius: 12px;
+                        <th>Enrollment</th>
 
-            padding: 23px;
+                        <th>Mobile</th>
 
-            box-shadow:
-                0 4px 15px rgba(0, 0, 0, 0.07);
+                        <th>Course</th>
 
-            margin-bottom: 30px;
-       
+                        <th>Class</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="studentTableBody">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+/* CHECK ADMIN LOGIN */
+
+if (
+    sessionStorage.getItem("adminLoggedIn")
+    !== "true"
+) {
+
+    window.location.href =
+        "admin-login.html";
+
+}
+
+
+/* GET STUDENTS */
+
+function getStudents() {
+
+    const data =
+        localStorage.getItem("students");
+
+    if (!data) {
+
+        return [];
+
+    }
+
+    return JSON.parse(data);
+
+}
+
+
+/* SAVE STUDENTS */
+
+function saveStudents(students) {
+
+    localStorage.setItem(
+        "students",
+        JSON.stringify(students)
+    );
+
+}
+
+
+/* CREATE STUDENT */
+
+document
+.getElementById("studentForm")
+.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+
+    const name =
+        document.getElementById("studentName")
+        .value.trim();
+
+
+    const studentId =
+        document.getElementById("studentId")
+        .value.trim();
+
+
+    const password =
+        document.getElementById("studentPassword")
+        .value;
+
+
+    const enrollment =
+        document.getElementById("enrollment")
+        .value.trim();
+
+
+    const mobile =
+        document.getElementById("mobile")
+        .value.trim();
+
+
+    const email =
+        document.getElementById("email")
+        .value.trim();
+
+
+    const course =
+        document.getElementById("course")
+        .value.trim();
+
+
+    const studentClass =
+        document.getElementById("studentClass")
+        .value.trim();
+
+
+    let students =
+        getStudents();
+
+
+    const alreadyExists =
+        students.some(function(student) {
+
+            return student.studentId.toLowerCase()
+                === studentId.toLowerCase();
+
+        });
+
+
+    if (alreadyExists) {
+
+        showMessage(
+            "This Student ID already exists.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const newStudent = {
+
+        name: name,
+
+        studentId: studentId,
+
+        password: password,
+
+        enrollment: enrollment,
+
+        mobile: mobile,
+
+        email: email,
+
+        course: course,
+
+        studentClass: studentClass,
+
+        createdDate:
+            new Date().toLocaleString()
+
+    };
+
+
+    students.push(newStudent);
+
+
+    saveStudents(students);
+
+
+    showMessage(
+        "Student account created successfully!",
+        "success"
+    );
+
+
+    document
+    .getElementById("studentForm")
+    .reset();
+
+
+    displayStudents();
+
+});
+
+
+/* SHOW MESSAGE */
+
+function showMessage(text, type) {
+
+    const message =
+        document.getElementById("message");
+
+
+    message.style.display = "block";
+
+
+    if (type === "success") {
+
+        message.style.background = "#e8f5e9";
+
+        message.style.color = "#2e7d32";
+
+    } else {
+
+        message.style.background = "#ffebee";
+
+        message.style.color = "#c62828";
+
+    }
+
+
+    message.textContent = text;
+
+}
+
+
+/* DISPLAY STUDENTS */
+
+function displayStudents() {
+
+    const students =
+        getStudents();
+
+
+    const table =
+        document.getElementById("studentTableBody");
+
+
+    table.innerHTML = "";
+
+
+    if (students.length === 0) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="9" class="no-students">
+                    No students created yet.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    students.forEach(function(student, index) {
+
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td>${index + 1}</td>
+
+            <td>${student.name}</td>
+
+            <td>
+                <strong>${student.studentId}</strong>
+            </td>
+
+            <td>
+                ${student.password}
+            </td>
+
+            <td>
+                ${student.enrollment || "-"}
+            </td>
+
+            <td>
+                ${student.mobile || "-"}
+            </td>
+
+            <td>
+                ${student.course || "-"}
+            </td>
+
+            <td>
+                ${student.studentClass || "-"}
+            </td>
+
+            <td>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyStudent(${index})"
+                >
+                    Copy
+                </button>
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteStudent(${index})"
+                >
+                    Delete
+                </button>
+
+            </td>
+
+        `;
+
+
+        table.appendChild(row);
+
+    });
+
+}
+
+
+/* COPY STUDENT DETAILS */
+
+function copyStudent(index) {
+
+    const students =
+        getStudents();
+
+
+    const student =
+        students[index];
+
+
+    const text =
+
+`Student Name: ${student.name}
+Student ID: ${student.studentId}
+Password: ${student.password}
+Enrollment No: ${student.enrollment || "-"}
+Course: ${student.course || "-"}
+Class: ${student.studentClass || "-"}`;
+
+
+    navigator.clipboard.writeText(text);
+
+
+    alert(
+        "Student details copied successfully."
+    );
+
+}
+
+
+/* DELETE STUDENT */
+
+function deleteStudent(index) {
+
+    const students =
+        getStudents();
+
+
+    const student =
+        students[index];
+
+
+    const confirmDelete =
+        confirm(
+            "Delete student " +
+            student.name +
+            " (" +
+            student.studentId +
+            ")?"
+        );
+
+
+    if (!confirmDelete) {
+
+        return;
+
+    }
+
+
+    students.splice(index, 1);
+
+
+    saveStudents(students);
+
+
+    displayStudents();
+
+}
+
+
+/* LOGOUT */
+
+function logout() {
+
+    sessionStorage.removeItem(
+        "adminLoggedIn"
+    );
+
+    sessionStorage.removeItem(
+        "adminId"
+    );
+
+
+    window.location.href =
+        "admin-login.html";
+
+}
+
+
+/* LOAD STUDENTS */
+
+displayStudents();
+
+
+</script>
+
+
+</body>
+
+        </html>
