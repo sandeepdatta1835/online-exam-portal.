@@ -301,3 +301,685 @@ required>
 
 <label>
 Password
+</label>
+
+<input
+type="text"
+id="studentPassword"
+placeholder="Enter password"
+required>
+
+</div>
+
+
+<!-- ENROLLMENT -->
+
+<div class="form-group">
+
+<label>
+Enrollment No.
+</label>
+
+<input
+type="text"
+id="enrollment"
+placeholder="Enter enrollment number">
+
+</div>
+
+
+<!-- MOBILE -->
+
+<div class="form-group">
+
+<label>
+Mobile Number
+</label>
+
+<input
+type="text"
+id="mobile"
+placeholder="Enter mobile number">
+
+</div>
+
+
+<!-- EMAIL -->
+
+<div class="form-group">
+
+<label>
+Email Address
+</label>
+
+<input
+type="email"
+id="email"
+placeholder="Enter email">
+
+</div>
+
+
+<!-- BOARD -->
+
+<div class="form-group">
+
+<label>
+Board
+</label>
+
+<select id="board">
+
+<option value="">
+Select Board
+</option>
+
+<option value="NIOS">
+NIOS
+</option>
+
+<option value="CBSE">
+CBSE
+</option>
+
+<option value="ICSE">
+ICSE
+</option>
+
+<option value="Maharashtra Board">
+Maharashtra Board
+</option>
+
+<option value="Other">
+Other
+</option>
+
+</select>
+
+</div>
+
+
+<!-- CLASS -->
+
+<div class="form-group">
+
+<label>
+Class
+</label>
+
+<input
+type="text"
+id="studentClass"
+placeholder="Example: 10">
+
+</div>
+
+
+<!-- BUTTON -->
+
+<div class="form-group full">
+
+<button
+type="submit"
+class="create-btn"
+id="createButton">
+
+Create Student Account
+
+</button>
+
+</div>
+
+
+</div>
+
+</form>
+
+
+<div
+id="message"
+class="message">
+</div>
+
+
+</div>
+
+
+
+<!-- STUDENT LIST -->
+
+<div class="card">
+
+<h2>
+Student Accounts
+</h2>
+
+<div class="table-box">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+Student Name
+</th>
+
+<th>
+Student ID
+</th>
+
+<th>
+Enrollment
+</th>
+
+<th>
+Mobile
+</th>
+
+<th>
+Email
+</th>
+
+<th>
+Board
+</th>
+
+<th>
+Class
+</th>
+
+<th>
+Status
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="studentTable">
+
+</tbody>
+
+
+</table>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+/*
+========================================
+ADMIN LOGIN CHECK
+========================================
+*/
+
+if(
+    sessionStorage.getItem(
+        "adminLoggedIn"
+    ) !== "true"
+){
+
+    window.location.href =
+        "admin-login.html";
+
+}
+
+
+
+/*
+========================================
+GOOGLE APPS SCRIPT URL
+========================================
+*/
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwZK14mHGJmBYAy9oOErqiQa7F0YI2KsWc3ZO9_G0KpOQAI0IpjnAra4c1toEzXP-KK9w/exec";
+
+
+
+/*
+========================================
+GET ELEMENTS
+========================================
+*/
+
+const form =
+document.getElementById(
+    "studentForm"
+);
+
+const button =
+document.getElementById(
+    "createButton"
+);
+
+const message =
+document.getElementById(
+    "message"
+);
+
+const table =
+document.getElementById(
+    "studentTable"
+);
+
+
+
+/*
+========================================
+MESSAGE
+========================================
+*/
+
+function showMessage(
+    text,
+    type
+){
+
+    message.innerText =
+        text;
+
+    message.className =
+        "message " + type;
+
+}
+
+
+
+/*
+========================================
+CREATE STUDENT
+========================================
+*/
+
+form.addEventListener(
+    "submit",
+    function(event){
+
+        event.preventDefault();
+
+
+        const studentName =
+        document.getElementById(
+            "studentName"
+        ).value.trim();
+
+
+        const studentId =
+        document.getElementById(
+            "studentId"
+        ).value.trim();
+
+
+        const password =
+        document.getElementById(
+            "studentPassword"
+        ).value.trim();
+
+
+        const enrollment =
+        document.getElementById(
+            "enrollment"
+        ).value.trim();
+
+
+        const mobile =
+        document.getElementById(
+            "mobile"
+        ).value.trim();
+
+
+        const email =
+        document.getElementById(
+            "email"
+        ).value.trim();
+
+
+        const board =
+        document.getElementById(
+            "board"
+        ).value.trim();
+
+
+        const studentClass =
+        document.getElementById(
+            "studentClass"
+        ).value.trim();
+
+
+
+        /*
+        REQUIRED FIELDS
+        */
+
+        if(
+            studentName === "" ||
+            studentId === "" ||
+            password === ""
+        ){
+
+            showMessage(
+                "Please enter Student Name, Student ID and Password.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+
+        /*
+        DISABLE BUTTON
+        */
+
+        button.disabled =
+            true;
+
+        button.innerText =
+            "Saving...";
+
+
+        showMessage(
+            "Sending student information to Google Sheets...",
+            "info"
+        );
+
+
+
+        /*
+        DATA
+        */
+
+        const data = {
+
+            action:
+                "createStudent",
+
+            studentId:
+                studentId,
+
+            studentName:
+                studentName,
+
+            password:
+                password,
+
+            enrollment:
+                enrollment,
+
+            mobile:
+                mobile,
+
+            email:
+                email,
+
+            board:
+                board,
+
+            studentClass:
+                studentClass
+
+        };
+
+
+
+        /*
+        =================================
+        SEND REQUEST
+        =================================
+        */
+
+        fetch(
+            API_URL,
+            {
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                    "text/plain;charset=utf-8"
+                },
+
+                body:
+                JSON.stringify(data)
+
+            }
+        )
+
+        .then(
+            function(response){
+
+                return response.json();
+
+            }
+        )
+
+        .then(
+            function(result){
+
+                console.log(
+                    "API Response:",
+                    result
+                );
+
+
+                if(
+                    result.success === true
+                ){
+
+                    showMessage(
+                        "Student created successfully in Google Sheets.",
+                        "success"
+                    );
+
+
+                    addStudent(
+                        studentName,
+                        studentId,
+                        enrollment,
+                        mobile,
+                        email,
+                        board,
+                        studentClass
+                    );
+
+
+                    form.reset();
+
+                }
+
+                else{
+
+                    showMessage(
+                        result.message ||
+                        "Student was not created.",
+                        "error"
+                    );
+
+                }
+
+
+                button.disabled =
+                    false;
+
+                button.innerText =
+                    "Create Student Account";
+
+            }
+        )
+
+        .catch(
+            function(error){
+
+                console.error(
+                    "ERROR:",
+                    error
+                );
+
+
+                showMessage(
+                    "Connection error: " +
+                    error.message,
+                    "error"
+                );
+
+
+                button.disabled =
+                    false;
+
+                button.innerText =
+                    "Create Student Account";
+
+            }
+        );
+
+    }
+);
+
+
+
+/*
+========================================
+ADD STUDENT TO TABLE
+========================================
+*/
+
+function addStudent(
+    name,
+    id,
+    enrollment,
+    mobile,
+    email,
+    board,
+    studentClass
+){
+
+    const row =
+    document.createElement(
+        "tr"
+    );
+
+
+    row.innerHTML =
+
+    "<td>" +
+    escapeHTML(name) +
+    "</td>" +
+
+    "<td>" +
+    escapeHTML(id) +
+    "</td>" +
+
+    "<td>" +
+    escapeHTML(enrollment) +
+    "</td>" +
+
+    "<td>" +
+    escapeHTML(mobile) +
+    "</td>" +
+
+    "<td>" +
+    escapeHTML(email) +
+    "</td>" +
+
+    "<td>" +
+    escapeHTML(board) +
+    "</td>" +
+
+    "<td>" +
+    escapeHTML(studentClass) +
+    "</td>" +
+
+    "<td class='status'>" +
+    "Active" +
+    "</td>";
+
+
+    table.appendChild(
+        row
+    );
+
+}
+
+
+
+/*
+========================================
+HTML SECURITY
+========================================
+*/
+
+function escapeHTML(
+    value
+){
+
+    return String(value)
+
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+
+    .replace(
+        /</g,
+        "&lt;"
+    )
+
+    .replace(
+        />/g,
+        "&gt;"
+    )
+
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+
+/*
+========================================
+LOGOUT
+========================================
+*/
+
+function logout(){
+
+    sessionStorage.removeItem(
+        "adminLoggedIn"
+    );
+
+    sessionStorage.removeItem(
+        "adminId"
+    );
+
+    window.location.href =
+        "admin-login.html";
+
+}
+
+</script>
+
+
+</body>
+
+</html>
