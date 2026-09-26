@@ -3,154 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Admin Panel | Online Exam Portal</title>
 
 <style>
-*{
-    box-sizing:border-box;
-}
-
 body{
     margin:0;
-    font-family:Arial,Helvetica,sans-serif;
+    font-family:Arial,sans-serif;
     background:#f4f7fb;
-    color:#222;
 }
 
 .header{
     background:#173b7a;
     color:white;
-    padding:18px 20px;
+    padding:20px;
 }
 
 .header-inner{
-    max-width:1200px;
+    max-width:1100px;
     margin:auto;
     display:flex;
     justify-content:space-between;
     align-items:center;
 }
 
-.header h1{
-    margin:0;
-    font-size:24px;
-}
-
-.header p{
-    margin:5px 0 0;
-    font-size:14px;
-}
-
-.logout-btn{
+.logout{
     background:#dc3545;
     color:white;
     border:0;
     padding:10px 16px;
     border-radius:6px;
-    cursor:pointer;
-    font-weight:bold;
 }
 
 .container{
-    max-width:1200px;
+    max-width:1100px;
     margin:25px auto;
-    padding:0 15px;
-}
-
-.notice{
-    background:#fff3cd;
-    color:#664d03;
     padding:15px;
-    border-radius:8px;
-    margin-bottom:25px;
-    line-height:1.5;
-}
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
-    margin-bottom:25px;
-}
-
-.stat{
-    background:white;
-    padding:20px;
-    text-align:center;
-    border-radius:10px;
-    box-shadow:0 2px 10px rgba(0,0,0,.08);
-}
-
-.stat h2{
-    margin:0;
-    color:#173b7a;
-    font-size:30px;
-}
-
-.stat p{
-    margin:8px 0 0;
-    color:#666;
 }
 
 .card{
     background:white;
     padding:25px;
+    margin-bottom:20px;
     border-radius:10px;
-    margin-bottom:25px;
     box-shadow:0 2px 10px rgba(0,0,0,.08);
 }
 
-.card h2{
-    margin-top:0;
+h2{
     color:#173b7a;
 }
 
 .form-grid{
     display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:16px;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
 }
 
-.form-group{
-    display:flex;
-    flex-direction:column;
-}
-
-.form-group label{
+label{
     font-weight:bold;
     margin-bottom:6px;
+    display:block;
 }
 
-.form-group input,
-.form-group select{
+input,select{
+    width:100%;
     padding:11px;
     border:1px solid #ccc;
     border-radius:6px;
-    font-size:15px;
+    box-sizing:border-box;
 }
 
-.full{
-    grid-column:1/-1;
-}
-
-.create-btn{
-    background:#198754;
-    color:white;
-    border:0;
-    padding:13px 20px;
-    border-radius:6px;
-    font-size:16px;
-    font-weight:bold;
+button{
     cursor:pointer;
 }
 
-.message{
-    display:none;
-    padding:12px;
-    margin-top:15px;
+.create{
+    background:#198754;
+    color:white;
+    border:0;
+    padding:12px 20px;
     border-radius:6px;
     font-weight:bold;
+}
+
+.search{
+    width:100%;
+    margin-bottom:15px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#173b7a;
+    color:white;
+    padding:10px;
+}
+
+td{
+    padding:10px;
+    border-bottom:1px solid #ddd;
+}
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+.copy{
+    background:#0d6efd;
+    color:white;
+    border:0;
+    padding:7px;
+    border-radius:5px;
+}
+
+.delete{
+    background:#dc3545;
+    color:white;
+    border:0;
+    padding:7px;
+    border-radius:5px;
+}
+
+.message{
+    margin-top:15px;
+    padding:12px;
+    display:none;
+    border-radius:6px;
 }
 
 .success{
@@ -163,63 +143,6 @@ body{
     color:#842029;
 }
 
-.search{
-    width:100%;
-    padding:12px;
-    border:1px solid #ccc;
-    border-radius:6px;
-    font-size:15px;
-    margin-bottom:20px;
-}
-
-.table-wrapper{
-    overflow-x:auto;
-}
-
-table{
-    width:100%;
-    min-width:950px;
-    border-collapse:collapse;
-}
-
-th{
-    background:#173b7a;
-    color:white;
-    padding:12px;
-    text-align:left;
-}
-
-td{
-    padding:11px;
-    border-bottom:1px solid #ddd;
-}
-
-.copy-btn{
-    background:#0d6efd;
-    color:white;
-    border:0;
-    padding:7px 10px;
-    border-radius:5px;
-    cursor:pointer;
-}
-
-.delete-btn{
-    background:#dc3545;
-    color:white;
-    border:0;
-    padding:7px 10px;
-    border-radius:5px;
-    cursor:pointer;
-    margin-left:5px;
-}
-
-.footer{
-    text-align:center;
-    color:#666;
-    padding:25px;
-    font-size:13px;
-}
-
 @media(max-width:700px){
 
     .header-inner{
@@ -228,20 +151,8 @@ td{
         gap:15px;
     }
 
-    .stats{
-        grid-template-columns:1fr;
-    }
-
     .form-grid{
         grid-template-columns:1fr;
-    }
-
-    .full{
-        grid-column:auto;
-    }
-
-    .card{
-        padding:18px;
     }
 }
 </style>
@@ -255,13 +166,10 @@ td{
 
         <div>
             <h1>🔐 Admin Panel</h1>
-            <p>Online Exam Portal Administration</p>
+            <div>Online Exam Portal</div>
         </div>
 
-        <button
-            class="logout-btn"
-            onclick="logoutAdmin()"
-        >
+        <button class="logout" onclick="logout()">
             Logout
         </button>
 
@@ -272,37 +180,21 @@ td{
 
 <div class="container">
 
-    <div class="notice">
-        <strong>Testing Version:</strong>
-        Student accounts are currently stored in this browser.
-        Real online authentication will be connected later using
-        Google Apps Script and Google Sheets.
-    </div>
+    <div class="card">
 
+        <h2>Admin Dashboard</h2>
 
-    <!-- STATISTICS -->
+        <p>
+            Welcome, Administrator.
+        </p>
 
-    <div class="stats">
-
-        <div class="stat">
-            <h2 id="totalStudents">0</h2>
-            <p>Total Students</p>
-        </div>
-
-        <div class="stat">
-            <h2 id="totalExams">0</h2>
-            <p>Total Exams</p>
-        </div>
-
-        <div class="stat">
-            <h2>ON</h2>
-            <p>Admin Status</p>
-        </div>
+        <p>
+            Total Students:
+            <strong id="studentCount">0</strong>
+        </p>
 
     </div>
 
-
-    <!-- CREATE STUDENT -->
 
     <div class="card">
 
@@ -312,104 +204,54 @@ td{
 
             <div class="form-grid">
 
-                <div class="form-group">
-
-                    <label>
-                        Student Name *
-                    </label>
-
+                <div>
+                    <label>Student Name *</label>
                     <input
-                        type="text"
                         id="studentName"
-                        placeholder="Enter student name"
                         required
-                    >
-
+                        placeholder="Student name">
                 </div>
 
-
-                <div class="form-group">
-
-                    <label>
-                        Student ID *
-                    </label>
-
+                <div>
+                    <label>Student ID *</label>
                     <input
-                        type="text"
                         id="studentId"
-                        placeholder="Example: STU001"
                         required
-                    >
-
+                        placeholder="STU001">
                 </div>
 
-
-                <div class="form-group">
-
-                    <label>
-                        Password *
-                    </label>
-
+                <div>
+                    <label>Password *</label>
                     <input
-                        type="text"
                         id="studentPassword"
-                        placeholder="Create password"
                         required
-                    >
-
+                        placeholder="Student@123">
                 </div>
 
-
-                <div class="form-group">
-
-                    <label>
-                        Enrollment Number
-                    </label>
-
+                <div>
+                    <label>Enrollment Number</label>
                     <input
-                        type="text"
                         id="enrollment"
-                        placeholder="Enrollment number"
-                    >
-
+                        placeholder="Enrollment number">
                 </div>
 
-
-                <div class="form-group">
-
-                    <label>
-                        Mobile Number
-                    </label>
-
+                <div>
+                    <label>Mobile Number</label>
                     <input
-                        type="tel"
                         id="mobile"
-                        placeholder="Mobile number"
-                    >
-
+                        placeholder="Mobile number">
                 </div>
 
-
-                <div class="form-group">
-
-                    <label>
-                        Email
-                    </label>
-
+                <div>
+                    <label>Email</label>
                     <input
-                        type="email"
                         id="email"
-                        placeholder="Email address"
-                    >
-
+                        type="email"
+                        placeholder="Email">
                 </div>
 
-
-                <div class="form-group">
-
-                    <label>
-                        Course / Board
-                    </label>
+                <div>
+                    <label>Course / Board</label>
 
                     <select id="course">
 
@@ -417,36 +259,17 @@ td{
                             Select Board
                         </option>
 
-                        <option value="NIOS">
-                            NIOS
-                        </option>
-
-                        <option value="CBSE">
-                            CBSE
-                        </option>
-
-                        <option value="ICSE">
-                            ICSE
-                        </option>
-
-                        <option value="Maharashtra Board">
-                            Maharashtra Board
-                        </option>
-
-                        <option value="Other">
-                            Other
-                        </option>
+                        <option>NIOS</option>
+                        <option>CBSE</option>
+                        <option>ICSE</option>
+                        <option>Maharashtra Board</option>
+                        <option>Other</option>
 
                     </select>
-
                 </div>
 
-
-                <div class="form-group">
-
-                    <label>
-                        Class
-                    </label>
+                <div>
+                    <label>Class</label>
 
                     <select id="studentClass">
 
@@ -454,66 +277,45 @@ td{
                             Select Class
                         </option>
 
-                        <option value="7">Class 7</option>
-                        <option value="8">Class 8</option>
-                        <option value="9">Class 9</option>
-                        <option value="10">Class 10</option>
-                        <option value="11">Class 11</option>
-                        <option value="12">Class 12</option>
-
-                        <option value="Senior Secondary">
-                            Senior Secondary
-                        </option>
-
-                        <option value="Other">
-                            Other
-                        </option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                        <option>Senior Secondary</option>
 
                     </select>
-
-                </div>
-
-
-                <div class="form-group full">
-
-                    <button
-                        type="submit"
-                        class="create-btn"
-                    >
-                        ➕ Create Student Account
-                    </button>
-
                 </div>
 
             </div>
 
+            <br>
+
+            <button
+                type="submit"
+                class="create">
+                Create Student Account
+            </button>
+
         </form>
 
-
-        <div
-            id="message"
-            class="message"
-        ></div>
+        <div id="message" class="message"></div>
 
     </div>
 
-
-    <!-- STUDENT LIST -->
 
     <div class="card">
 
         <h2>👨‍🎓 Student Accounts</h2>
 
         <input
-            type="text"
+            id="search"
             class="search"
-            id="searchStudent"
             placeholder="Search student..."
-            oninput="displayStudents()"
-        >
+            oninput="showStudents()">
 
-
-        <div class="table-wrapper">
+        <div class="table-wrap">
 
             <table>
 
@@ -527,7 +329,7 @@ td{
                         <th>Mobile</th>
                         <th>Course</th>
                         <th>Class</th>
-                        <th>Actions</th>
+                        <th>Action</th>
                     </tr>
 
                 </thead>
@@ -543,49 +345,37 @@ td{
 </div>
 
 
-<div class="footer">
-
-    Online Exam Portal<br>
-    Admin Panel - Testing Version
-
-</div>
-
-
 <script>
 
-/* =====================================
-   ADMIN AUTHENTICATION CHECK
-===================================== */
+/*
+========================================
+ADMIN LOGIN CHECK
+========================================
+*/
 
 if(
     sessionStorage.getItem("adminLoggedIn")
     !== "true"
 ){
 
-    window.location.replace(
-        "admin-login.html"
-    );
+    window.location.href =
+        "admin-login.html";
 
 }
 
 
-/* =====================================
-   STUDENT STORAGE
-===================================== */
+/*
+========================================
+STUDENT FUNCTIONS
+========================================
+*/
 
 function getStudents(){
 
-    try{
-
-        return JSON.parse(
-            localStorage.getItem("students") || "[]"
-        );
-
-    }catch(error){
-
-        return [];
-
-    }
+    return JSON.parse(
+        localStorage.getItem("students")
+        || "[]"
+    );
 
 }
 
@@ -600,191 +390,144 @@ function saveStudents(students){
 }
 
 
-/* =====================================
-   CREATE STUDENT
-===================================== */
+/*
+========================================
+CREATE STUDENT
+========================================
+*/
 
 document
 .getElementById("studentForm")
-.addEventListener(
-    "submit",
-    function(event){
+.addEventListener("submit",function(e){
 
-        event.preventDefault();
+    e.preventDefault();
 
+    const student = {
 
-        const name =
+        name:
             document
             .getElementById("studentName")
-            .value
-            .trim();
+            .value.trim(),
 
-
-        const studentId =
+        studentId:
             document
             .getElementById("studentId")
-            .value
-            .trim();
+            .value.trim(),
 
-
-        const password =
+        password:
             document
             .getElementById("studentPassword")
-            .value
-            .trim();
+            .value.trim(),
 
-
-        const enrollment =
+        enrollment:
             document
             .getElementById("enrollment")
-            .value
-            .trim();
+            .value.trim(),
 
-
-        const mobile =
+        mobile:
             document
             .getElementById("mobile")
-            .value
-            .trim();
+            .value.trim(),
 
-
-        const email =
+        email:
             document
             .getElementById("email")
-            .value
-            .trim();
+            .value.trim(),
 
-
-        const course =
+        course:
             document
             .getElementById("course")
-            .value;
+            .value,
 
-
-        const studentClass =
+        studentClass:
             document
             .getElementById("studentClass")
-            .value;
+            .value,
+
+        createdDate:
+            new Date().toLocaleString()
+
+    };
 
 
-        let students = getStudents();
+    let students = getStudents();
 
 
-        /* Duplicate ID check */
+    const exists =
+        students.some(function(s){
 
-        const duplicate =
-            students.some(function(student){
+            return s.studentId.toLowerCase()
+                === student.studentId.toLowerCase();
 
-                return String(
-                    student.studentId
-                ).toLowerCase()
-                ===
-                studentId.toLowerCase();
-
-            });
+        });
 
 
-        if(duplicate){
-
-            showMessage(
-                "This Student ID already exists.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        /* New student */
-
-        const newStudent = {
-
-            name:name,
-
-            studentId:studentId,
-
-            password:password,
-
-            enrollment:enrollment,
-
-            mobile:mobile,
-
-            email:email,
-
-            course:course,
-
-            studentClass:studentClass,
-
-            createdDate:
-                new Date().toLocaleString()
-
-        };
-
-
-        students.push(newStudent);
-
-        saveStudents(students);
-
-
-        document
-        .getElementById("studentForm")
-        .reset();
-
-
-        displayStudents();
-
-        updateStats();
-
+    if(exists){
 
         showMessage(
-            "Student account created successfully.",
-            "success"
+            "Student ID already exists.",
+            "error"
         );
 
+        return;
+
     }
-);
 
 
-/* =====================================
-   DISPLAY STUDENTS
-===================================== */
+    students.push(student);
 
-function displayStudents(){
+    saveStudents(students);
+
+    document
+    .getElementById("studentForm")
+    .reset();
+
+    showStudents();
+
+    showMessage(
+        "Student account created successfully.",
+        "success"
+    );
+
+});
+
+
+/*
+========================================
+DISPLAY STUDENTS
+========================================
+*/
+
+function showStudents(){
 
     const table =
         document.getElementById(
             "studentTable"
         );
 
-
     const search =
         document
-        .getElementById(
-            "searchStudent"
-        )
+        .getElementById("search")
         .value
-        .toLowerCase()
-        .trim();
-
+        .toLowerCase();
 
     const students = getStudents();
 
 
     const filtered =
-        students.filter(function(student){
+        students.filter(function(s){
 
-            const text =
-                (
-                    student.name + " " +
-                    student.studentId + " " +
-                    student.enrollment + " " +
-                    student.mobile + " " +
-                    student.course
-                )
-                .toLowerCase();
-
-            return text.includes(search);
+            return (
+                s.name +
+                " " +
+                s.studentId +
+                " " +
+                s.enrollment +
+                " " +
+                s.mobile
+            )
+            .toLowerCase()
+            .includes(search);
 
         });
 
@@ -794,21 +537,18 @@ function displayStudents(){
 
     if(filtered.length === 0){
 
-        table.innerHTML = `
-            <tr>
-                <td colspan="8"
-                    style="text-align:center;padding:25px;">
-                    No student accounts found.
-                </td>
-            </tr>
-        `;
-
-        return;
+        table.innerHTML =
+        `<tr>
+            <td colspan="8"
+                style="text-align:center">
+                No students found.
+            </td>
+        </tr>`;
 
     }
 
 
-    filtered.forEach(function(student){
+    filtered.forEach(function(s){
 
         const row =
             document.createElement("tr");
@@ -816,57 +556,31 @@ function displayStudents(){
 
         row.innerHTML = `
 
-            <td>
-                ${escapeHtml(student.name)}
-            </td>
+            <td>${safe(s.name)}</td>
 
-            <td>
-                <strong>
-                    ${escapeHtml(student.studentId)}
-                </strong>
-            </td>
+            <td>${safe(s.studentId)}</td>
 
-            <td>
-                ${escapeHtml(student.password)}
-            </td>
+            <td>${safe(s.password)}</td>
 
-            <td>
-                ${escapeHtml(
-                    student.enrollment || "-"
-                )}
-            </td>
+            <td>${safe(s.enrollment)}</td>
 
-            <td>
-                ${escapeHtml(
-                    student.mobile || "-"
-                )}
-            </td>
+            <td>${safe(s.mobile)}</td>
 
-            <td>
-                ${escapeHtml(
-                    student.course || "-"
-                )}
-            </td>
+            <td>${safe(s.course)}</td>
 
-            <td>
-                ${escapeHtml(
-                    student.studentClass || "-"
-                )}
-            </td>
+            <td>${safe(s.studentClass)}</td>
 
             <td>
 
                 <button
-                    class="copy-btn"
-                    onclick="copyCredentials('${escapeJs(student.studentId)}')"
-                >
+                    class="copy"
+                    onclick="copyStudent('${jsSafe(s.studentId)}')">
                     Copy
                 </button>
 
                 <button
-                    class="delete-btn"
-                    onclick="deleteStudent('${escapeJs(student.studentId)}')"
-                >
+                    class="delete"
+                    onclick="deleteStudent('${jsSafe(s.studentId)}')">
                     Delete
                 </button>
 
@@ -879,29 +593,31 @@ function displayStudents(){
 
     });
 
+
+    document
+    .getElementById("studentCount")
+    .textContent = students.length;
+
 }
 
 
-/* =====================================
-   COPY STUDENT LOGIN
-===================================== */
+/*
+========================================
+COPY
+========================================
+*/
 
-function copyCredentials(studentId){
-
-    const students = getStudents();
-
+function copyStudent(id){
 
     const student =
-        students.find(function(item){
+        getStudents().find(function(s){
 
-            return item.studentId === studentId;
+            return s.studentId === id;
 
         });
 
 
     if(!student){
-
-        alert("Student not found.");
 
         return;
 
@@ -909,125 +625,79 @@ function copyCredentials(studentId){
 
 
     const text =
-        "Online Exam Portal\n\n" +
-        "Student Name: " +
-        student.name + "\n" +
+        "Student Login Details\n\n" +
         "Student ID: " +
-        student.studentId + "\n" +
-        "Password: " +
+        student.studentId +
+        "\nPassword: " +
         student.password;
 
 
-    if(
-        navigator.clipboard &&
-        navigator.clipboard.writeText
-    ){
+    navigator.clipboard
+    .writeText(text)
+    .then(function(){
 
-        navigator.clipboard
-        .writeText(text)
-        .then(function(){
+        alert(
+            "Student login details copied."
+        );
 
-            alert(
-                "Student login details copied."
-            );
-
-        });
-
-    }else{
+    })
+    .catch(function(){
 
         alert(text);
 
-    }
+    });
 
 }
 
 
-/* =====================================
-   DELETE STUDENT
-===================================== */
+/*
+========================================
+DELETE
+========================================
+*/
 
-function deleteStudent(studentId){
+function deleteStudent(id){
 
-    const students = getStudents();
-
-
-    const student =
-        students.find(function(item){
-
-            return item.studentId === studentId;
-
-        });
-
-
-    if(!student){
+    if(
+        !confirm(
+            "Delete this student account?"
+        )
+    ){
 
         return;
 
     }
 
 
-    const confirmDelete =
-        confirm(
-            "Delete " +
-            student.name +
-            " (" +
-            student.studentId +
-            ")?"
-        );
+    const students =
+        getStudents().filter(function(s){
 
-
-    if(!confirmDelete){
-
-        return;
-
-    }
-
-
-    const updated =
-        students.filter(function(item){
-
-            return item.studentId !== studentId;
+            return s.studentId !== id;
 
         });
 
 
-    saveStudents(updated);
+    saveStudents(students);
 
-    displayStudents();
-
-    updateStats();
+    showStudents();
 
 }
 
 
-/* =====================================
-   STATISTICS
-===================================== */
+/*
+========================================
+MESSAGE
+========================================
+*/
 
-function updateStats(){
-
-    const students = getStudents();
-
-    document
-    .getElementById("totalStudents")
-    .textContent = students.length;
-
-}
-
-
-/* =====================================
-   MESSAGE
-===================================== */
-
-function showMessage(message,type){
+function showMessage(text,type){
 
     const box =
         document.getElementById(
             "message"
         );
 
-
-    box.textContent = message;
+    box.textContent = text;
 
     box.className =
         "message " + type;
@@ -1044,11 +714,13 @@ function showMessage(message,type){
 }
 
 
-/* =====================================
-   SECURITY HELPERS
-===================================== */
+/*
+========================================
+SECURITY HELPERS
+========================================
+*/
 
-function escapeHtml(value){
+function safe(value){
 
     return String(value || "")
     .replace(/&/g,"&amp;")
@@ -1060,7 +732,7 @@ function escapeHtml(value){
 }
 
 
-function escapeJs(value){
+function jsSafe(value){
 
     return String(value || "")
     .replace(/\\/g,"\\\\")
@@ -1069,11 +741,13 @@ function escapeJs(value){
 }
 
 
-/* =====================================
-   LOGOUT
-===================================== */
+/*
+========================================
+LOGOUT
+========================================
+*/
 
-function logoutAdmin(){
+function logout(){
 
     sessionStorage.removeItem(
         "adminLoggedIn"
@@ -1083,22 +757,21 @@ function logoutAdmin(){
         "adminId"
     );
 
-    window.location.replace(
-        "admin-login.html"
-    );
+    window.location.href =
+        "admin-login.html";
 
 }
 
 
-/* =====================================
-   START
-===================================== */
+/*
+========================================
+START
+========================================
+*/
 
-displayStudents();
-
-updateStats();
+showStudents();
 
 </script>
 
 </body>
-                              </html>
+    </html>
