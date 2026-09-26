@@ -1,744 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Admin Login | Online Learning & Examination Portal</title>
-
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f7fb;
-            color: #222;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-
-        /* ================= HEADER ================= */
-
-        header {
-            background: #102a43;
-            color: white;
-            padding: 15px 5%;
-        }
-
-
-        .header-container {
-            max-width: 1200px;
-            margin: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-
-        .logo {
-            font-size: 19px;
-            font-weight: bold;
-        }
-
-
-        .home-link {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-
-        .home-link:hover {
-            text-decoration: underline;
-        }
-
-
-        /* ================= MAIN ================= */
-
-        main {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 15px;
-        }
-
-
-        .login-container {
-            width: 100%;
-            max-width: 440px;
-        }
-
-
-        .login-card {
-            background: white;
-            border-radius: 16px;
-            padding: 35px 30px;
-            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.10);
-        }
-
-
-        /* ================= ICON ================= */
-
-        .admin-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 18px;
-
-            border-radius: 50%;
-
-            background: #e8eef5;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 38px;
-        }
-
-
-        /* ================= TITLE ================= */
-
-        h1 {
-            text-align: center;
-            color: #102a43;
-            font-size: 27px;
-            margin-bottom: 6px;
-        }
-
-
-        .subtitle {
-            text-align: center;
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 28px;
-        }
-
-
-        /* ================= FORM ================= */
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-
-        label {
-            display: block;
-            font-weight: bold;
-            font-size: 14px;
-            margin-bottom: 7px;
-        }
-
-
-        input {
-            width: 100%;
-            padding: 13px 14px;
-
-            border: 1px solid #ccc;
-            border-radius: 8px;
-
-            font-size: 15px;
-            outline: none;
-        }
-
-
-        input:focus {
-            border-color: #0d47a1;
-
-            box-shadow:
-                0 0 0 2px
-                rgba(13, 71, 161, 0.08);
-        }
-
-
-        .password-box {
-            position: relative;
-        }
-
-
-        .password-box input {
-            padding-right: 70px;
-        }
-
-
-        .show-password {
-            position: absolute;
-
-            right: 10px;
-            top: 50%;
-
-            transform: translateY(-50%);
-
-            background: transparent;
-            border: none;
-
-            color: #0d47a1;
-
-            font-weight: bold;
-
-            cursor: pointer;
-
-            padding: 5px;
-        }
-
-
-        /* ================= LOGIN BUTTON ================= */
-
-        .login-btn {
-            width: 100%;
-
-            padding: 14px;
-
-            background: #102a43;
-            color: white;
-
-            border: none;
-            border-radius: 8px;
-
-            font-size: 16px;
-            font-weight: bold;
-
-            cursor: pointer;
-
-            margin-top: 5px;
-        }
-
-
-        .login-btn:hover {
-            background: #0d47a1;
-        }
-
-
-        /* ================= MESSAGE ================= */
-
-        #message {
-            display: none;
-
-            margin-top: 18px;
-
-            padding: 12px;
-
-            border-radius: 8px;
-
-            text-align: center;
-
-            font-size: 13px;
-        }
-
-
-        /* ================= SECURITY BOX ================= */
-
-        .security-box {
-            margin-top: 22px;
-
-            padding: 15px;
-
-            background: #fff8e1;
-
-            border-left: 4px solid #ffb300;
-
-            border-radius: 6px;
-
-            color: #555;
-
-            font-size: 13px;
-        }
-
-
-        .security-box strong {
-            color: #333;
-        }
-
-
-        /* ================= BACK LINKS ================= */
-
-        .links {
-            margin-top: 23px;
-
-            text-align: center;
-        }
-
-
-        .links a {
-            color: #0d47a1;
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            margin: 0 7px;
-        }
-
-
-        .links a:hover {
-            text-decoration: underline;
-        }
-
-
-        /* ================= FOOTER ================= */
-
-        footer {
-            background: #102a43;
-
-            color: white;
-
-            text-align: center;
-
-            padding: 20px 15px;
-
-            font-size: 13px;
-        }
-
-
-        footer p {
-            margin: 3px 0;
-        }
-
-
-        /* ================= MOBILE ================= */
-
-        @media (max-width: 600px) {
-
-            header {
-                padding: 13px 15px;
-            }
-
-
-            .header-container {
-                flex-direction: column;
-                gap: 8px;
-            }
-
-
-            .logo {
-                font-size: 17px;
-                text-align: center;
-            }
-
-
-            .login-card {
-                padding: 28px 20px;
-            }
-
-
-            h1 {
-                font-size: 24px;
-            }
-
-
-            .subtitle {
-                font-size: 13px;
-            }
-
-        }
-
-    </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Login | Online Exam Portal</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f1f5f9;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.login-box{
+    width:100%;
+    max-width:420px;
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 5px 25px rgba(0,0,0,.12);
+    margin:20px;
+}
+
+.logo{
+    text-align:center;
+    font-size:45px;
+    margin-bottom:10px;
+}
+
+h1{
+    text-align:center;
+    color:#173b7a;
+    margin:0 0 8px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+    margin-bottom:25px;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+input{
+    width:100%;
+    padding:13px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:16px;
+    margin-bottom:18px;
+}
+
+input:focus{
+    outline:none;
+    border-color:#173b7a;
+}
+
+.login-btn{
+    width:100%;
+    padding:13px;
+    border:0;
+    border-radius:6px;
+    background:#173b7a;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.login-btn:hover{
+    background:#0f2b5d;
+}
+
+.error{
+    display:none;
+    background:#f8d7da;
+    color:#842029;
+    padding:12px;
+    border-radius:6px;
+    margin-bottom:15px;
+    text-align:center;
+}
+
+.home{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#173b7a;
+    text-decoration:none;
+}
+
+.demo{
+    margin-top:20px;
+    padding:12px;
+    background:#fff3cd;
+    color:#664d03;
+    border-radius:6px;
+    font-size:14px;
+    line-height:1.6;
+}
+</style>
 </head>
-
 
 <body>
 
+<div class="login-box">
 
-<!-- ================= HEADER ================= -->
+    <div class="logo">🔐</div>
 
-<header>
+    <h1>Admin Login</h1>
 
-    <div class="header-container">
+    <div class="subtitle">
+        Online Exam Portal
+    </div>
 
-        <div class="logo">
-            Online Learning & Examination Portal
-        </div>
+    <div id="errorMessage" class="error">
+        Invalid Admin ID or Password.
+    </div>
 
+    <form id="adminLoginForm">
 
-        <a
-            href="index.html"
-            class="home-link"
+        <label for="adminId">
+            Admin ID
+        </label>
+
+        <input
+            type="text"
+            id="adminId"
+            placeholder="Enter Admin ID"
+            autocomplete="username"
+            required
         >
-            ← Back to Website
-        </a>
 
+        <label for="adminPassword">
+            Password
+        </label>
+
+        <input
+            type="password"
+            id="adminPassword"
+            placeholder="Enter Password"
+            autocomplete="current-password"
+            required
+        >
+
+        <button
+            type="submit"
+            class="login-btn"
+        >
+            Login to Admin Panel
+        </button>
+
+    </form>
+
+    <div class="demo">
+        <strong>Testing Login</strong><br>
+        Admin ID: <strong>admin</strong><br>
+        Password: <strong>Admin@123</strong>
     </div>
 
-</header>
+    <a href="index.html" class="home">
+        ← Back to Home
+    </a>
 
+</div>
 
-<!-- ================= MAIN ================= -->
-
-<main>
-
-    <div class="login-container">
-
-        <div class="login-card">
-
-
-            <!-- ICON -->
-
-            <div class="admin-icon">
-                🔐
-            </div>
-
-
-            <!-- TITLE -->
-
-            <h1>
-                Admin Login
-            </h1>
-
-
-            <p class="subtitle">
-                Secure access to the administration panel
-            </p>
-
-
-            <!-- LOGIN FORM -->
-
-            <form id="adminLoginForm">
-
-
-                <!-- ADMIN ID -->
-
-                <div class="form-group">
-
-                    <label for="adminId">
-                        Admin ID
-                    </label>
-
-
-                    <input
-                        type="text"
-                        id="adminId"
-                        placeholder="Enter Admin ID"
-                        autocomplete="username"
-                        required
-                    >
-
-                </div>
-
-
-                <!-- PASSWORD -->
-
-                <div class="form-group">
-
-                    <label for="adminPassword">
-                        Password
-                    </label>
-
-
-                    <div class="password-box">
-
-                        <input
-                            type="password"
-                            id="adminPassword"
-                            placeholder="Enter Admin Password"
-                            autocomplete="current-password"
-                            required
-                        >
-
-
-                        <button
-                            type="button"
-                            class="show-password"
-                            id="showPassword"
-                        >
-                            Show
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- LOGIN -->
-
-                <button
-                    type="submit"
-                    class="login-btn"
-                >
-                    🔐 Admin Login
-                </button>
-
-            </form>
-
-
-            <!-- MESSAGE -->
-
-            <div id="message"></div>
-
-
-            <!-- SECURITY -->
-
-            <div class="security-box">
-
-                <strong>
-                    🔒 Security Notice
-                </strong>
-
-                <br><br>
-
-                This administration area is intended only for the
-                authorized website administrator.
-
-                <br><br>
-
-                The real administrator authentication will be connected
-                to the secure backend later. Do not store your real
-                password inside this HTML file.
-
-            </div>
-
-
-            <!-- LINKS -->
-
-            <div class="links">
-
-                <a href="index.html">
-                    Home
-                </a>
-
-                |
-
-                <a href="login.html">
-                    Student Login
-                </a>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-</main>
-
-
-<!-- ================= FOOTER ================= -->
-
-<footer>
-
-    <p>
-        © 2026 Online Learning & Examination Portal
-    </p>
-
-    <p>
-        Administrator Area
-    </p>
-
-</footer>
-
-
-<!-- ================= JAVASCRIPT ================= -->
 
 <script>
 
+document
+.getElementById("adminLoginForm")
+.addEventListener("submit", function(event){
 
-    /* =========================================
-       SHOW / HIDE PASSWORD
-    ========================================= */
+    event.preventDefault();
 
-    const passwordInput =
-        document.getElementById(
-            "adminPassword"
+    const adminId =
+        document.getElementById("adminId")
+        .value
+        .trim();
+
+    const adminPassword =
+        document.getElementById("adminPassword")
+        .value;
+
+    const errorMessage =
+        document.getElementById("errorMessage");
+
+
+    if(
+        adminId === "admin" &&
+        adminPassword === "Admin@123"
+    ){
+
+        /*
+          Save admin login status
+        */
+
+        sessionStorage.setItem(
+            "adminLoggedIn",
+            "true"
+        );
+
+        sessionStorage.setItem(
+            "adminId",
+            adminId
         );
 
 
-    const showPassword =
-        document.getElementById(
-            "showPassword"
-        );
+        /*
+          Open Admin Panel
+        */
 
+        window.location.href =
+            "admin-panel.html";
 
-    showPassword.addEventListener(
-        "click",
-        function () {
+    }else{
 
-            if (
-                passwordInput.type ===
-                "password"
-            ) {
-
-                passwordInput.type =
-                    "text";
-
-                showPassword.textContent =
-                    "Hide";
-
-            } else {
-
-                passwordInput.type =
-                    "password";
-
-                showPassword.textContent =
-                    "Show";
-
-            }
-
-        }
-    );
-
-
-    /* =========================================
-       ADMIN LOGIN
-    ========================================= */
-
-    document
-        .getElementById("adminLoginForm")
-        .addEventListener(
-            "submit",
-            function (event) {
-
-                event.preventDefault();
-
-
-                const adminId =
-                    document
-                        .getElementById(
-                            "adminId"
-                        )
-                        .value
-                        .trim();
-
-
-                const password =
-                    document
-                        .getElementById(
-                            "adminPassword"
-                        )
-                        .value
-                        .trim();
-
-
-                const message =
-                    document.getElementById(
-                        "message"
-                    );
-
-
-                /* CHECK ADMIN ID */
-
-                if (adminId === "") {
-
-                    showMessage(
-                        "Please enter Admin ID.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                /* CHECK PASSWORD */
-
-                if (password === "") {
-
-                    showMessage(
-                        "Please enter Admin Password.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                /*
-                 ==================================
-                 FRONTEND DEMO ONLY
-                 ==================================
-
-                 We deliberately do NOT check
-                 a hard-coded password here.
-
-                 Real authentication will later
-                 be handled by the secure backend.
-
-                 Flow:
-
-                 Admin Login
-                       ↓
-                 Google Apps Script
-                       ↓
-                 Admin verification
-                       ↓
-                 Admin Panel
-                 */
-
-
-                sessionStorage.setItem(
-                    "adminLoginAttempt",
-                    "true"
-                );
-
-
-                showMessage(
-                    "Admin login page is working. Secure authentication will be connected before the Admin Panel is activated.",
-                    "info"
-                );
-
-            }
-        );
-
-
-    /* =========================================
-       MESSAGE FUNCTION
-    ========================================= */
-
-    function showMessage(
-        text,
-        type
-    ) {
-
-        const message =
-            document.getElementById(
-                "message"
-            );
-
-
-        message.style.display =
+        errorMessage.style.display =
             "block";
-
-
-        if (type === "error") {
-
-            message.style.background =
-                "#ffebee";
-
-            message.style.color =
-                "#c62828";
-
-        } else {
-
-            message.style.background =
-                "#e3f2fd";
-
-            message.style.color =
-                "#0d47a1";
-
-        }
-
-
-        message.textContent =
-            text;
 
     }
 
+});
 
 </script>
 
-
 </body>
-
-</html>
+    </html>
