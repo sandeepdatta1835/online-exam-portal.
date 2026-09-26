@@ -7,85 +7,182 @@
 <title>Admin Panel - Online Exam Portal</title>
 
 <style>
+
 *{
     box-sizing:border-box;
 }
 
 body{
     margin:0;
-    font-family:Arial, sans-serif;
-    background:#f4f6f8;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f6f9;
     color:#222;
 }
 
+/* HEADER */
+
 header{
-    background:#172554;
-    color:white;
-    padding:18px;
+    background:#17365d;
+    color:#fff;
+    padding:18px 20px;
+}
+
+.header-inner{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
 }
 
 header h1{
     margin:0;
-    font-size:24px;
+    font-size:23px;
 }
 
 header p{
-    margin:6px 0 0;
-    font-size:14px;
+    margin:5px 0 0;
+    font-size:13px;
 }
 
+/* NAV */
+
+nav{
+    background:#fff;
+    border-bottom:1px solid #ddd;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.nav-inner{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    overflow-x:auto;
+}
+
+.nav-inner button{
+    background:none;
+    border:0;
+    padding:14px 16px;
+    cursor:pointer;
+    font-weight:bold;
+    color:#17365d;
+    white-space:nowrap;
+}
+
+.nav-inner button:hover{
+    background:#eef4fb;
+}
+
+/* MAIN */
+
 .container{
-    max-width:1100px;
+    max-width:1200px;
     margin:25px auto;
     padding:0 15px;
 }
 
+/* CARDS */
+
 .card{
-    background:white;
+    background:#fff;
+    border-radius:10px;
     padding:22px;
     margin-bottom:20px;
-    border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
 
 .card h2{
     margin-top:0;
-    color:#172554;
+    color:#17365d;
+    font-size:20px;
 }
 
-.form-grid{
+.card h3{
+    color:#17365d;
+}
+
+/* SECTIONS */
+
+.section{
+    display:none;
+}
+
+.section.active{
+    display:block;
+}
+
+/* FORM */
+
+.grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
     gap:15px;
 }
 
-input, select{
+.field{
+    margin-bottom:12px;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:6px;
+    font-size:14px;
+}
+
+input,
+select,
+textarea{
     width:100%;
-    padding:12px;
+    padding:11px;
     border:1px solid #ccc;
     border-radius:6px;
-    font-size:15px;
+    font-size:14px;
 }
+
+textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+/* BUTTONS */
 
 button{
-    border:none;
-    padding:12px 18px;
+    border:0;
     border-radius:6px;
+    padding:10px 16px;
     cursor:pointer;
-    font-size:15px;
+    font-size:14px;
+    font-weight:bold;
 }
 
-.create-btn{
-    background:#166534;
-    color:white;
-    margin-top:18px;
+.primary{
+    background:#17365d;
+    color:#fff;
 }
 
-.logout-btn{
-    background:#dc2626;
-    color:white;
-    float:right;
-    margin-top:-35px;
+.success{
+    background:#198754;
+    color:#fff;
+}
+
+.danger{
+    background:#dc3545;
+    color:#fff;
+}
+
+.secondary{
+    background:#6c757d;
+    color:#fff;
+}
+
+.warning{
+    background:#f0ad4e;
+    color:#fff;
 }
 
 button:disabled{
@@ -93,272 +190,1284 @@ button:disabled{
     cursor:not-allowed;
 }
 
+/* MESSAGE */
+
 .message{
-    margin-top:15px;
+    display:none;
     padding:12px;
     border-radius:6px;
-    display:none;
+    margin-top:15px;
+    font-size:14px;
 }
 
-.success{
-    background:#dcfce7;
-    color:#166534;
+.message.success-msg{
+    display:block;
+    background:#d1e7dd;
+    color:#0f5132;
 }
 
-.error{
-    background:#fee2e2;
-    color:#991b1b;
+.message.error-msg{
+    display:block;
+    background:#f8d7da;
+    color:#842029;
+}
+
+/* TABLE */
+
+.table-wrap{
+    overflow-x:auto;
 }
 
 table{
     width:100%;
     border-collapse:collapse;
     margin-top:15px;
+    min-width:700px;
 }
 
-th, td{
+th,
+td{
     border:1px solid #ddd;
-    padding:10px;
+    padding:9px;
     text-align:left;
-    font-size:14px;
+    font-size:13px;
 }
 
 th{
-    background:#e5e7eb;
+    background:#17365d;
+    color:#fff;
 }
 
-.placeholder{
-    padding:20px;
-    background:#f8fafc;
-    border:1px dashed #aaa;
+tr:nth-child(even){
+    background:#fafafa;
+}
+
+/* SUBJECT LIST */
+
+.subject-list{
+    border:1px solid #ddd;
     border-radius:8px;
-    color:#555;
+    max-height:320px;
+    overflow-y:auto;
+    background:#fafafa;
 }
 
-@media(max-width:700px){
-    .form-grid{
+.subject-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:11px;
+    border-bottom:1px solid #eee;
+}
+
+.subject-item:last-child{
+    border-bottom:0;
+}
+
+.subject-item input{
+    width:auto;
+}
+
+/* STUDENT INFO */
+
+.student-info{
+    display:none;
+    background:#eef4fb;
+    padding:15px;
+    border-radius:7px;
+    margin:15px 0;
+}
+
+.student-info div{
+    margin:6px 0;
+}
+
+/* DASHBOARD BOXES */
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.dashboard-box{
+    background:#fff;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.dashboard-box h3{
+    margin:0 0 8px;
+    color:#17365d;
+}
+
+.dashboard-number{
+    font-size:28px;
+    font-weight:bold;
+}
+
+/* ACTIONS */
+
+.actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:15px;
+}
+
+/* SMALL TEXT */
+
+.small{
+    font-size:13px;
+    color:#666;
+}
+
+/* STATUS */
+
+.status{
+    display:inline-block;
+    padding:4px 9px;
+    border-radius:15px;
+    font-size:12px;
+    background:#d1e7dd;
+    color:#0f5132;
+}
+
+/* MOBILE */
+
+@media(max-width:800px){
+
+    .grid{
         grid-template-columns:1fr;
     }
 
-    table{
-        display:block;
-        overflow-x:auto;
+    .dashboard-grid{
+        grid-template-columns:repeat(2,1fr);
     }
 
     header h1{
-        font-size:20px;
+        font-size:19px;
     }
+
 }
+
+@media(max-width:500px){
+
+    .dashboard-grid{
+        grid-template-columns:1fr;
+    }
+
+    .header-inner{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+}
+
 </style>
 </head>
 
 <body>
 
-<header>
-    <h1>🔐 Online Exam Portal - Admin Panel</h1>
-    <p>Student Management System</p>
 
-    <button class="logout-btn" onclick="logoutAdmin()">
-        Logout
-    </button>
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+<div class="header-inner">
+
+<div>
+
+<h1>Online Exam Portal - Admin Panel</h1>
+
+<p>
+Student • Subjects • Question Papers • Exams • Results
+</p>
+
+</div>
+
+<button
+class="danger"
+onclick="logoutAdmin()"
+>
+Logout
+</button>
+
+</div>
+
 </header>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav>
+
+<div class="nav-inner">
+
+<button onclick="showSection('dashboard')">
+Dashboard
+</button>
+
+<button onclick="showSection('students')">
+Students
+</button>
+
+<button onclick="showSection('subjects')">
+Assign Subjects
+</button>
+
+<button onclick="showSection('papers')">
+Question Papers
+</button>
+
+<button onclick="showSection('exams')">
+Exams
+</button>
+
+<button onclick="showSection('submissions')">
+Submissions
+</button>
+
+<button onclick="showSection('results')">
+Results
+</button>
+
+</div>
+
+</nav>
+
 
 <div class="container">
 
-    <!-- CREATE STUDENT -->
 
-    <div class="card">
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
 
-        <h2>➕ Create Student</h2>
+<section
+id="dashboard"
+class="section active"
+>
 
-        <form id="studentForm">
+<div class="card">
 
-            <div class="form-grid">
+<h2>📊 Admin Dashboard</h2>
 
-                <div>
-                    <label>Student Name *</label>
-                    <input
-                        type="text"
-                        id="studentName"
-                        required
-                    >
-                </div>
+<p>
+Welcome to the Online Exam Portal administration system.
+</p>
 
-                <div>
-                    <label>Student ID *</label>
-                    <input
-                        type="text"
-                        id="studentId"
-                        required
-                    >
-                </div>
-
-                <div>
-                    <label>Password *</label>
-                    <input
-                        type="password"
-                        id="password"
-                        required
-                    >
-                </div>
-
-                <div>
-                    <label>Enrollment No.</label>
-                    <input
-                        type="text"
-                        id="enrollment"
-                    >
-                </div>
-
-                <div>
-                    <label>Mobile</label>
-                    <input
-                        type="text"
-                        id="mobile"
-                    >
-                </div>
-
-                <div>
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                    >
-                </div>
-
-                <div>
-                    <label>Board</label>
-
-                    <select id="board">
-
-                        <option value="">
-                            Select Board
-                        </option>
-
-                        <option value="NIOS">
-                            NIOS
-                        </option>
-
-                        <option value="CBSE">
-                            CBSE
-                        </option>
-
-                        <option value="ICSE">
-                            ICSE
-                        </option>
-
-                        <option value="Maharashtra Board">
-                            Maharashtra Board
-                        </option>
-
-                    </select>
-
-                </div>
-
-                <div>
-                    <label>Class</label>
-
-                    <input
-                        type="text"
-                        id="studentClass"
-                        placeholder="Example: 10"
-                    >
-
-                </div>
-
-            </div>
-
-            <button
-                type="submit"
-                class="create-btn"
-                id="createButton"
-            >
-                Create Student
-            </button>
-
-        </form>
-
-        <div
-            id="message"
-            class="message"
-        ></div>
-
-    </div>
+</div>
 
 
-    <!-- STUDENT RECORDS -->
+<div class="dashboard-grid">
 
-    <div class="card">
+<div class="dashboard-box">
 
-        <h2>👨‍🎓 Student Records</h2>
+<h3>Students</h3>
 
-        <table id="studentTable">
+<div
+id="studentCount"
+class="dashboard-number"
+>
+0
+</div>
 
-            <thead>
-
-                <tr>
-                    <th>Student ID</th>
-                    <th>Name</th>
-                    <th>Enrollment</th>
-                    <th>Board</th>
-                    <th>Class</th>
-                    <th>Status</th>
-                </tr>
-
-            </thead>
-
-            <tbody id="studentTableBody">
-
-            </tbody>
-
-        </table>
-
-    </div>
+</div>
 
 
-    <!-- FUTURE FEATURES -->
+<div class="dashboard-box">
 
-    <div class="card">
+<h3>Subjects</h3>
 
-        <h2>📚 Other Admin Functions</h2>
+<div
+id="subjectCount"
+class="dashboard-number"
+>
+0
+</div>
 
-        <div class="placeholder">
+</div>
 
-            <p>⏳ Student Subject Assignment - Coming Next</p>
 
-            <p>⏳ Question Paper Management - Coming Next</p>
+<div class="dashboard-box">
 
-            <p>⏳ Exam Scheduling - Coming Next</p>
+<h3>Question Papers</h3>
 
-            <p>⏳ Answer Sheet / Submission Management - Coming Next</p>
+<div
+id="paperCount"
+class="dashboard-number"
+>
+0
+</div>
 
-            <p>⏳ Marks & Result Management - Coming Next</p>
+</div>
 
-        </div>
 
-    </div>
+<div class="dashboard-box">
+
+<h3>Exams</h3>
+
+<div
+id="examCount"
+class="dashboard-number"
+>
+0
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     STUDENTS
+===================================================== -->
+
+<section
+id="students"
+class="section"
+>
+
+<div class="card">
+
+<h2>👨‍🎓 Create Student</h2>
+
+<div class="grid">
+
+<div class="field">
+
+<label>
+Student ID *
+</label>
+
+<input
+id="studentId"
+type="text"
+placeholder="Example: TEST004"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Student Name *
+</label>
+
+<input
+id="studentName"
+type="text"
+placeholder="Student full name"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Password *
+</label>
+
+<input
+id="studentPassword"
+type="text"
+placeholder="Example: Test123"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Enrollment Number
+</label>
+
+<input
+id="enrollment"
+type="text"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Mobile
+</label>
+
+<input
+id="mobile"
+type="text"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Email
+</label>
+
+<input
+id="email"
+type="email"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Board
+</label>
+
+<input
+id="board"
+type="text"
+value="NIOS"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Class
+</label>
+
+<input
+id="studentClass"
+type="text"
+value="10"
+>
+
+</div>
+
+</div>
+
+
+<button
+id="createBtn"
+class="primary"
+onclick="createStudent()"
+>
+Create Student
+</button>
+
+<div
+id="createMessage"
+class="message"
+></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>Student List</h2>
+
+<div class="actions">
+
+<button
+class="primary"
+onclick="loadStudents()"
+>
+Refresh Students
+</button>
+
+</div>
+
+<div
+id="studentTable"
+class="table-wrap"
+>
+<p class="small">
+Loading students...
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SUBJECT ASSIGNMENT
+===================================================== -->
+
+<section
+id="subjects"
+class="section"
+>
+
+<div class="card">
+
+<h2>📚 Assign Subjects</h2>
+
+<div class="field">
+
+<label>
+Select Student
+</label>
+
+<select
+id="studentSelect"
+onchange="loadSelectedStudent()"
+>
+
+<option value="">
+-- Select Student --
+</option>
+
+</select>
+
+</div>
+
+
+<div
+id="studentInfo"
+class="student-info"
+>
+
+<div>
+<strong>Name:</strong>
+<span id="infoName"></span>
+</div>
+
+<div>
+<strong>Student ID:</strong>
+<span id="infoId"></span>
+</div>
+
+<div>
+<strong>Board:</strong>
+<span id="infoBoard"></span>
+</div>
+
+<div>
+<strong>Class:</strong>
+<span id="infoClass"></span>
+</div>
+
+</div>
+
+
+<label>
+Select Subjects
+</label>
+
+<div
+id="subjectList"
+class="subject-list"
+>
+
+<p class="small">
+Select a student first.
+</p>
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="secondary"
+onclick="selectAllSubjects()"
+>
+Select All
+</button>
+
+<button
+class="secondary"
+onclick="clearAllSubjects()"
+>
+Clear All
+</button>
+
+<button
+id="assignBtn"
+class="success"
+onclick="assignSubjects()"
+>
+Save Assigned Subjects
+</button>
+
+</div>
+
+
+<div
+id="assignMessage"
+class="message"
+></div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     QUESTION PAPERS
+===================================================== -->
+
+<section
+id="papers"
+class="section"
+>
+
+<div class="card">
+
+<h2>📄 Add Question Paper</h2>
+
+<div class="grid">
+
+<div class="field">
+
+<label>
+Paper Name
+</label>
+
+<input
+id="paperName"
+placeholder="Example: NIOS Class 10 English 2026"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Subject ID
+</label>
+
+<select
+id="paperSubject"
+>
+<option value="">
+-- Select Subject --
+</option>
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Subject Code
+</label>
+
+<input
+id="paperSubjectCode"
+placeholder="Example: 202"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Subject Name
+</label>
+
+<input
+id="paperSubjectName"
+placeholder="English"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Board
+</label>
+
+<input
+id="paperBoard"
+placeholder="NIOS"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Class
+</label>
+
+<input
+id="paperClass"
+placeholder="10"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Exam Type
+</label>
+
+<select id="paperExamType">
+
+<option value="Practice">
+Practice
+</option>
+
+<option value="Unit Test">
+Unit Test
+</option>
+
+<option value="Term Exam">
+Term Exam
+</option>
+
+<option value="Final Exam">
+Final Exam
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Year
+</label>
+
+<input
+id="paperYear"
+value="2026"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Question Paper File URL
+</label>
+
+<input
+id="paperFileURL"
+placeholder="Google Drive PDF URL"
+>
+
+</div>
+
+</div>
+
+
+<button
+class="success"
+onclick="addQuestionPaper()"
+>
+Add Question Paper
+</button>
+
+
+<div
+id="paperMessage"
+class="message"
+></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>Question Papers</h2>
+
+<button
+class="primary"
+onclick="loadQuestionPapers()"
+>
+Refresh Question Papers
+</button>
+
+<div
+id="paperTable"
+class="table-wrap"
+>
+<p class="small">
+Loading...
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     EXAMS
+===================================================== -->
+
+<section
+id="exams"
+class="section"
+>
+
+<div class="card">
+
+<h2>📝 Schedule Exam</h2>
+
+<div class="grid">
+
+<div class="field">
+
+<label>
+Exam Name
+</label>
+
+<input
+id="examName"
+placeholder="Example: NIOS English Monthly Test"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Subject
+</label>
+
+<select
+id="examSubject"
+>
+<option value="">
+-- Select Subject --
+</option>
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Question Paper
+</label>
+
+<select
+id="examQuestionPaper"
+>
+<option value="">
+-- Select Question Paper --
+</option>
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Board
+</label>
+
+<input
+id="examBoard"
+value="NIOS"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Class
+</label>
+
+<input
+id="examClass"
+value="10"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Duration (Minutes)
+</label>
+
+<input
+id="examDuration"
+type="number"
+value="60"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Total Marks
+</label>
+
+<input
+id="examMarks"
+type="number"
+value="50"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Start Date & Time
+</label>
+
+<input
+id="examStart"
+type="datetime-local"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+End Date & Time
+</label>
+
+<input
+id="examEnd"
+type="datetime-local"
+>
+
+</div>
+
+</div>
+
+
+<button
+class="success"
+onclick="addExam()"
+>
+Create / Schedule Exam
+</button>
+
+
+<div
+id="examMessage"
+class="message"
+></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>Scheduled Exams</h2>
+
+<button
+class="primary"
+onclick="loadExams()"
+>
+Refresh Exams
+</button>
+
+<div
+id="examTable"
+class="table-wrap"
+>
+<p class="small">
+Loading...
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SUBMISSIONS
+===================================================== -->
+
+<section
+id="submissions"
+class="section"
+>
+
+<div class="card">
+
+<h2>📥 Student Submissions</h2>
+
+<button
+class="primary"
+onclick="loadSubmissions()"
+>
+Refresh Submissions
+</button>
+
+<div
+id="submissionTable"
+class="table-wrap"
+>
+
+<p class="small">
+Loading...
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     RESULTS
+===================================================== -->
+
+<section
+id="results"
+class="section"
+>
+
+<div class="card">
+
+<h2>📊 Enter / Publish Result</h2>
+
+<div class="grid">
+
+<div class="field">
+
+<label>
+Student ID
+</label>
+
+<input
+id="resultStudentId"
+placeholder="TEST003"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Exam ID
+</label>
+
+<input
+id="resultExamId"
+placeholder="Exam ID"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Subject ID
+</label>
+
+<input
+id="resultSubjectId"
+placeholder="SUB001"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Exam Name
+</label>
+
+<input
+id="resultExamName"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Total Marks
+</label>
+
+<input
+id="resultTotalMarks"
+type="number"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Marks Obtained
+</label>
+
+<input
+id="resultMarks"
+type="number"
+oninput="calculatePercentage()"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Percentage
+</label>
+
+<input
+id="resultPercentage"
+readonly
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Grade
+</label>
+
+<input
+id="resultGrade"
+placeholder="A / B / C"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Result Status
+</label>
+
+<select id="resultStatus">
+
+<option value="Published">
+Published
+</option>
+
+<option value="Draft">
+Draft
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Remarks
+</label>
+
+<textarea
+id="resultRemarks"
+placeholder="Evaluator remarks"
+></textarea>
+
+</div>
+
+
+<button
+class="success"
+onclick="saveResult()"
+>
+Save Result
+</button>
+
+
+<div
+id="resultMessage"
+class="message"
+></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>Published Results</h2>
+
+<button
+class="primary"
+onclick="loadResults()"
+>
+Refresh Results
+</button>
+
+<div
+id="resultTable"
+class="table-wrap"
+>
+
+<p class="small">
+Loading...
+</p>
+
+</div>
+
+</div>
+
+</section>
+
 
 </div>
 
 
 <script>
 
-/* ==============================
-   GOOGLE APPS SCRIPT API
-============================== */
-
-const API_URL =
-"https://script.google.com/macros/s/AKfycbzwMrFz4dBr4h_fp6zFT0mCkXSEw0_cqKgZxWBppnUWNTRoxBa9ee4B7Ljx30n9FCiOiA/exec";
-
-
-
-/* ==============================
-   ADMIN LOGIN CHECK
-============================== */
+/* =====================================================
+   ADMIN AUTH
+===================================================== */
 
 if(
-    sessionStorage.getItem("adminLoggedIn")
-    !== "true"
+    sessionStorage.getItem("adminLoggedIn") !== "true"
 ){
 
     window.location.href =
@@ -367,371 +1476,1886 @@ if(
 }
 
 
-/* ==============================
-   MESSAGE
-============================== */
+/* =====================================================
+   API URL
+===================================================== */
 
-function showMessage(message, success){
+const API_URL =
+"https://script.google.com/macros/s/AKfycbzwMrFz4dBr4h_fp6zFT0mCkXSEw0_cqKgZxWBppnUWNTRoxBa9ee4B7Ljx30n9FCiOiA/exec";
 
-    const box =
-        document.getElementById("message");
 
-    box.textContent =
-        message;
+/* =====================================================
+   GLOBAL DATA
+===================================================== */
 
-    box.className =
-        "message " +
-        (success ? "success" : "error");
+let students = [];
 
-    box.style.display =
-        "block";
+let subjects = [];
+
+let papers = [];
+
+let exams = [];
+
+
+/* =====================================================
+   JSONP
+===================================================== */
+
+function jsonpRequest(params, callback){
+
+    const callbackName =
+        "callback_" +
+        Date.now() +
+        "_" +
+        Math.floor(Math.random()*10000);
+
+    params.callback =
+        callbackName;
+
+    let script = null;
+
+    window[callbackName] =
+        function(data){
+
+            try{
+
+                callback(data);
+
+            }
+            finally{
+
+                delete window[callbackName];
+
+                if(script){
+                    script.remove();
+                }
+
+            }
+
+        };
+
+
+    const query =
+        Object.keys(params)
+        .map(function(key){
+
+            return encodeURIComponent(key)
+            + "="
+            + encodeURIComponent(params[key]);
+
+        })
+        .join("&");
+
+
+    script =
+        document.createElement("script");
+
+    script.src =
+        API_URL + "?" + query;
+
+
+    script.onerror =
+        function(){
+
+            callback({
+                success:false,
+                message:"Connection error"
+            });
+
+            delete window[callbackName];
+
+            if(script){
+                script.remove();
+            }
+
+        };
+
+
+    document.body.appendChild(script);
 
 }
 
 
-/* ==============================
-   CREATE STUDENT - JSONP
-============================== */
+/* =====================================================
+   NAVIGATION
+===================================================== */
 
-function createStudentViaJSONP(data){
+function showSection(id){
 
-    return new Promise(function(resolve){
+    document
+        .querySelectorAll(".section")
+        .forEach(function(section){
 
-        const callbackName =
-            "studentCallback_" +
-            Date.now();
+            section.classList.remove("active");
 
-        let script = null;
-
-        let finished = false;
+        });
 
 
-        function cleanup(){
+    const section =
+        document.getElementById(id);
 
-            if(window[callbackName]){
 
-                delete window[callbackName];
+    if(section){
+        section.classList.add("active");
+    }
 
-            }
 
-            if(
-                script &&
-                script.parentNode
-            ){
+    if(id === "students"){
+        loadStudents();
+    }
 
-                script.parentNode.removeChild(script);
+    if(id === "subjects"){
+        loadStudents();
+        loadSubjects();
+    }
 
-            }
+    if(id === "papers"){
+        loadSubjects();
+        loadQuestionPapers();
+    }
+
+    if(id === "exams"){
+        loadSubjects();
+        loadQuestionPapers();
+        loadExams();
+    }
+
+    if(id === "submissions"){
+        loadSubmissions();
+    }
+
+    if(id === "results"){
+        loadResults();
+    }
+
+}
+
+
+/* =====================================================
+   CREATE STUDENT
+===================================================== */
+
+function createStudent(){
+
+    const studentId =
+        document.getElementById("studentId")
+        .value.trim();
+
+    const studentName =
+        document.getElementById("studentName")
+        .value.trim();
+
+    const password =
+        document.getElementById("studentPassword")
+        .value.trim();
+
+    const enrollment =
+        document.getElementById("enrollment")
+        .value.trim();
+
+    const mobile =
+        document.getElementById("mobile")
+        .value.trim();
+
+    const email =
+        document.getElementById("email")
+        .value.trim();
+
+    const board =
+        document.getElementById("board")
+        .value.trim();
+
+    const studentClass =
+        document.getElementById("studentClass")
+        .value.trim();
+
+    const message =
+        document.getElementById("createMessage");
+
+    const button =
+        document.getElementById("createBtn");
+
+
+    if(
+        !studentId ||
+        !studentName ||
+        !password
+    ){
+
+        showMessage(
+            message,
+            "Student ID, name and password are required.",
+            false
+        );
+
+        return;
+    }
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "Creating...";
+
+
+    jsonpRequest({
+
+        action:"createStudent",
+
+        studentId:studentId,
+
+        studentName:studentName,
+
+        password:password,
+
+        enrollment:enrollment,
+
+        mobile:mobile,
+
+        email:email,
+
+        board:board,
+
+        studentClass:studentClass
+
+    },function(result){
+
+        button.disabled = false;
+
+        button.textContent =
+            "Create Student";
+
+
+        if(result.success){
+
+            showMessage(
+                message,
+                "Student created successfully.",
+                true
+            );
+
+
+            document.getElementById("studentId").value="";
+
+            document.getElementById("studentName").value="";
+
+            document.getElementById("studentPassword").value="";
+
+            document.getElementById("enrollment").value="";
+
+            document.getElementById("mobile").value="";
+
+            document.getElementById("email").value="";
+
+
+            loadStudents();
 
         }
+        else{
 
+            showMessage(
+                message,
+                result.message || "Unable to create student.",
+                false
+            );
 
-        window[callbackName] =
-            function(result){
-
-                if(finished){
-                    return;
-                }
-
-                finished = true;
-
-                cleanup();
-
-                resolve(result);
-
-            };
-
-
-        const url =
-            API_URL +
-            "?action=createStudent" +
-            "&callback=" +
-            encodeURIComponent(callbackName) +
-            "&studentId=" +
-            encodeURIComponent(data.studentId) +
-            "&studentName=" +
-            encodeURIComponent(data.studentName) +
-            "&password=" +
-            encodeURIComponent(data.password) +
-            "&enrollment=" +
-            encodeURIComponent(data.enrollment) +
-            "&mobile=" +
-            encodeURIComponent(data.mobile) +
-            "&email=" +
-            encodeURIComponent(data.email) +
-            "&board=" +
-            encodeURIComponent(data.board) +
-            "&studentClass=" +
-            encodeURIComponent(data.studentClass);
-
-
-        script =
-            document.createElement("script");
-
-        script.src =
-            url;
-
-        script.async =
-            true;
-
-
-        script.onerror =
-            function(){
-
-                if(finished){
-                    return;
-                }
-
-                finished = true;
-
-                cleanup();
-
-                resolve({
-                    success:false,
-                    message:
-                    "Could not connect to Google Apps Script."
-                });
-
-            };
-
-
-        document.body.appendChild(script);
-
-
-        /* Timeout */
-
-        setTimeout(function(){
-
-            if(finished){
-                return;
-            }
-
-            finished = true;
-
-            cleanup();
-
-            resolve({
-                success:false,
-                message:
-                "Connection timed out. Please try again."
-            });
-
-        },15000);
+        }
 
     });
 
 }
 
 
-/* ==============================
-   FORM SUBMISSION
-============================== */
+/* =====================================================
+   LOAD STUDENTS
+===================================================== */
 
-document
-.getElementById("studentForm")
-.addEventListener(
-    "submit",
-    async function(event){
+function loadStudents(){
 
-        event.preventDefault();
+    const table =
+        document.getElementById("studentTable");
 
 
-        const button =
-            document.getElementById(
-                "createButton"
-            );
+    if(!table){
+        return;
+    }
 
 
-        button.disabled =
-            true;
-
-        button.textContent =
-            "Creating...";
+    table.innerHTML =
+        "<p class='small'>Loading students...</p>";
 
 
-        showMessage(
-            "Creating student...",
-            true
-        );
+    jsonpRequest({
+
+        action:"getStudents"
+
+    },function(result){
+
+        if(!result.success){
+
+            table.innerHTML =
+                "<p class='small'>" +
+                escapeHtml(
+                    result.message ||
+                    "Unable to load students."
+                ) +
+                "</p>";
+
+            return;
+        }
 
 
-        const data = {
-
-            studentId:
-                document
-                .getElementById(
-                    "studentId"
-                )
-                .value
-                .trim(),
-
-            studentName:
-                document
-                .getElementById(
-                    "studentName"
-                )
-                .value
-                .trim(),
-
-            password:
-                document
-                .getElementById(
-                    "password"
-                )
-                .value,
-
-            enrollment:
-                document
-                .getElementById(
-                    "enrollment"
-                )
-                .value
-                .trim(),
-
-            mobile:
-                document
-                .getElementById(
-                    "mobile"
-                )
-                .value
-                .trim(),
-
-            email:
-                document
-                .getElementById(
-                    "email"
-                )
-                .value
-                .trim(),
-
-            board:
-                document
-                .getElementById(
-                    "board"
-                )
-                .value,
-
-            studentClass:
-                document
-                .getElementById(
-                    "studentClass"
-                )
-                .value
-                .trim()
-
-        };
+        students =
+            result.data || [];
 
 
-        try{
+        displayStudents();
 
-            const result =
-                await createStudentViaJSONP(
-                    data
-                );
+        populateStudentDropdown();
 
+        updateDashboardCounts();
 
-            if(result.success){
+    });
 
-                showMessage(
-                    "✅ Student created successfully.",
-                    true
-                );
+}
 
 
-                addStudentToTable(data);
+/* =====================================================
+   DISPLAY STUDENTS
+===================================================== */
+
+function displayStudents(){
+
+    const table =
+        document.getElementById("studentTable");
 
 
-                document
-                .getElementById(
-                    "studentForm"
-                )
-                .reset();
+    if(!students.length){
+
+        table.innerHTML =
+            "<p class='small'>No students found.</p>";
+
+        return;
+    }
 
 
-            }else{
+    let html = `
 
-                showMessage(
-                    "❌ " +
-                    (
-                        result.message ||
-                        "Student could not be created."
-                    ),
-                    false
-                );
+    <table>
 
-            }
+    <thead>
+
+    <tr>
+
+    <th>Student ID</th>
+
+    <th>Name</th>
+
+    <th>Enrollment</th>
+
+    <th>Mobile</th>
+
+    <th>Board</th>
+
+    <th>Class</th>
+
+    <th>Subjects</th>
+
+    <th>Status</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+    `;
 
 
-        }catch(error){
+    students.forEach(function(student){
+
+        html += `
+
+        <tr>
+
+        <td>
+        ${escapeHtml(student.studentId)}
+        </td>
+
+        <td>
+        ${escapeHtml(student.studentName)}
+        </td>
+
+        <td>
+        ${escapeHtml(student.enrollment)}
+        </td>
+
+        <td>
+        ${escapeHtml(student.mobile)}
+        </td>
+
+        <td>
+        ${escapeHtml(student.board)}
+        </td>
+
+        <td>
+        ${escapeHtml(student.studentClass)}
+        </td>
+
+        <td>
+        ${escapeHtml(student.subjects || "")}
+        </td>
+
+        <td>
+        <span class="status">
+        ${escapeHtml(student.status || "Active")}
+        </span>
+        </td>
+
+        </tr>
+
+        `;
+
+    });
+
+
+    html += `
+    </tbody>
+    </table>
+    `;
+
+
+    table.innerHTML =
+        html;
+
+}
+
+
+/* =====================================================
+   STUDENT DROPDOWN
+===================================================== */
+
+function populateStudentDropdown(){
+
+    const select =
+        document.getElementById("studentSelect");
+
+
+    if(!select){
+        return;
+    }
+
+
+    const current =
+        select.value;
+
+
+    select.innerHTML =
+        `<option value="">
+        -- Select Student --
+        </option>`;
+
+
+    students.forEach(function(student){
+
+        const option =
+            document.createElement("option");
+
+        option.value =
+            student.studentId;
+
+        option.textContent =
+            student.studentId +
+            " - " +
+            student.studentName;
+
+        select.appendChild(option);
+
+    });
+
+
+    if(current){
+        select.value = current;
+    }
+
+}
+
+
+/* =====================================================
+   LOAD SUBJECTS
+===================================================== */
+
+function loadSubjects(){
+
+    jsonpRequest({
+
+        action:"getSubjects"
+
+    },function(result){
+
+        if(!result.success){
+            return;
+        }
+
+
+        subjects =
+            result.data || [];
+
+
+        displaySubjects();
+
+        populateSubjectDropdowns();
+
+        updateDashboardCounts();
+
+    });
+
+}
+
+
+/* =====================================================
+   DISPLAY SUBJECTS
+===================================================== */
+
+function displaySubjects(){
+
+    const list =
+        document.getElementById("subjectList");
+
+
+    if(!list){
+        return;
+    }
+
+
+    if(!subjects.length){
+
+        list.innerHTML =
+            "<p class='small'>No subjects found.</p>";
+
+        return;
+    }
+
+
+    let html = "";
+
+
+    subjects.forEach(function(subject){
+
+        html += `
+
+        <div class="subject-item">
+
+        <input
+        type="checkbox"
+        class="subject-checkbox"
+        value="${escapeHtml(subject.subjectId)}"
+        >
+
+        <span>
+
+        <strong>
+        ${escapeHtml(subject.subjectCode)}
+        </strong>
+
+        -
+        ${escapeHtml(subject.subjectName)}
+
+        <small>
+        (${escapeHtml(subject.board)}
+        Class ${escapeHtml(subject.studentClass)})
+        </small>
+
+        </span>
+
+        </div>
+
+        `;
+
+    });
+
+
+    list.innerHTML =
+        html;
+
+}
+
+
+/* =====================================================
+   LOAD SELECTED STUDENT
+===================================================== */
+
+function loadSelectedStudent(){
+
+    const studentId =
+        document.getElementById("studentSelect")
+        .value;
+
+
+    const info =
+        document.getElementById("studentInfo");
+
+
+    if(!studentId){
+
+        info.style.display =
+            "none";
+
+        clearAllSubjects();
+
+        return;
+
+    }
+
+
+    jsonpRequest({
+
+        action:"getStudent",
+
+        studentId:studentId
+
+    },function(result){
+
+        if(!result.success){
 
             showMessage(
-                "❌ Error: " +
-                error.message,
+                document.getElementById("assignMessage"),
+                result.message || "Student not found.",
                 false
             );
 
+            return;
         }
 
+
+        const student =
+            result.data;
+
+
+        info.style.display =
+            "block";
+
+
+        document.getElementById("infoName")
+        .textContent =
+            student.studentName || "";
+
+
+        document.getElementById("infoId")
+        .textContent =
+            student.studentId || "";
+
+
+        document.getElementById("infoBoard")
+        .textContent =
+            student.board || "";
+
+
+        document.getElementById("infoClass")
+        .textContent =
+            student.studentClass || "";
+
+
+        loadSubjectsForStudent(
+            student.subjects || ""
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   LOAD SUBJECTS FOR STUDENT
+===================================================== */
+
+function loadSubjectsForStudent(assigned){
+
+    const list =
+        document.getElementById("subjectList");
+
+
+    if(!subjects.length){
+
+        loadSubjects();
+
+        setTimeout(function(){
+
+            loadSubjectsForStudent(assigned);
+
+        },500);
+
+        return;
+
+    }
+
+
+    const assignedIds =
+        String(assigned || "")
+        .split(",")
+        .map(function(id){
+
+            return id.trim().toLowerCase();
+
+        })
+        .filter(Boolean);
+
+
+    document
+        .querySelectorAll(".subject-checkbox")
+        .forEach(function(box){
+
+            box.checked =
+                assignedIds.includes(
+                    box.value.toLowerCase()
+                );
+
+        });
+
+}
+
+
+/* =====================================================
+   ASSIGN SUBJECTS
+===================================================== */
+
+function assignSubjects(){
+
+    const studentId =
+        document.getElementById("studentSelect")
+        .value;
+
+
+    const message =
+        document.getElementById("assignMessage");
+
+
+    const button =
+        document.getElementById("assignBtn");
+
+
+    if(!studentId){
+
+        showMessage(
+            message,
+            "Please select a student first.",
+            false
+        );
+
+        return;
+    }
+
+
+    const selected = [];
+
+
+    document
+        .querySelectorAll(".subject-checkbox:checked")
+        .forEach(function(box){
+
+            selected.push(
+                box.value
+            );
+
+        });
+
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "Saving...";
+
+
+    jsonpRequest({
+
+        action:"assignSubjects",
+
+        studentId:studentId,
+
+        subjects:selected.join(",")
+
+    },function(result){
 
         button.disabled =
             false;
 
         button.textContent =
-            "Create Student";
-
-    }
-);
+            "Save Assigned Subjects";
 
 
-/* ==============================
-   ADD STUDENT TO DISPLAY TABLE
-============================== */
+        if(result.success){
 
-function addStudentToTable(data){
-
-    const tbody =
-        document.getElementById(
-            "studentTableBody"
-        );
+            showMessage(
+                message,
+                "Subjects assigned successfully.",
+                true
+            );
 
 
-    const row =
-        document.createElement("tr");
+            loadStudents();
 
+        }
+        else{
 
-    row.innerHTML =
+            showMessage(
+                message,
+                result.message ||
+                "Unable to assign subjects.",
+                false
+            );
 
-        "<td>" +
-        escapeHtml(data.studentId) +
-        "</td>" +
+        }
 
-        "<td>" +
-        escapeHtml(data.studentName) +
-        "</td>" +
-
-        "<td>" +
-        escapeHtml(data.enrollment) +
-        "</td>" +
-
-        "<td>" +
-        escapeHtml(data.board) +
-        "</td>" +
-
-        "<td>" +
-        escapeHtml(data.studentClass) +
-        "</td>" +
-
-        "<td>Active</td>";
-
-
-    tbody.appendChild(row);
+    });
 
 }
 
 
-/* ==============================
-   HTML SECURITY
-============================== */
+/* =====================================================
+   SELECT / CLEAR SUBJECTS
+===================================================== */
+
+function selectAllSubjects(){
+
+    document
+        .querySelectorAll(".subject-checkbox")
+        .forEach(function(box){
+
+            box.checked = true;
+
+        });
+
+}
+
+
+function clearAllSubjects(){
+
+    document
+        .querySelectorAll(".subject-checkbox")
+        .forEach(function(box){
+
+            box.checked = false;
+
+        });
+
+}
+
+
+/* =====================================================
+   SUBJECT DROPDOWNS
+===================================================== */
+
+function populateSubjectDropdowns(){
+
+    const paperSubject =
+        document.getElementById("paperSubject");
+
+    const examSubject =
+        document.getElementById("examSubject");
+
+
+    if(paperSubject){
+
+        paperSubject.innerHTML =
+            `<option value="">
+            -- Select Subject --
+            </option>`;
+
+    }
+
+
+    if(examSubject){
+
+        examSubject.innerHTML =
+            `<option value="">
+            -- Select Subject --
+            </option>`;
+
+    }
+
+
+    subjects.forEach(function(subject){
+
+        const text =
+            subject.subjectCode +
+            " - " +
+            subject.subjectName;
+
+
+        if(paperSubject){
+
+            const option =
+                document.createElement("option");
+
+            option.value =
+                subject.subjectId;
+
+            option.textContent =
+                text;
+
+            paperSubject.appendChild(option);
+
+        }
+
+
+        if(examSubject){
+
+            const option =
+                document.createElement("option");
+
+            option.value =
+                subject.subjectId;
+
+            option.textContent =
+                text;
+
+            examSubject.appendChild(option);
+
+        }
+
+    });
+
+}
+
+
+/* =====================================================
+   QUESTION PAPER
+===================================================== */
+
+function addQuestionPaper(){
+
+    const message =
+        document.getElementById("paperMessage");
+
+
+    jsonpRequest({
+
+        action:"addQuestionPaper",
+
+        paperName:
+            document.getElementById("paperName").value.trim(),
+
+        subjectId:
+            document.getElementById("paperSubject").value,
+
+        subjectCode:
+            document.getElementById("paperSubjectCode").value.trim(),
+
+        subjectName:
+            document.getElementById("paperSubjectName").value.trim(),
+
+        board:
+            document.getElementById("paperBoard").value.trim(),
+
+        studentClass:
+            document.getElementById("paperClass").value.trim(),
+
+        examType:
+            document.getElementById("paperExamType").value,
+
+        year:
+            document.getElementById("paperYear").value.trim(),
+
+        fileURL:
+            document.getElementById("paperFileURL").value.trim()
+
+    },function(result){
+
+        if(result.success){
+
+            showMessage(
+                message,
+                "Question paper added successfully.",
+                true
+            );
+
+            loadQuestionPapers();
+
+        }
+        else{
+
+            showMessage(
+                message,
+                result.message ||
+                "Unable to add question paper.",
+                false
+            );
+
+        }
+
+    });
+
+}
+
+
+/* =====================================================
+   LOAD QUESTION PAPERS
+===================================================== */
+
+function loadQuestionPapers(){
+
+    const table =
+        document.getElementById("paperTable");
+
+
+    if(!table){
+        return;
+    }
+
+
+    jsonpRequest({
+
+        action:"getQuestionPapers"
+
+    },function(result){
+
+        if(!result.success){
+
+            table.innerHTML =
+                "<p class='small'>" +
+                escapeHtml(result.message || "") +
+                "</p>";
+
+            return;
+
+        }
+
+
+        papers =
+            result.data || [];
+
+
+        let html = `
+
+        <table>
+
+        <thead>
+
+        <tr>
+
+        <th>ID</th>
+
+        <th>Paper</th>
+
+        <th>Subject</th>
+
+        <th>Board</th>
+
+        <th>Class</th>
+
+        <th>Type</th>
+
+        <th>Year</th>
+
+        <th>Status</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody>
+        `;
+
+
+        papers.forEach(function(paper){
+
+            html += `
+
+            <tr>
+
+            <td>
+            ${escapeHtml(paper.questionPaperId)}
+            </td>
+
+            <td>
+            ${escapeHtml(paper.paperName)}
+            </td>
+
+            <td>
+            ${escapeHtml(paper.subjectCode)}
+            -
+            ${escapeHtml(paper.subjectName)}
+            </td>
+
+            <td>
+            ${escapeHtml(paper.board)}
+            </td>
+
+            <td>
+            ${escapeHtml(paper.studentClass)}
+            </td>
+
+            <td>
+            ${escapeHtml(paper.examType)}
+            </td>
+
+            <td>
+            ${escapeHtml(paper.year)}
+            </td>
+
+            <td>
+            ${escapeHtml(paper.status)}
+            </td>
+
+            </tr>
+
+            `;
+
+        });
+
+
+        html += `
+        </tbody>
+        </table>
+        `;
+
+
+        table.innerHTML =
+            html;
+
+
+        populateQuestionPaperDropdown();
+
+        updateDashboardCounts();
+
+    });
+
+}
+
+
+/* =====================================================
+   QUESTION PAPER DROPDOWN
+===================================================== */
+
+function populateQuestionPaperDropdown(){
+
+    const select =
+        document.getElementById("examQuestionPaper");
+
+
+    if(!select){
+        return;
+    }
+
+
+    select.innerHTML =
+        `<option value="">
+        -- Select Question Paper --
+        </option>`;
+
+
+    papers.forEach(function(paper){
+
+        const option =
+            document.createElement("option");
+
+        option.value =
+            paper.questionPaperId;
+
+        option.textContent =
+            paper.questionPaperId +
+            " - " +
+            paper.paperName;
+
+        select.appendChild(option);
+
+    });
+
+}
+
+
+/* =====================================================
+   EXAM
+===================================================== */
+
+function addExam(){
+
+    const message =
+        document.getElementById("examMessage");
+
+
+    jsonpRequest({
+
+        action:"addExam",
+
+        examName:
+            document.getElementById("examName").value.trim(),
+
+        subjectId:
+            document.getElementById("examSubject").value,
+
+        questionPaperId:
+            document.getElementById("examQuestionPaper").value,
+
+        board:
+            document.getElementById("examBoard").value.trim(),
+
+        studentClass:
+            document.getElementById("examClass").value.trim(),
+
+        durationMinutes:
+            document.getElementById("examDuration").value,
+
+        totalMarks:
+            document.getElementById("examMarks").value,
+
+        startDateTime:
+            document.getElementById("examStart").value,
+
+        endDateTime:
+            document.getElementById("examEnd").value
+
+    },function(result){
+
+        if(result.success){
+
+            showMessage(
+                message,
+                "Exam created successfully.",
+                true
+            );
+
+            loadExams();
+
+        }
+        else{
+
+            showMessage(
+                message,
+                result.message ||
+                "Unable to create exam.",
+                false
+            );
+
+        }
+
+    });
+
+}
+
+
+/* =====================================================
+   LOAD EXAMS
+===================================================== */
+
+function loadExams(){
+
+    const table =
+        document.getElementById("examTable");
+
+
+    if(!table){
+        return;
+    }
+
+
+    jsonpRequest({
+
+        action:"getExams"
+
+    },function(result){
+
+        if(!result.success){
+
+            table.innerHTML =
+                "<p class='small'>" +
+                escapeHtml(result.message || "") +
+                "</p>";
+
+            return;
+
+        }
+
+
+        exams =
+            result.data || [];
+
+
+        let html = `
+
+        <table>
+
+        <thead>
+
+        <tr>
+
+        <th>Exam ID</th>
+
+        <th>Exam Name</th>
+
+        <th>Subject</th>
+
+        <th>Duration</th>
+
+        <th>Marks</th>
+
+        <th>Start</th>
+
+        <th>End</th>
+
+        <th>Status</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody>
+        `;
+
+
+        exams.forEach(function(exam){
+
+            html += `
+
+            <tr>
+
+            <td>
+            ${escapeHtml(exam.examId)}
+            </td>
+
+            <td>
+            ${escapeHtml(exam.examName)}
+            </td>
+
+            <td>
+            ${escapeHtml(exam.subjectId)}
+            </td>
+
+            <td>
+            ${escapeHtml(exam.durationMinutes)}
+            min
+            </td>
+
+            <td>
+            ${escapeHtml(exam.totalMarks)}
+            </td>
+
+            <td>
+            ${escapeHtml(exam.startDateTime)}
+            </td>
+
+            <td>
+            ${escapeHtml(exam.endDateTime)}
+            </td>
+
+            <td>
+            ${escapeHtml(exam.status)}
+            </td>
+
+            </tr>
+
+            `;
+
+        });
+
+
+        html += `
+        </tbody>
+        </table>
+        `;
+
+
+        table.innerHTML =
+            html;
+
+
+        updateDashboardCounts();
+
+    });
+
+}
+
+
+/* =====================================================
+   SUBMISSIONS
+===================================================== */
+
+function loadSubmissions(){
+
+    const table =
+        document.getElementById("submissionTable");
+
+
+    if(!table){
+        return;
+    }
+
+
+    jsonpRequest({
+
+        action:"getSubmissions"
+
+    },function(result){
+
+        if(!result.success){
+
+            table.innerHTML =
+                "<p class='small'>" +
+                escapeHtml(result.message || "") +
+                "</p>";
+
+            return;
+
+        }
+
+
+        const data =
+            result.data || [];
+
+
+        if(!data.length){
+
+            table.innerHTML =
+                "<p class='small'>No submissions found.</p>";
+
+            return;
+
+        }
+
+
+        let html = `
+
+        <table>
+
+        <thead>
+
+        <tr>
+
+        <th>Submission ID</th>
+
+        <th>Student ID</th>
+
+        <th>Exam ID</th>
+
+        <th>Subject ID</th>
+
+        <th>Type</th>
+
+        <th>Answer File</th>
+
+        <th>Date</th>
+
+        <th>Status</th>
+
+        <th>Marks</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody>
+        `;
+
+
+        data.forEach(function(item){
+
+            let file =
+                escapeHtml(
+                    item.answerFileURL || ""
+                );
+
+
+            if(item.answerFileURL){
+
+                file =
+                    `<a
+                    href="${escapeHtml(item.answerFileURL)}"
+                    target="_blank"
+                    >
+                    Open
+                    </a>`;
+
+            }
+
+
+            html += `
+
+            <tr>
+
+            <td>
+            ${escapeHtml(item.submissionId)}
+            </td>
+
+            <td>
+            ${escapeHtml(item.studentId)}
+            </td>
+
+            <td>
+            ${escapeHtml(item.examId)}
+            </td>
+
+            <td>
+            ${escapeHtml(item.subjectId)}
+            </td>
+
+            <td>
+            ${escapeHtml(item.submissionType)}
+            </td>
+
+            <td>
+            ${file}
+            </td>
+
+            <td>
+            ${escapeHtml(item.submittedDateTime)}
+            </td>
+
+            <td>
+            ${escapeHtml(item.status)}
+            </td>
+
+            <td>
+            ${escapeHtml(item.marksObtained)}
+            </td>
+
+            </tr>
+
+            `;
+
+        });
+
+
+        html += `
+        </tbody>
+        </table>
+        `;
+
+
+        table.innerHTML =
+            html;
+
+    });
+
+}
+
+
+/* =====================================================
+   RESULT CALCULATION
+===================================================== */
+
+function calculatePercentage(){
+
+    const total =
+        Number(
+            document.getElementById("resultTotalMarks").value
+        );
+
+
+    const marks =
+        Number(
+            document.getElementById("resultMarks").value
+        );
+
+
+    const percentageField =
+        document.getElementById("resultPercentage");
+
+
+    if(total > 0){
+
+        percentageField.value =
+            ((marks / total) * 100)
+            .toFixed(2);
+
+    }
+    else{
+
+        percentageField.value = "";
+
+    }
+
+}
+
+
+/* =====================================================
+   SAVE RESULT
+===================================================== */
+
+function saveResult(){
+
+    const message =
+        document.getElementById("resultMessage");
+
+
+    jsonpRequest({
+
+        action:"saveResult",
+
+        studentId:
+            document.getElementById("resultStudentId").value.trim(),
+
+        examId:
+            document.getElementById("resultExamId").value.trim(),
+
+        subjectId:
+            document.getElementById("resultSubjectId").value.trim(),
+
+        examName:
+            document.getElementById("resultExamName").value.trim(),
+
+        totalMarks:
+            document.getElementById("resultTotalMarks").value,
+
+        marksObtained:
+            document.getElementById("resultMarks").value,
+
+        percentage:
+            document.getElementById("resultPercentage").value,
+
+        grade:
+            document.getElementById("resultGrade").value.trim(),
+
+        resultStatus:
+            document.getElementById("resultStatus").value,
+
+        remarks:
+            document.getElementById("resultRemarks").value.trim()
+
+    },function(result){
+
+        if(result.success){
+
+            showMessage(
+                message,
+                "Result saved successfully.",
+                true
+            );
+
+            loadResults();
+
+        }
+        else{
+
+            showMessage(
+                message,
+                result.message ||
+                "Unable to save result.",
+                false
+            );
+
+        }
+
+    });
+
+}
+
+
+/* =====================================================
+   LOAD RESULTS
+===================================================== */
+
+function loadResults(){
+
+    const table =
+        document.getElementById("resultTable");
+
+
+    if(!table){
+        return;
+    }
+
+
+    jsonpRequest({
+
+        action:"getResults"
+
+    },function(result){
+
+        if(!result.success){
+
+            table.innerHTML =
+                "<p class='small'>" +
+                escapeHtml(result.message || "") +
+                "</p>";
+
+            return;
+
+        }
+
+
+        const data =
+            result.data || [];
+
+
+        if(!data.length){
+
+            table.innerHTML =
+                "<p class='small'>No results found.</p>";
+
+            return;
+
+        }
+
+
+        let html = `
+
+        <table>
+
+        <thead>
+
+        <tr>
+
+        <th>Result ID</th>
+
+        <th>Student ID</th>
+
+        <th>Exam</th>
+
+        <th>Total</th>
+
+        <th>Obtained</th>
+
+        <th>Percentage</th>
+
+        <th>Grade</th>
+
+        <th>Status</th>
+
+        <th>Remarks</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody>
+        `;
+
+
+        data.forEach(function(item){
+
+            html += `
+
+            <tr>
+
+            <td>
+            ${escapeHtml(item.resultId)}
+            </td>
+
+            <td>
+            ${escapeHtml(item.studentId)}
+            </td>
+
+            <td>
+            ${escapeHtml(item.examName)}
+            </td>
+
+            <td>
+            ${escapeHtml(item.totalMarks)}
+            </td>
+
+            <td>
+            ${escapeHtml(item.marksObtained)}
+            </td>
+
+            <td>
+            ${escapeHtml(item.percentage)}%
+            </td>
+
+            <td>
+            ${escapeHtml(item.grade)}
+            </td>
+
+            <td>
+            ${escapeHtml(item.resultStatus)}
+            </td>
+
+            <td>
+            ${escapeHtml(item.remarks)}
+            </td>
+
+            </tr>
+
+            `;
+
+        });
+
+
+        html += `
+        </tbody>
+        </table>
+        `;
+
+
+        table.innerHTML =
+            html;
+
+    });
+
+}
+
+
+/* =====================================================
+   DASHBOARD COUNTS
+===================================================== */
+
+function updateDashboardCounts(){
+
+    const studentCount =
+        document.getElementById("studentCount");
+
+    const subjectCount =
+        document.getElementById("subjectCount");
+
+    const paperCount =
+        document.getElementById("paperCount");
+
+    const examCount =
+        document.getElementById("examCount");
+
+
+    if(studentCount){
+        studentCount.textContent =
+            students.length;
+    }
+
+
+    if(subjectCount){
+        subjectCount.textContent =
+            subjects.length;
+    }
+
+
+    if(paperCount){
+        paperCount.textContent =
+            papers.length;
+    }
+
+
+    if(examCount){
+        examCount.textContent =
+            exams.length;
+    }
+
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+function showMessage(
+    element,
+    message,
+    success
+){
+
+    element.textContent =
+        message;
+
+    element.className =
+        "message " +
+        (
+            success
+            ? "success-msg"
+            : "error-msg"
+        );
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
 
 function escapeHtml(value){
 
@@ -745,9 +3369,9 @@ function escapeHtml(value){
 }
 
 
-/* ==============================
+/* =====================================================
    LOGOUT
-============================== */
+===================================================== */
 
 function logoutAdmin(){
 
@@ -763,6 +3387,19 @@ function logoutAdmin(){
         "admin-login.html";
 
 }
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadStudents();
+
+loadSubjects();
+
+loadQuestionPapers();
+
+loadExams();
 
 </script>
 
