@@ -5,15 +5,12 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>Admin Panel | Online Exam Portal</title>
 
 <style>
-
-/* ========================================
-   BASIC SETTINGS
-======================================== */
 
 *{
     box-sizing:border-box;
@@ -21,612 +18,184 @@
 
 body{
     margin:0;
-    padding:0;
     font-family:Arial,Helvetica,sans-serif;
-    background:#f3f5f9;
+    background:#f4f6f9;
     color:#222;
 }
 
-
-/* ========================================
-   HEADER
-======================================== */
-
 .header{
-    background:linear-gradient(
-        135deg,
-        #182848,
-        #4b6cb7
-    );
-
+    background:#182848;
     color:white;
-
-    padding:18px 25px;
-
+    padding:18px 20px;
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
-    box-shadow:0 2px 8px rgba(0,0,0,0.15);
 }
 
-.header-left h1{
+.header h1{
     margin:0;
-
-    font-size:25px;
-}
-
-.header-left p{
-    margin:5px 0 0;
-
-    font-size:14px;
-
-    opacity:0.9;
-}
-
-.logout-btn{
-    background:#e53935;
-
-    color:white;
-
-    border:none;
-
-    padding:10px 18px;
-
-    border-radius:6px;
-
-    cursor:pointer;
-
-    font-size:14px;
-
-    font-weight:bold;
-}
-
-.logout-btn:hover{
-    background:#c62828;
-}
-
-
-/* ========================================
-   MAIN CONTAINER
-======================================== */
-
-.container{
-    width:95%;
-
-    max-width:1200px;
-
-    margin:25px auto;
-}
-
-
-/* ========================================
-   DASHBOARD CARDS
-======================================== */
-
-.dashboard-grid{
-    display:grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap:15px;
-
-    margin-bottom:25px;
-}
-
-.dashboard-card{
-    background:white;
-
-    border-radius:10px;
-
-    padding:20px;
-
-    box-shadow:
-        0 2px 8px
-        rgba(0,0,0,0.08);
-}
-
-.dashboard-card h3{
-    margin:0 0 8px;
-
-    color:#555;
-
-    font-size:14px;
-}
-
-.dashboard-card .number{
-    font-size:28px;
-
-    font-weight:bold;
-
-    color:#182848;
-}
-
-
-/* ========================================
-   GENERAL CARD
-======================================== */
-
-.card{
-    background:white;
-
-    border-radius:10px;
-
-    padding:25px;
-
-    margin-bottom:25px;
-
-    box-shadow:
-        0 2px 10px
-        rgba(0,0,0,0.08);
-}
-
-.card-title{
-    margin:0 0 5px;
-
-    color:#182848;
-
     font-size:22px;
 }
 
-.card-description{
-    margin:0 0 20px;
-
-    color:#666;
-
-    font-size:14px;
+.header p{
+    margin:5px 0 0;
+    font-size:13px;
 }
 
+.logout{
+    background:#e53935;
+    color:white;
+    border:0;
+    padding:10px 16px;
+    border-radius:6px;
+}
 
-/* ========================================
-   FORM
-======================================== */
+.container{
+    width:94%;
+    max-width:1100px;
+    margin:25px auto;
+}
+
+.card{
+    background:white;
+    padding:22px;
+    margin-bottom:22px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+h2{
+    margin-top:0;
+    color:#182848;
+}
 
 .form-grid{
-
     display:grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-    gap:18px;
-
+    grid-template-columns:1fr 1fr;
+    gap:15px;
 }
 
 .form-group{
     width:100%;
 }
 
-.form-group.full-width{
-    grid-column:
-        1 / -1;
+.full{
+    grid-column:1/-1;
 }
 
-.form-group label{
-
+label{
     display:block;
-
-    margin-bottom:7px;
-
+    margin-bottom:6px;
     font-weight:bold;
-
-    color:#333;
-
     font-size:14px;
-
 }
 
-.form-group input,
-.form-group select{
-
+input,
+select{
     width:100%;
-
     padding:12px;
-
     border:1px solid #ccc;
-
     border-radius:6px;
-
     font-size:15px;
+}
 
+input:focus,
+select:focus{
     outline:none;
-
-    background:white;
-
+    border-color:#182848;
 }
-
-.form-group input:focus,
-.form-group select:focus{
-
-    border-color:#4b6cb7;
-
-    box-shadow:
-        0 0 0 2px
-        rgba(75,108,183,0.1);
-
-}
-
-
-/* ========================================
-   BUTTONS
-======================================== */
 
 .create-btn{
-
     background:#182848;
-
     color:white;
-
-    border:none;
-
-    padding:13px 25px;
-
+    border:0;
+    padding:13px 20px;
     border-radius:6px;
-
     font-size:16px;
-
     font-weight:bold;
-
     cursor:pointer;
-
-}
-
-.create-btn:hover{
-
-    background:#101c35;
-
 }
 
 .create-btn:disabled{
-
     background:#888;
-
-    cursor:not-allowed;
-
 }
-
-
-/* ========================================
-   MESSAGE
-======================================== */
 
 .message{
-
-    display:none;
-
-    margin-top:18px;
-
-    padding:13px 15px;
-
-    border-radius:6px;
-
-    font-size:14px;
-
-    line-height:1.5;
-
-}
-
-.message.success{
-
-    display:block;
-
-    background:#e2f6e6;
-
-    color:#176b2b;
-
-    border:1px solid #b8e3c0;
-
-}
-
-.message.error{
-
-    display:block;
-
-    background:#ffe5e5;
-
-    color:#a00000;
-
-    border:1px solid #f1b5b5;
-
-}
-
-.message.info{
-
-    display:block;
-
-    background:#e5f0ff;
-
-    color:#164c91;
-
-    border:1px solid #bfd5f5;
-
-}
-
-
-/* ========================================
-   STUDENT TABLE
-======================================== */
-
-.table-container{
-
-    width:100%;
-
-    overflow-x:auto;
-
-}
-
-.student-table{
-
-    width:100%;
-
-    border-collapse:collapse;
-
     margin-top:15px;
-
-    min-width:800px;
-
-}
-
-.student-table th{
-
-    background:#182848;
-
-    color:white;
-
     padding:12px;
-
-    text-align:left;
-
-    font-size:14px;
-
+    border-radius:6px;
+    display:none;
 }
 
-.student-table td{
-
-    border-bottom:1px solid #ddd;
-
-    padding:12px;
-
-    font-size:14px;
-
-}
-
-.student-table tr:hover{
-
-    background:#f7f9fc;
-
-}
-
-
-/* ========================================
-   STATUS
-======================================== */
-
-.status-active{
-
-    display:inline-block;
-
-    padding:5px 10px;
-
-    border-radius:20px;
-
+.success{
+    display:block;
     background:#dff5e3;
+    color:#176b2b;
+}
 
-    color:#18752b;
+.error{
+    display:block;
+    background:#ffe1e1;
+    color:#a00000;
+}
 
-    font-size:12px;
+.info{
+    display:block;
+    background:#e4efff;
+    color:#164c91;
+}
 
+.table-box{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    min-width:750px;
+    border-collapse:collapse;
+}
+
+th{
+    background:#182848;
+    color:white;
+    padding:11px;
+    text-align:left;
+}
+
+td{
+    padding:11px;
+    border-bottom:1px solid #ddd;
+}
+
+.status{
+    color:#176b2b;
     font-weight:bold;
-
 }
-
-
-/* ========================================
-   EMPTY MESSAGE
-======================================== */
-
-.empty-message{
-
-    text-align:center;
-
-    padding:30px;
-
-    color:#777;
-
-    font-size:14px;
-
-}
-
-
-/* ========================================
-   ADMIN FUNCTIONS
-======================================== */
-
-.function-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:15px;
-
-}
-
-.function-card{
-
-    border:1px solid #ddd;
-
-    border-radius:8px;
-
-    padding:18px;
-
-    background:#fafafa;
-
-}
-
-.function-card h3{
-
-    margin:0 0 8px;
-
-    color:#182848;
-
-    font-size:17px;
-
-}
-
-.function-card p{
-
-    margin:0;
-
-    color:#666;
-
-    font-size:13px;
-
-    line-height:1.5;
-
-}
-
-.function-card button{
-
-    margin-top:12px;
-
-    padding:8px 14px;
-
-    border:none;
-
-    border-radius:5px;
-
-    background:#ddd;
-
-    color:#555;
-
-    cursor:not-allowed;
-
-}
-
-
-/* ========================================
-   FOOTER
-======================================== */
-
-.footer{
-
-    text-align:center;
-
-    padding:20px;
-
-    color:#777;
-
-    font-size:13px;
-
-}
-
-
-/* ========================================
-   MOBILE
-======================================== */
-
-@media(max-width:900px){
-
-    .dashboard-grid{
-
-        grid-template-columns:
-            repeat(2,1fr);
-
-    }
-
-    .function-grid{
-
-        grid-template-columns:
-            1fr 1fr;
-
-    }
-
-}
-
 
 @media(max-width:700px){
 
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+
     .header{
-
         padding:15px;
-
     }
 
-    .header-left h1{
-
-        font-size:20px;
-
-    }
-
-    .header-left p{
-
-        font-size:12px;
-
-    }
-
-    .logout-btn{
-
-        padding:8px 12px;
-
-        font-size:12px;
-
+    .header h1{
+        font-size:18px;
     }
 
     .container{
-
-        width:94%;
-
-        margin:18px auto;
-
+        width:95%;
     }
 
     .card{
-
-        padding:18px;
-
-    }
-
-    .dashboard-grid{
-
-        grid-template-columns:1fr 1fr;
-
-        gap:10px;
-
-    }
-
-    .dashboard-card{
-
-        padding:15px;
-
-    }
-
-    .dashboard-card .number{
-
-        font-size:22px;
-
-    }
-
-    .form-grid{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .form-group.full-width{
-
-        grid-column:auto;
-
-    }
-
-    .function-grid{
-
-        grid-template-columns:1fr;
-
+        padding:17px;
     }
 
 }
@@ -639,27 +208,24 @@ body{
 <body>
 
 
-<!-- ========================================
-     HEADER
-======================================== -->
+<!-- HEADER -->
 
 <header class="header">
 
-    <div class="header-left">
+    <div>
 
         <h1>
             Online Exam Portal
         </h1>
 
         <p>
-            Administrator Dashboard
+            Administrator Panel
         </p>
 
     </div>
 
-
     <button
-        class="logout-btn"
+        class="logout"
         onclick="logout()">
 
         Logout
@@ -670,815 +236,68 @@ body{
 
 
 
-<!-- ========================================
-     MAIN CONTAINER
-======================================== -->
+<!-- MAIN -->
 
-<main class="container">
+<div class="container">
 
 
-<!-- ========================================
-     DASHBOARD SUMMARY
-======================================== -->
+<!-- CREATE STUDENT -->
 
-<section class="dashboard-grid">
+<div class="card">
 
+<h2>
+Create Student Account
+</h2>
 
-    <div class="dashboard-card">
+<p>
+Create a student account and save the
+student information to Google Sheets.
+</p>
 
-        <h3>
-            Total Students
-        </h3>
 
-        <div
-            class="number"
-            id="totalStudents">
+<form id="studentForm">
 
-            0
 
-        </div>
+<div class="form-grid">
 
-    </div>
 
+<!-- NAME -->
 
-    <div class="dashboard-card">
+<div class="form-group">
 
-        <h3>
-            Active Students
-        </h3>
+<label>
+Student Name
+</label>
 
-        <div
-            class="number"
-            id="activeStudents">
-
-            0
-
-        </div>
-
-    </div>
-
-
-    <div class="dashboard-card">
-
-        <h3>
-            Subjects
-        </h3>
-
-        <div
-            class="number">
-
-            10
-
-        </div>
-
-    </div>
-
-
-    <div class="dashboard-card">
-
-        <h3>
-            Exams
-
-        </h3>
-
-        <div
-            class="number">
-
-            0
-
-        </div>
-
-    </div>
-
-
-</section>
-
-
-
-<!-- ========================================
-     CREATE STUDENT
-======================================== -->
-
-<section class="card">
-
-
-    <h2 class="card-title">
-
-        Create Student Account
-
-    </h2>
-
-
-    <p class="card-description">
-
-        Create a student login account.
-        Student information will be stored
-        in the Google Sheets database.
-
-    </p>
-
-
-
-    <form
-        id="studentForm">
-
-
-        <div class="form-grid">
-
-
-            <!-- STUDENT NAME -->
-
-            <div class="form-group">
-
-                <label
-                    for="studentName">
-
-                    Student Name
-
-                </label>
-
-                <input
-                    type="text"
-                    id="studentName"
-                    placeholder="Enter student name"
-                    required>
-
-            </div>
-
-
-
-            <!-- STUDENT ID -->
-
-            <div class="form-group">
-
-                <label
-                    for="studentId">
-
-                    Student ID
-
-                </label>
-
-                <input
-                    type="text"
-                    id="studentId"
-                    placeholder="Example: STU001"
-                    required>
-
-            </div>
-
-
-
-            <!-- PASSWORD -->
-
-            <div class="form-group">
-
-                <label
-                    for="studentPassword">
-
-                    Password
-
-                </label>
-
-                <input
-                    type="text"
-                    id="studentPassword"
-                    placeholder="Enter student password"
-                    required>
-
-            </div>
-
-
-
-            <!-- ENROLLMENT -->
-
-            <div class="form-group">
-
-                <label
-                    for="enrollment">
-
-                    Enrollment No.
-
-                </label>
-
-                <input
-                    type="text"
-                    id="enrollment"
-                    placeholder="Enter enrollment number">
-
-            </div>
-
-
-
-            <!-- MOBILE -->
-
-            <div class="form-group">
-
-                <label
-                    for="mobile">
-
-                    Mobile Number
-
-                </label>
-
-                <input
-                    type="tel"
-                    id="mobile"
-                    placeholder="Enter mobile number">
-
-            </div>
-
-
-
-            <!-- EMAIL -->
-
-            <div class="form-group">
-
-                <label
-                    for="email">
-
-                    Email Address
-
-                </label>
-
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="Enter email address">
-
-            </div>
-
-
-
-            <!-- BOARD -->
-
-            <div class="form-group">
-
-                <label
-                    for="board">
-
-                    Board
-
-                </label>
-
-                <select
-                    id="board">
-
-                    <option value="">
-                        Select Board
-                    </option>
-
-                    <option value="NIOS">
-                        NIOS
-                    </option>
-
-                    <option value="CBSE">
-                        CBSE
-                    </option>
-
-                    <option value="ICSE">
-                        ICSE
-                    </option>
-
-                    <option value="Maharashtra Board">
-                        Maharashtra Board
-                    </option>
-
-                    <option value="Other">
-                        Other
-                    </option>
-
-                </select>
-
-            </div>
-
-
-
-            <!-- CLASS -->
-
-            <div class="form-group">
-
-                <label
-                    for="studentClass">
-
-                    Class
-
-                </label>
-
-                <input
-                    type="text"
-                    id="studentClass"
-                    placeholder="Example: 10">
-
-            </div>
-
-
-
-            <!-- BUTTON -->
-
-            <div class="form-group full-width">
-
-                <button
-                    type="submit"
-                    class="create-btn"
-                    id="createButton">
-
-                    Create Student Account
-
-                </button>
-
-            </div>
-
-
-        </div>
-
-
-    </form>
-
-
-
-    <!-- MESSAGE -->
-
-    <div
-        id="message"
-        class="message">
-
-    </div>
-
-
-</section>
-
-
-
-<!-- ========================================
-     STUDENT ACCOUNTS
-======================================== -->
-
-<section class="card">
-
-
-    <h2 class="card-title">
-
-        Student Accounts
-
-    </h2>
-
-
-    <p class="card-description">
-
-        Student accounts created through
-        the administrator panel.
-
-    </p>
-
-
-
-    <div class="table-container">
-
-
-        <table
-            class="student-table">
-
-
-            <thead>
-
-                <tr>
-
-                    <th>
-                        Name
-                    </th>
-
-                    <th>
-                        Student ID
-                    </th>
-
-                    <th>
-                        Enrollment
-                    </th>
-
-                    <th>
-                        Mobile
-                    </th>
-
-                    <th>
-                        Email
-                    </th>
-
-                    <th>
-                        Board
-                    </th>
-
-                    <th>
-                        Class
-                    </th>
-
-                    <th>
-                        Status
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody
-                id="studentTable">
-
-            </tbody>
-
-
-        </table>
-
-
-    </div>
-
-
-</section>
-
-
-
-<!-- ========================================
-     ADMIN FUNCTIONS
-======================================== -->
-
-<section class="card">
-
-
-    <h2 class="card-title">
-
-        Administration
-
-    </h2>
-
-
-    <p class="card-description">
-
-        Additional functions will be connected
-        to the Google Sheets database step by step.
-
-    </p>
-
-
-
-    <div class="function-grid">
-
-
-        <!-- SUBJECTS -->
-
-        <div class="function-card">
-
-            <h3>
-                Subject Management
-            </h3>
-
-            <p>
-                Assign subjects to individual
-                students and manage their
-                subject access.
-            </p>
-
-            <button disabled>
-
-                Coming Next
-
-            </button>
-
-        </div>
-
-
-
-        <!-- QUESTION PAPERS -->
-
-        <div class="function-card">
-
-            <h3>
-                Question Papers
-            </h3>
-
-            <p>
-                Add question papers, connect
-                Google Drive files and publish
-                or unpublish papers.
-            </p>
-
-            <button disabled>
-
-                Coming Next
-
-            </button>
-
-        </div>
-
-
-
-        <!-- EXAMS -->
-
-        <div class="function-card">
-
-            <h3>
-                Exam Management
-            </h3>
-
-            <p>
-                Create examinations, set duration,
-                marks and examination schedule.
-            </p>
-
-            <button disabled>
-
-                Coming Next
-
-            </button>
-
-        </div>
-
-
-
-        <!-- SUBMISSIONS -->
-
-        <div class="function-card">
-
-            <h3>
-                Answer Submissions
-            </h3>
-
-            <p>
-                View student answer sheets
-                and submitted examination
-                records.
-            </p>
-
-            <button disabled>
-
-                Coming Next
-
-            </button>
-
-        </div>
-
-
-
-        <!-- EVALUATION -->
-
-        <div class="function-card">
-
-            <h3>
-                Evaluation
-
-            </h3>
-
-            <p>
-                Check written answers,
-                enter marks and add
-                evaluator remarks.
-            </p>
-
-            <button disabled>
-
-                Coming Next
-
-            </button>
-
-        </div>
-
-
-
-        <!-- RESULTS -->
-
-        <div class="function-card">
-
-            <h3>
-                Results
-
-            </h3>
-
-            <p>
-                Prepare and publish student
-                examination results.
-            </p>
-
-            <button disabled>
-
-                Coming Next
-
-            </button>
-
-        </div>
-
-
-    </div>
-
-
-</section>
-
-
-
-<!-- ========================================
-     FOOTER
-======================================== -->
-
-<div class="footer">
-
-    Online Exam Portal
-    |
-    Administrator Panel
+<input
+type="text"
+id="studentName"
+placeholder="Enter student name"
+required>
 
 </div>
 
 
-</main>
+<!-- STUDENT ID -->
 
+<div class="form-group">
 
+<label>
+Student ID
+</label>
 
-<script>
+<input
+type="text"
+id="studentId"
+placeholder="Example: STU001"
+required>
 
+</div>
 
-/* ========================================
-   ADMIN LOGIN CHECK
-======================================== */
 
+<!-- PASSWORD -->
 
-if(
-    sessionStorage.getItem(
-        "adminLoggedIn"
-    ) !== "true"
-){
+<div class="form-group">
 
-    window.location.href =
-        "admin-login.html";
-
-}
-
-
-
-/* ========================================
-   GOOGLE APPS SCRIPT API URL
-======================================== */
-
-
-const API_URL =
-"https://script.google.com/macros/s/AKfycbwZK14mHGJmBYAy9oOErqiQa7F0YI2KsWc3ZO9_G0KpOQAI0IpjnAra4c1toEzXP-KK9w/exec";
-
-
-
-/* ========================================
-   GET HTML ELEMENTS
-======================================== */
-
-
-const form =
-    document.getElementById(
-        "studentForm"
-    );
-
-
-const message =
-    document.getElementById(
-        "message"
-    );
-
-
-const button =
-    document.getElementById(
-        "createButton"
-    );
-
-
-const table =
-    document.getElementById(
-        "studentTable"
-    );
-
-
-const totalStudents =
-    document.getElementById(
-        "totalStudents"
-    );
-
-
-const activeStudents =
-    document.getElementById(
-        "activeStudents"
-    );
-
-
-
-/* ========================================
-   SHOW MESSAGE
-======================================== */
-
-
-function showMessage(
-    text,
-    type
-){
-
-    message.textContent =
-        text;
-
-    message.className =
-        "message " + type;
-
-    message.style.display =
-        "block";
-
-}
-
-
-
-/* ========================================
-   LOCAL STUDENT LIST
-======================================== */
-
-
-let students =
-    JSON.parse(
-        localStorage.getItem(
-            "adminStudents"
-        ) || "[]"
-    );
-
-
-
-/* ========================================
-   UPDATE DASHBOARD
-======================================== */
-
-
-function updateDashboard(){
-
-    totalStudents.textContent =
-        students.length;
-
-
-    let active = 0;
-
-
-    students.forEach(
-        function(student){
-
-            if(
-                String(
-                    student.status || "Active"
-                ).toLowerCase()
-                === "active"
-            ){
-
-                active++;
-
-            }
-
-        }
-    );
-
-
-    activeStudents.textContent =
-        active;
-
-}
-
-
-
-/* ========================================
-   DISPLAY STUDENTS
-======================================== */
-
-
-function displayStudents(){
-
-    table.innerHTML = "";
-
-
-    if(
-        students.length === 0
-    ){
-
-        table.innerHTML = `
-
-            <tr>
-
-                <td
-                    colspan="8"
-                    class="empty-message">
-
-                    No student accounts
-                    created yet.
-
-                </td>
-
-            </tr>
-
-        `;
-
-        updateDashboard();
-
-        return;
-
-    }
-
-
-    students.forEach(
-        function(student){
-
-            const row =
-                document.createElement(
- 
+<label>
+Password
