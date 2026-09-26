@@ -1,826 +1,463 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Student Login | Online Exam Portal</title>
+<title>Student Login - Online Exam Portal</title>
 
 <style>
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
+*{
+    box-sizing:border-box;
 }
 
-body {
-    background: #f4f7fb;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f6f8;
 }
 
-/* HEADER */
-
-header {
-    background: white;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+.header{
+    background:#172554;
+    color:white;
+    padding:20px;
+    text-align:center;
 }
 
-.header-container {
-    max-width: 1100px;
-    margin: auto;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.header h1{
+    margin:0;
+    font-size:24px;
 }
 
-.logo {
-    font-size: 20px;
-    font-weight: bold;
-    color: #173f8a;
+.login-container{
+    max-width:420px;
+    margin:50px auto;
+    padding:15px;
 }
 
-.logo span {
-    display: block;
-    font-size: 11px;
-    color: #777;
-    font-weight: normal;
-    margin-top: 3px;
+.login-box{
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 3px 12px rgba(0,0,0,.12);
 }
 
-.home-link {
-    text-decoration: none;
-    color: #173f8a;
-    font-weight: bold;
-    font-size: 14px;
+.login-box h2{
+    text-align:center;
+    color:#172554;
+    margin-top:0;
 }
 
-/* LOGIN AREA */
-
-.login-container {
-    width: 100%;
-    max-width: 450px;
-    margin: auto;
-    padding: 30px 20px;
+label{
+    display:block;
+    margin-top:15px;
+    margin-bottom:6px;
+    font-weight:bold;
 }
 
-.login-card {
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+input{
+    width:100%;
+    padding:13px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:16px;
 }
 
-.login-icon {
-    width: 70px;
-    height: 70px;
-    background: #e8efff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 18px;
-    font-size: 35px;
+button{
+    width:100%;
+    margin-top:22px;
+    padding:13px;
+    border:0;
+    border-radius:6px;
+    background:#172554;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
 }
 
-.login-card h1 {
-    text-align: center;
-    color: #173f8a;
-    font-size: 27px;
-    margin-bottom: 8px;
+button:disabled{
+    opacity:.6;
 }
 
-.subtitle {
-    text-align: center;
-    color: #777;
-    font-size: 14px;
-    margin-bottom: 25px;
+.message{
+    display:none;
+    margin-top:15px;
+    padding:12px;
+    border-radius:6px;
+    text-align:center;
 }
 
-/* FORM */
-
-.form-group {
-    margin-bottom: 18px;
+.success{
+    background:#dcfce7;
+    color:#166534;
 }
 
-label {
-    display: block;
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 7px;
+.error{
+    background:#fee2e2;
+    color:#991b1b;
 }
 
-input {
-    width: 100%;
-    padding: 13px;
-    border: 1px solid #ccc;
-    border-radius: 7px;
-    font-size: 15px;
+.back{
+    text-align:center;
+    margin-top:20px;
 }
 
-input:focus {
-    outline: none;
-    border-color: #173f8a;
+.back a{
+    color:#172554;
+    text-decoration:none;
 }
-
-/* PASSWORD */
-
-.password-box {
-    position: relative;
-}
-
-.password-box input {
-    padding-right: 75px;
-}
-
-.show-password {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #173f8a;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* OPTIONS */
-
-.login-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    font-size: 13px;
-}
-
-.remember {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.remember input {
-    width: auto;
-}
-
-.forgot {
-    color: #173f8a;
-    text-decoration: none;
-}
-
-/* BUTTON */
-
-.login-btn {
-    width: 100%;
-    padding: 13px;
-    border: none;
-    border-radius: 7px;
-    background: #173f8a;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.login-btn:hover {
-    background: #102a43;
-}
-
-/* MESSAGE */
-
-.message {
-    display: none;
-    margin-top: 15px;
-    padding: 12px;
-    border-radius: 7px;
-    text-align: center;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-/* DEMO INFORMATION */
-
-.demo-box {
-    margin-top: 20px;
-    background: #fff8e1;
-    border-left: 4px solid #f0a500;
-    padding: 13px;
-    font-size: 13px;
-    line-height: 1.6;
-}
-
-.demo-box strong {
-    color: #8a5a00;
-}
-
-/* LINKS */
-
-.quick-links {
-    text-align: center;
-    margin-top: 22px;
-    font-size: 14px;
-}
-
-.quick-links a {
-    color: #173f8a;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-/* FOOTER */
-
-footer {
-    margin-top: auto;
-    background: #111827;
-    color: #b9c0cc;
-    text-align: center;
-    padding: 18px;
-    font-size: 13px;
-}
-
-
-/* MOBILE */
-
-@media(max-width:500px) {
-
-    .header-container {
-        padding: 13px 15px;
-    }
-
-    .logo {
-        font-size: 17px;
-    }
-
-    .login-card {
-        padding: 24px 18px;
-    }
-
-    .login-card h1 {
-        font-size: 24px;
-    }
-
-    .login-options {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-
-}
-
 </style>
-
 </head>
-
 
 <body>
 
-
-<!-- HEADER -->
-
-<header>
-
-    <div class="header-container">
-
-        <div class="logo">
-
-            Online Exam Portal
-
-            <span>
-                Learning • Examination • Submission
-            </span>
-
-        </div>
-
-
-        <a
-            href="index.html"
-            class="home-link"
-        >
-            ← Home
-        </a>
-
-    </div>
-
-</header>
-
-
-
-<!-- LOGIN -->
+<div class="header">
+    <h1>🎓 Online Exam Portal</h1>
+</div>
 
 <div class="login-container">
 
-    <div class="login-card">
+    <div class="login-box">
 
-
-        <div class="login-icon">
-            👨‍🎓
-        </div>
-
-
-        <h1>
-            Student Login
-        </h1>
-
-
-        <p class="subtitle">
-            Login to access your student dashboard
-        </p>
-
-
+        <h2>Student Login</h2>
 
         <form id="loginForm">
 
+            <label for="studentId">
+                Student ID
+            </label>
 
-            <!-- STUDENT ID -->
+            <input
+                type="text"
+                id="studentId"
+                placeholder="Enter Student ID"
+                required
+            >
 
-            <div class="form-group">
+            <label for="password">
+                Password
+            </label>
 
-                <label>
-                    Student ID / Enrollment Number
-                </label>
-
-                <input
-                    type="text"
-                    id="studentId"
-                    placeholder="Enter your Student ID"
-                    autocomplete="username"
-                    required
-                >
-
-            </div>
-
-
-
-            <!-- PASSWORD -->
-
-            <div class="form-group">
-
-                <label>
-                    Password
-                </label>
-
-
-                <div class="password-box">
-
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Enter your password"
-                        autocomplete="current-password"
-                        required
-                    >
-
-
-                    <button
-                        type="button"
-                        class="show-password"
-                        onclick="togglePassword()"
-                    >
-                        Show
-                    </button>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- OPTIONS -->
-
-            <div class="login-options">
-
-                <label class="remember">
-
-                    <input
-                        type="checkbox"
-                        id="remember"
-                    >
-
-                    Remember me
-
-                </label>
-
-
-                <a
-                    href="#"
-                    class="forgot"
-                    onclick="forgotPassword()"
-                >
-                    Forgot Password?
-                </a>
-
-            </div>
-
-
-
-            <!-- LOGIN BUTTON -->
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter Password"
+                required
+            >
 
             <button
                 type="submit"
-                class="login-btn"
+                id="loginButton"
             >
                 Login
             </button>
 
-
-            <!-- MESSAGE -->
-
-            <div
-                id="message"
-                class="message"
-            ></div>
-
-
         </form>
 
+        <div
+            id="message"
+            class="message"
+        ></div>
 
-
-        <!-- DEMO INFORMATION -->
-
-        <div class="demo-box">
-
-            <strong>For testing:</strong>
-
-            Student accounts must first be created by the
-            Administrator from the Admin Panel.
-
-            <br><br>
-
-            Example:
-
-            <br>
-
-            Student ID: <strong>STU001</strong>
-
-            <br>
-
-            Password: <strong>Student@123</strong>
-
-        </div>
-
-
-
-        <!-- QUICK LINKS -->
-
-        <div class="quick-links">
-
-            <a href="question-papers.html">
-                Question Papers
-            </a>
-
-            &nbsp; | &nbsp;
-
-            <a href="online-exam.html">
-                Online Exam
-            </a>
-
-            &nbsp; | &nbsp;
-
+        <div class="back">
             <a href="index.html">
-                Home
+                ← Back to Home
             </a>
-
         </div>
-
 
     </div>
 
 </div>
 
 
-
-<!-- FOOTER -->
-
-<footer>
-
-    © 2026 Online Exam Portal. All Rights Reserved.
-
-</footer>
-
-
-
 <script>
 
+/* =========================
+   GOOGLE APPS SCRIPT
+========================= */
 
-/* =========================================
-   SHOW / HIDE PASSWORD
-========================================= */
-
-function togglePassword() {
-
-    const password =
-        document.getElementById("password");
-
-    const button =
-        document.querySelector(".show-password");
+const API_URL =
+"https://script.google.com/macros/s/AKfycbzwMrFz4dBr4h_fp6zFT0mCkXSEw0_cqKgZxWBppnUWNTRoxBa9ee4B7Ljx30n9FCiOiA/exec";
 
 
-    if (password.type === "password") {
+/* =========================
+   MESSAGE
+========================= */
 
-        password.type = "text";
+function showMessage(message, success){
 
-        button.textContent = "Hide";
+    const box =
+        document.getElementById("message");
 
-    } else {
+    box.textContent =
+        message;
 
-        password.type = "password";
+    box.className =
+        "message " +
+        (success ? "success" : "error");
 
-        button.textContent = "Show";
-
-    }
-
+    box.style.display =
+        "block";
 }
 
 
+/* =========================
+   STUDENT LOGIN
+========================= */
 
-/* =========================================
-   LOGIN
-========================================= */
+function studentLogin(studentId,password){
+
+    return new Promise(function(resolve){
+
+        const callbackName =
+            "loginCallback_" +
+            Date.now();
+
+        let script = null;
+        let finished = false;
+
+
+        function cleanup(){
+
+            if(window[callbackName]){
+                delete window[callbackName];
+            }
+
+            if(
+                script &&
+                script.parentNode
+            ){
+                script.parentNode.removeChild(script);
+            }
+        }
+
+
+        window[callbackName] =
+            function(result){
+
+                if(finished){
+                    return;
+                }
+
+                finished = true;
+
+                cleanup();
+
+                resolve(result);
+            };
+
+
+        const url =
+            API_URL +
+            "?action=studentLogin" +
+            "&callback=" +
+            encodeURIComponent(callbackName) +
+            "&studentId=" +
+            encodeURIComponent(studentId) +
+            "&password=" +
+            encodeURIComponent(password);
+
+
+        script =
+            document.createElement("script");
+
+        script.src = url;
+        script.async = true;
+
+
+        script.onerror =
+            function(){
+
+                if(finished){
+                    return;
+                }
+
+                finished = true;
+
+                cleanup();
+
+                resolve({
+                    success:false,
+                    message:
+                    "Could not connect to server."
+                });
+            };
+
+
+        document.body.appendChild(script);
+
+
+        setTimeout(function(){
+
+            if(finished){
+                return;
+            }
+
+            finished = true;
+
+            cleanup();
+
+            resolve({
+                success:false,
+                message:
+                "Connection timed out. Please try again."
+            });
+
+        },15000);
+
+    });
+}
+
+
+/* =========================
+   LOGIN FORM
+========================= */
 
 document
 .getElementById("loginForm")
-.addEventListener("submit", function(event) {
+.addEventListener(
+    "submit",
+    async function(event){
 
-    event.preventDefault();
+        event.preventDefault();
 
 
-    const studentId =
-        document
-        .getElementById("studentId")
-        .value
-        .trim();
-
-
-    const password =
-        document
-        .getElementById("password")
-        .value;
-
-
-    const remember =
-        document
-        .getElementById("remember")
-        .checked;
-
-
-    const message =
-        document
-        .getElementById("message");
-
-
-    /* GET STUDENTS */
-
-    const studentsData =
-        localStorage.getItem("students");
-
-
-    if (!studentsData) {
-
-        showMessage(
-            "No student account has been created yet. Please contact the administrator.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    let students;
-
-
-    try {
-
-        students =
-            JSON.parse(studentsData);
-
-    } catch (error) {
-
-        showMessage(
-            "Student account data could not be read.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    /* FIND STUDENT */
-
-    const student =
-        students.find(function(item) {
-
-            return (
-                item.studentId.toLowerCase()
-                === studentId.toLowerCase()
-                &&
-                item.password === password
-            );
-
-        });
-
-
-    /* WRONG LOGIN */
-
-    if (!student) {
-
-        showMessage(
-            "Invalid Student ID or Password.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    /* SAVE LOGIN INFORMATION */
-
-    localStorage.setItem(
-        "studentId",
-        student.studentId
-    );
-
-
-    localStorage.setItem(
-        "studentName",
-        student.name
-    );
-
-
-    localStorage.setItem(
-        "studentEnrollment",
-        student.enrollment || ""
-    );
-
-
-    localStorage.setItem(
-        "studentMobile",
-        student.mobile || ""
-    );
-
-
-    localStorage.setItem(
-        "studentEmail",
-        student.email || ""
-    );
-
-
-    localStorage.setItem(
-        "studentCourse",
-        student.course || ""
-    );
-
-
-    localStorage.setItem(
-        "studentClass",
-        student.studentClass || ""
-    );
-
-
-    /* REMEMBER LOGIN */
-
-    if (remember) {
-
-        localStorage.setItem(
-            "rememberStudent",
-            "true"
-        );
-
-    } else {
-
-        localStorage.removeItem(
-            "rememberStudent"
-        );
-
-    }
-
-
-    /* SUCCESS */
-
-    showMessage(
-        "Login successful. Opening your dashboard...",
-        "success"
-    );
-
-
-    setTimeout(function() {
-
-        window.location.href =
-            "student-dashboard.html";
-
-    }, 800);
-
-});
-
-
-
-/* =========================================
-   SHOW MESSAGE
-========================================= */
-
-function showMessage(text, type) {
-
-    const message =
-        document.getElementById("message");
-
-
-    message.style.display = "block";
-
-
-    if (type === "success") {
-
-        message.style.background =
-            "#e8f5e9";
-
-        message.style.color =
-            "#2e7d32";
-
-    } else {
-
-        message.style.background =
-            "#ffebee";
-
-        message.style.color =
-            "#c62828";
-
-    }
-
-
-    message.textContent = text;
-
-}
-
-
-
-/* =========================================
-   FORGOT PASSWORD
-========================================= */
-
-function forgotPassword() {
-
-    alert(
-        "Please contact the Administrator to reset your password."
-    );
-
-}
-
-
-
-/* =========================================
-   LOAD REMEMBERED STUDENT ID
-========================================= */
-
-window.addEventListener(
-    "load",
-    function() {
-
-        const remember =
-            localStorage.getItem(
-                "rememberStudent"
+        const button =
+            document.getElementById(
+                "loginButton"
             );
 
 
-        if (remember === "true") {
+        const studentId =
+            document
+            .getElementById(
+                "studentId"
+            )
+            .value
+            .trim();
 
-            const savedId =
-                localStorage.getItem(
-                    "studentId"
+
+        const password =
+            document
+            .getElementById(
+                "password"
+            )
+            .value;
+
+
+        button.disabled = true;
+        button.textContent = "Logging in...";
+
+
+        showMessage(
+            "Checking login...",
+            true
+        );
+
+
+        try{
+
+            const result =
+                await studentLogin(
+                    studentId,
+                    password
                 );
 
 
-            if (savedId) {
+            if(result.success){
 
-                document
-                .getElementById("studentId")
-                .value = savedId;
+                /* Save student information */
+
+                const data =
+                    result.data || {};
 
 
-                document
-                .getElementById("remember")
-                .checked = true;
+                localStorage.setItem(
+                    "studentId",
+                    data.studentId || studentId
+                );
+
+                localStorage.setItem(
+                    "studentName",
+                    data.studentName || ""
+                );
+
+                localStorage.setItem(
+                    "enrollment",
+                    data.enrollment || ""
+                );
+
+                localStorage.setItem(
+                    "mobile",
+                    data.mobile || ""
+                );
+
+                localStorage.setItem(
+                    "email",
+                    data.email || ""
+                );
+
+                localStorage.setItem(
+                    "board",
+                    data.board || ""
+                );
+
+                localStorage.setItem(
+                    "studentClass",
+                    data.studentClass || ""
+                );
+
+                localStorage.setItem(
+                    "studentSubjects",
+                    JSON.stringify(
+                        data.subjects || []
+                    )
+                );
+
+
+                showMessage(
+                    "Login successful. Opening dashboard...",
+                    true
+                );
+
+
+                setTimeout(function(){
+
+                    window.location.href =
+                        "student-dashboard.html";
+
+                },700);
+
+
+            }else{
+
+                showMessage(
+                    result.message ||
+                    "Invalid Student ID or Password.",
+                    false
+                );
 
             }
 
+
+        }catch(error){
+
+            showMessage(
+                "Login error: " +
+                error.message,
+                false
+            );
+
         }
+
+
+        button.disabled = false;
+        button.textContent = "Login";
 
     }
 );
 
-
 </script>
 
-
 </body>
-
-    </html>
+</html>
