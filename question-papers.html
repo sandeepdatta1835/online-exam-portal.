@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Question Papers | Online Exam Portal</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f7fb;
+      color: #222;
+    }
+
+    /* HEADER */
+    header {
+      background: #ffffff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+      color: #173f8a;
+    }
+
+    .logo span {
+      display: block;
+      font-size: 11px;
+      color: #777;
+      font-weight: normal;
+      margin-top: 3px;
+    }
+
+    nav {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      color: #173f8a;
+    }
+
+    .login-btn {
+      background: #173f8a;
+      color: white !important;
+      padding: 9px 15px;
+      border-radius: 6px;
+    }
+
+    .menu-btn {
+      display: none;
+      font-size: 27px;
+      cursor: pointer;
+    }
+
+    /* PAGE HEADER */
+    .page-header {
+      background: linear-gradient(135deg, #173f8a, #2563b8);
+      color: white;
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    .page-header h1 {
+      font-size: 34px;
+      margin-bottom: 10px;
+    }
+
+    .page-header p {
+      color: #e5edff;
+      font-size: 15px;
+    }
+
+    /* MAIN */
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    /* SEARCH */
+    .search-box {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+      margin-bottom: 25px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #d5d9e2;
+      border-radius: 7px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: #173f8a;
+    }
+
+    /* FILTERS */
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .filters select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d5d9e2;
+      border-radius: 7px;
+      background: white;
+      font-size: 14px;
+      outline: none;
+    }
+
+    /* RESULTS */
+    .results-heading {
+      margin: 30px 0 15px;
+      font-size: 21px;
+      color: #173f8a;
+    }
+
+    .papers {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .paper-card {
+      background: white;
+      border-radius: 10px;
+      padding: 22px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+      border: 1px solid #edf0f5;
+    }
+
+    .paper-card h3 {
+      color: #173f8a;
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .paper-info {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #eef3ff;
+      color: #173f8a;
+      padding: 5px 9px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .download-btn {
+      display: inline-block;
+      background: #173f8a;
+      color: white;
+      text-decoration: none;
+      padding: 11px 17px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .download-btn:hover {
+      background: #102f69;
+    }
+
+    .view-btn {
+      display: inline-block;
+      background: #f0f2f6;
+      color: #333;
+      text-decoration: none;
+      padding: 11px 17px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      margin-left: 6px;
+    }
+
+    /* NO RESULTS */
+    .no-results {
+      display: none;
+      text-align: center;
+      background: white;
+      padding: 35px 20px;
+      border-radius: 10px;
+      color: #666;
+      margin-top: 20px;
+    }
+
+    /* INFO */
+    .info-box {
+      background: white;
+      border-left: 5px solid #173f8a;
+      padding: 20px;
+      border-radius: 7px;
+      margin-top: 35px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+    }
+
+    .info-box h3 {
+      color: #173f8a;
+      margin-bottom: 10px;
+    }
+
+    .info-box p {
+      color: #666;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #111827;
+      color: white;
+      padding: 35px 20px 20px;
+      margin-top: 30px;
+    }
+
+    .footer-container {
+      max-width: 1100px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 30px;
+    }
+
+    footer h3 {
+      margin-bottom: 12px;
+    }
+
+    footer p,
+    footer a {
+      color: #b9c0cc;
+      font-size: 14px;
+      line-height: 1.8;
+      text-decoration: none;
+    }
+
+    .copyright {
+      text-align: center;
+      border-top: 1px solid #29303b;
+      margin-top: 25px;
+      padding-top: 18px;
+      color: #8e96a3;
+      font-size: 13px;
+    }
+
+    /* MOBILE */
+    @media (max-width: 800px) {
+
+      .menu-btn {
+        display: block;
+      }
+
+      nav {
+        display: none;
+        position: absolute;
+        top: 65px;
+        left: 0;
+        width: 100%;
+        background: white;
+        padding: 15px 20px;
+        flex-direction: column;
+        align-items: stretch;
+        box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+      }
+
+      nav.active {
+        display: flex;
+      }
+
+      nav a {
+        padding: 10px 0;
+      }
+
+      .login-btn {
+        text-align: center;
+      }
+
+      .page-header h1 {
+        font-size: 28px;
+      }
+
+      .filters {
+        grid-template-columns: 1fr;
+      }
+
+      .papers {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 450px) {
+
+      .page-header {
+        padding: 40px 15px;
+      }
+
+      .page-header h1 {
+        font-size: 25px;
+      }
+
+      .container {
+        padding: 30px 15px;
+      }
+
+      .paper-card {
+        padding: 18px;
+      }
+
+      .download-btn,
+      .view-btn {
+        display: block;
+        text-align: center;
+        margin: 7px 0 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+
+    <div class="header-container">
+
+      <div class="logo">
+        Online Exam Portal
+        <span>Learning • Examination • Submission</span>
+      </div>
+
+      <div class="menu-btn" onclick="toggleMenu()">
+        ☰
+      </div>
+
+      <nav id="mainNav">
+
+        <a href="index.html">Home</a>
+
+        <a href="question-papers.html">
+          Question Papers
+        </a>
+
+        <a href="subjects.html">
+          Subjects
+        </a>
+
+        <a href="online-exam.html">
+          Online Exam
+        </a>
+
+        <a href="submit-answer.html">
+          Submit Answer
+        </a>
+
+        <a href="login.html" class="login-btn">
+          Student Login
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <!-- PAGE HEADER -->
+
+  <section class="page-header">
+
+    <h1>Question Papers</h1>
+
+    <p>
+      Find and download question papers for your examination preparation.
+    </p>
+
+  </section>
+
+
+  <!-- MAIN CONTENT -->
+
+  <main class="container">
+
+
+    <!-- SEARCH AND FILTER -->
+
+    <div class="search-box">
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="🔍 Search question paper, subject, code or chapter..."
+        onkeyup="filterPapers()"
+      >
+
+
+      <div class="filters">
+
+        <select id="courseFilter" onchange="filterPapers()">
+
+          <option value="">All Courses / Boards</option>
+
+          <option value="NIOS">
+            NIOS
+          </option>
+
+          <option value="CBSE">
+            CBSE
+          </option>
+
+          <option value="ICSE">
+            ICSE
+          </option>
+
+          <option value="Maharashtra Board">
+            Maharashtra Board
+          </option>
+
+        </select>
+
+
+        <select id="classFilter" onchange="filterPapers()">
+
+          <option value="">All Classes</option>
+
+          <option value="Class 7">
+            Class 7
+          </option>
+
+          <option value="Class 8">
+            Class 8
+          </option>
+
+          <option value="Class 9">
+            Class 9
+          </option>
+
+          <option value="Class 10">
+            Class 10
+          </option>
+
+          <option value="Senior Secondary">
+            Senior Secondary
+          </option>
+
+        </select>
+
+
+        <select id="subjectFilter" onchange="filterPapers()">
+
+          <option value="">All Subjects</option>
+
+          <option value="English">
+            English
+          </option>
+
+          <option value="Mathematics">
+            Mathematics
+          </option>
+
+          <option value="Science">
+            Science
+          </option>
+
+          <option value="Physics">
+            Physics
+          </option>
+
+          <option value="Chemistry">
+            Chemistry
+          </option>
+
+          <option value="Accountancy">
+            Accountancy
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <!-- RESULT COUNT -->
+
+    <h2 class="results-heading" id="resultCount">
+      Available Question Papers
+    </h2>
+
+
+    <!-- QUESTION PAPERS -->
+
+    <div class="papers" id="papersList">
+
+
+      <!-- PAPER 1 -->
+
+      <div
+        class="paper-card"
+        data-course="NIOS"
+        data-class="Class 10"
+        data-subject="English"
+      >
+
+        <span class="badge">
+          NIOS • 202
+        </span>
+
+        <h3>
+          English – Chapter 1
+        </h3>
+
+        <div class="paper-info">
+
+          <strong>Course:</strong> NIOS Secondary<br>
+
+          <strong>Class:</strong> Class 10<br>
+
+          <strong>Subject:</strong> English<br>
+
+          <strong>Code:</strong> 202<br>
+
+          <strong>Marks:</strong> 20
+
+        </div>
+
+        <a
+          href="#"
+          class="download-btn"
+          onclick="showMessage(event)"
+        >
+          📥 Download PDF
+        </a>
+
+        <a
+          href="#"
+          class="view-btn"
+          onclick="showMessage(event)"
+        >
+          👁 View
+        </a>
+
+      </div>
+
+
+      <!-- PAPER 2 -->
+
+      <div
+        class="paper-card"
+        data-course="NIOS"
+        data-class="Class 10"
+        data-subject="Science"
+      >
+
+        <span class="badge">
+          NIOS • 212
+        </span>
+
+        <h3>
+          Science & Technology – Practice Paper
+        </h3>
+
+        <div class="paper-info">
+
+          <strong>Course:</strong> NIOS Secondary<br>
+
+          <strong>Class:</strong> Class 10<br>
+
+          <strong>Subject:</strong> Science & Technology<br>
+
+          <strong>Code:</strong> 212<br>
+
+          <strong>Marks:</strong> 50
+
+        </div>
+
+        <a
+          href="#"
+          class="download-btn"
+          onclick="showMessage(event)"
+        >
+          📥 Download PDF
+        </a>
+
+        <a
+          href="#"
+          class="view-btn"
+          onclick="showMessage(event)"
+        >
+          👁 View
+        </a>
+
+      </div>
+
+
+      <!-- PAPER 3 -->
+
+      <div
+        class="paper-card"
+        data-course="ICSE"
+        data-class="Class 9"
+        data-subject="Physics"
+      >
+
+        <span class="badge">
+          ICSE • Physics
+        </span>
+
+        <h3>
+          Class 9 Physics – Practice Paper
+        </h3>
+
+        <div class="paper-info">
+
+          <strong>Board:</strong> ICSE<br>
+
+          <strong>Class:</strong> Class 9<br>
+
+          <strong>Subject:</strong> Physics<br>
+
+          <strong>Marks:</strong> 80
+
+        </div>
+
+        <a
+          href="#"
+          class="download-btn"
+          onclick="showMessage(event)"
+        >
+          📥 Download PDF
+        </a>
+
+        <a
+          href="#"
+          class="view-btn"
+          onclick="showMessage(event)"
+        >
+          👁 View
+        </a>
+
+      </div>
+
+
+      <!-- PAPER 4 -->
+
+      <div
+        class="paper-card"
+        data-course="Maharashtra Board"
+        data-class="Class 7"
+        data-subject="Science"
+      >
+
+        <span class="badge">
+          Maharashtra Board
+        </span>
+
+        <h3>
+          Class 7 Science – Chapters 1 to 10
+        </h3>
+
+        <div class="paper-info">
+
+          <strong>Board:</strong> Maharashtra Board<br>
+
+          <strong>Class:</strong> Class 7<br>
+
+          <strong>Subject:</strong> Science<br>
+
+          <strong>Chapters:</strong> 1–10<br>
+
+          <strong>Marks:</strong> 50
+
+        </div>
+
+        <a
+          href="#"
+          class="download-btn"
+          onclick="showMessage(event)"
+        >
+          📥 Download PDF
+        </a>
+
+        <a
+          href="#"
+          class="view-btn"
+          onclick="showMessage(event)"
+        >
+          👁 View
+        </a>
+
+      </div>
+
+
+      <!-- PAPER 5 -->
+
+      <div
+        class="paper-card"
+        data-course="CBSE"
+        data-class="Class 10"
+        data-subject="Mathematics"
+      >
+
+        <span class="badge">
+          CBSE
+        </span>
+
+        <h3>
+          Class 10 Mathematics – Practice Paper
+        </h3>
+
+        <div class="paper-info">
+
+          <strong>Board:</strong> CBSE<br>
+
+          <strong>Class:</strong> Class 10<br>
+
+          <strong>Subject:</strong> Mathematics<br>
+
+          <strong>Marks:</strong> 80
+
+        </div>
+
+        <a
+          href="#"
+          class="download-btn"
+          onclick="showMessage(event)"
+        >
+          📥 Download PDF
+        </a>
+
+        <a
+          href="#"
+          class="view-btn"
+          onclick="showMessage(event)"
+        >
+          👁 View
+        </a>
+
+      </div>
+
+
+      <!-- PAPER 6 -->
+
+      <div
+        class="paper-card"
+        data-course="NIOS"
+        data-class="Senior Secondary"
+        data-subject="Accountancy"
+      >
+
+        <span class="badge">
+          NIOS • 224
+        </span>
+
+        <h3>
+          Accountancy – Practice Paper
+        </h3>
+
+        <div class="paper-info">
+
+          <strong>Course:</strong> NIOS Senior Secondary<br>
+
+          <strong>Class:</strong> Senior Secondary<br>
+
+          <strong>Subject:</strong> Accountancy<br>
+
+          <strong>Code:</strong> 224<br>
+
+          <strong>Marks:</strong> 100
+
+        </div>
+
+        <a
+          href="#"
+          class="download-btn"
+          onclick="showMessage(event)"
+        >
+          📥 Download PDF
+        </a>
+
+        <a
+          href="#"
+          class="view-btn"
+          onclick="showMessage(event)"
+        >
+          👁 View
+        </a>
+
+      </div>
+
+
+    </div>
+
+
+    <!-- NO RESULTS -->
+
+    <div class="no-results" id="noResults">
+
+      <h3>No question paper found</h3>
+
+      <p>
+        Try changing your search or filter options.
+      </p>
+
+    </div>
+
+
+    <!-- INFORMATION -->
+
+    <div class="info-box">
+
+      <h3>📌 Important Information</h3>
+
+      <p>
+        Select your course, class and subject to find the
+        required question paper. Question papers can be
+        viewed or downloaded for examination preparation.
+        More papers will be added regularly.
+      </p>
+
+    </div>
+
+  </main>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="footer-container">
+
+      <div>
+
+        <h3>Online Exam Portal</h3>
+
+        <p>
+          A simple online platform for educational resources,
+          question papers, examinations and answer-sheet submission.
+        </p>
+
+      </div>
+
+
+      <div>
+
+        <h3>Quick Links</h3>
+
+        <p>
+          <a href="index.html">Home</a><br>
+
+          <a href="question-papers.html">
+            Question Papers
+          </a><br>
+
+          <a href="subjects.html">
+            Subjects
+          </a><br>
+
+          <a href="online-exam.html">
+            Online Exam
+          </a>
+        </p>
+
+      </div>
+
+
+      <div>
+
+        <h3>Student</h3>
+
+        <p>
+          <a href="login.html">
+            Student Login
+          </a><br>
+
+          <a href="submit-answer.html">
+            Submit Answer
+          </a><br>
+
+          <a href="login.html">
+            Results
+          </a>
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+      © 2026 Online Exam Portal. All Rights Reserved.
+
+    </div>
+
+  </footer>
+
+
+  <!-- JAVASCRIPT -->
+
+  <script>
+
+    function toggleMenu() {
+
+      const nav = document.getElementById("mainNav");
+
+      nav.classList.toggle("active");
+
+    }
+
+
+    function filterPapers() {
+
+      const search =
+        document.getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+      const course =
+        document.getElementById("courseFilter")
+        .value
+        .toLowerCase();
+
+      const selectedClass =
+        document.getElementById("classFilter")
+        .value
+        .toLowerCase();
+
+      const subject =
+        document.getElementById("subjectFilter")
+        .value
+        .toLowerCase();
+
+
+      const papers =
+        document.querySelectorAll(".paper-card");
+
+
+      let visibleCount = 0;
+
+
+      papers.forEach(function(paper) {
+
+        const text =
+          paper.innerText.toLowerCase();
+
+        const paperCourse =
+          paper.dataset.course.toLowerCase();
+
+        const paperClass =
+          paper.dataset.class.toLowerCase();
+
+        const paperSubject =
+          paper.dataset.subject.toLowerCase();
+
+
+        const searchMatch =
+          text.includes(search);
+
+        const courseMatch =
+          course === "" ||
+          paperCourse === course;
+
+        const classMatch =
+          selectedClass === "" ||
+          paperClass === selectedClass;
+
+        const subjectMatch =
+          subject === "" ||
+          paperSubject === subject;
+
+
+        if (
+          searchMatch &&
+          courseMatch &&
+          classMatch &&
+          subjectMatch
+        ) {
+
+          paper.style.display = "block";
+
+          visibleCount++;
+
+        } else {
+
+          paper.style.display = "none";
+
+        }
+
+      });
+
+
+      document.getElementById("resultCount").innerText =
+        "Available Question Papers (" + visibleCount + ")";
+
+
+      if (visibleCount === 0) {
+
+        document.getElementById("noResults").style.display =
+          "block";
+
+      } else {
+
+        document.getElementById("noResults").style.display =
+          "none";
+
+      }
+
+    }
+
+
+    function showMessage(event) {
+
+      event.preventDefault();
+
+      alert(
+        "The PDF download will be connected after the question paper is uploaded to the website."
+      );
+
+    }
+
+  </script>
+
+</body>
+</html>
