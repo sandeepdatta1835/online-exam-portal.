@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Login | Online Learning & Examination Portal</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        header {
+            background: #0d47a1;
+            color: white;
+            padding: 15px 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* MAIN */
+        .main {
+            min-height: calc(100vh - 150px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 15px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 15px;
+            padding: 35px 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.10);
+        }
+
+        .login-icon {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: #e3f2fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+        }
+
+        .login-card h1 {
+            text-align: center;
+            color: #0d47a1;
+            margin-bottom: 8px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #0d47a1;
+            box-shadow: 0 0 0 2px rgba(13, 71, 161, 0.08);
+        }
+
+        .password-box {
+            position: relative;
+        }
+
+        .password-box input {
+            padding-right: 70px;
+        }
+
+        .show-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: none;
+            color: #0d47a1;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 5px 0 20px;
+            font-size: 13px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .remember input {
+            width: auto;
+        }
+
+        .forgot {
+            color: #0d47a1;
+            text-decoration: none;
+        }
+
+        .forgot:hover {
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: #0d47a1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background: #083579;
+        }
+
+        #message {
+            display: none;
+            margin-top: 18px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .info-box {
+            margin-top: 22px;
+            padding: 15px;
+            background: #fff8e1;
+            border-left: 4px solid #ffb300;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .quick-links {
+            margin-top: 25px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .quick-link {
+            text-align: center;
+            padding: 10px 5px;
+            background: #f1f5f9;
+            border-radius: 7px;
+            color: #0d47a1;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .quick-link:hover {
+            background: #e3f2fd;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #102a43;
+            color: white;
+            text-align: center;
+            padding: 22px 15px;
+            font-size: 13px;
+        }
+
+        /* MOBILE */
+        @media (max-width: 700px) {
+
+            header {
+                padding: 13px 15px;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            nav {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 10px 14px;
+            }
+
+            nav a {
+                font-size: 12px;
+            }
+
+            .main {
+                padding: 25px 12px;
+                align-items: flex-start;
+            }
+
+            .login-card {
+                padding: 28px 20px;
+            }
+
+            .login-card h1 {
+                font-size: 24px;
+            }
+
+            .login-options {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .quick-links {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="nav-container">
+
+        <div class="logo">
+            Online Learning & Examination Portal
+        </div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="question-papers.html">Question Papers</a>
+            <a href="subjects.html">Subjects</a>
+            <a href="online-exam.html">Online Exam</a>
+            <a href="submit-answer.html">Submit Answer</a>
+        </nav>
+
+    </div>
+</header>
+
+
+<!-- MAIN -->
+<main class="main">
+
+    <div class="login-container">
+
+        <div class="login-card">
+
+            <div class="login-icon">
+                👨‍🎓
+            </div>
+
+            <h1>Student Login</h1>
+
+            <p class="subtitle">
+                Login to access your student dashboard and online examinations.
+            </p>
+
+
+            <form id="loginForm">
+
+                <!-- STUDENT ID -->
+                <div class="form-group">
+
+                    <label for="studentId">
+                        Student ID / Enrollment Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="studentId"
+                        placeholder="Enter Student ID or Enrollment Number"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- PASSWORD -->
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="password-box">
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            onclick="togglePassword()"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- OPTIONS -->
+                <div class="login-options">
+
+                    <label class="remember">
+
+                        <input
+                            type="checkbox"
+                            id="remember"
+                        >
+
+                        Remember me
+
+                    </label>
+
+                    <a
+                        href="#"
+                        class="forgot"
+                        onclick="forgotPassword(); return false;"
+                    >
+                        Forgot Password?
+                    </a>
+
+                </div>
+
+
+                <!-- LOGIN BUTTON -->
+                <button
+                    type="submit"
+                    class="login-btn"
+                >
+                    Login
+                </button>
+
+            </form>
+
+
+            <!-- MESSAGE -->
+            <div id="message"></div>
+
+
+            <!-- INFORMATION -->
+            <div class="info-box">
+
+                <strong>Important:</strong><br>
+
+                Student authentication will be connected to the secure
+                backend system later. Your login details will not be stored
+                in this webpage.
+
+            </div>
+
+
+            <!-- QUICK LINKS -->
+            <div class="quick-links">
+
+                <a
+                    href="question-papers.html"
+                    class="quick-link"
+                >
+                    📄 Question Papers
+                </a>
+
+                <a
+                    href="subjects.html"
+                    class="quick-link"
+                >
+                    📚 Subjects
+                </a>
+
+                <a
+                    href="online-exam.html"
+                    class="quick-link"
+                >
+                    📝 Online Exam
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- FOOTER -->
+<footer>
+
+    <p>
+        © 2026 Online Learning & Examination Portal
+    </p>
+
+    <p>
+        Free Educational & Examination Platform
+    </p>
+
+</footer>
+
+
+<script>
+
+    /* SHOW / HIDE PASSWORD */
+
+    function togglePassword() {
+
+        const password =
+            document.getElementById("password");
+
+        const button =
+            document.querySelector(".show-password");
+
+        if (password.type === "password") {
+
+            password.type = "text";
+            button.textContent = "Hide";
+
+        } else {
+
+            password.type = "password";
+            button.textContent = "Show";
+
+        }
+
+    }
+
+
+    /* FORGOT PASSWORD */
+
+    function forgotPassword() {
+
+        alert(
+            "Password recovery will be available after the student login backend is connected."
+        );
+
+    }
+
+
+    /* DEMO LOGIN */
+
+    document
+        .getElementById("loginForm")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            const studentId =
+                document.getElementById("studentId").value.trim();
+
+            const password =
+                document.getElementById("password").value.trim();
+
+            const message =
+                document.getElementById("message");
+
+
+            if (studentId === "" || password === "") {
+
+                message.style.display = "block";
+                message.style.background = "#ffebee";
+                message.style.color = "#c62828";
+
+                message.textContent =
+                    "Please enter Student ID and Password.";
+
+                return;
+
+            }
+
+
+            /*
+             * DEMO ONLY
+             *
+             * Real authentication will be connected later
+             * using Google Apps Script + Google Sheets.
+             */
+
+            message.style.display = "block";
+            message.style.background = "#e3f2fd";
+            message.style.color = "#0d47a1";
+
+            message.textContent =
+                "Login system is ready for backend connection. Student Dashboard will be connected next.";
+
+        });
+
+</script>
+
+</body>
+</html>
