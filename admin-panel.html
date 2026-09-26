@@ -1,97 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Admin Panel | Online Exam Portal</title>
+<title>Admin Panel - Online Exam Portal</title>
 
 <style>
-
 *{
     box-sizing:border-box;
 }
 
 body{
     margin:0;
-    font-family:Arial,Helvetica,sans-serif;
-    background:#f4f6f9;
+    font-family:Arial, sans-serif;
+    background:#f4f6f8;
     color:#222;
 }
 
-.header{
-    background:#182848;
+header{
+    background:#172554;
     color:white;
-    padding:18px 20px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+    padding:18px;
 }
 
-.header h1{
+header h1{
     margin:0;
-    font-size:22px;
+    font-size:24px;
 }
 
-.header p{
-    margin:5px 0 0;
-    font-size:13px;
-}
-
-.logout{
-    background:#e53935;
-    color:white;
-    border:0;
-    padding:10px 16px;
-    border-radius:6px;
+header p{
+    margin:6px 0 0;
+    font-size:14px;
 }
 
 .container{
-    width:94%;
     max-width:1100px;
     margin:25px auto;
+    padding:0 15px;
 }
 
 .card{
     background:white;
     padding:22px;
-    margin-bottom:22px;
+    margin-bottom:20px;
     border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
 }
 
-h2{
+.card h2{
     margin-top:0;
-    color:#182848;
+    color:#172554;
 }
 
 .form-grid{
     display:grid;
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:repeat(2,1fr);
     gap:15px;
 }
 
-.form-group{
-    width:100%;
-}
-
-.full{
-    grid-column:1/-1;
-}
-
-label{
-    display:block;
-    margin-bottom:6px;
-    font-weight:bold;
-    font-size:14px;
-}
-
-input,
-select{
+input, select{
     width:100%;
     padding:12px;
     border:1px solid #ccc;
@@ -99,25 +67,30 @@ select{
     font-size:15px;
 }
 
-input:focus,
-select:focus{
-    outline:none;
-    border-color:#182848;
+button{
+    border:none;
+    padding:12px 18px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:15px;
 }
 
 .create-btn{
-    background:#182848;
+    background:#166534;
     color:white;
-    border:0;
-    padding:13px 20px;
-    border-radius:6px;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
+    margin-top:18px;
 }
 
-.create-btn:disabled{
-    background:#888;
+.logout-btn{
+    background:#dc2626;
+    color:white;
+    float:right;
+    margin-top:-35px;
+}
+
+button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
 }
 
 .message{
@@ -128,406 +101,263 @@ select:focus{
 }
 
 .success{
-    display:block;
-    background:#dff5e3;
-    color:#176b2b;
+    background:#dcfce7;
+    color:#166534;
 }
 
 .error{
-    display:block;
-    background:#ffe1e1;
-    color:#a00000;
-}
-
-.info{
-    display:block;
-    background:#e4efff;
-    color:#164c91;
-}
-
-.table-box{
-    overflow-x:auto;
+    background:#fee2e2;
+    color:#991b1b;
 }
 
 table{
     width:100%;
-    min-width:750px;
     border-collapse:collapse;
+    margin-top:15px;
+}
+
+th, td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:left;
+    font-size:14px;
 }
 
 th{
-    background:#182848;
-    color:white;
-    padding:11px;
-    text-align:left;
+    background:#e5e7eb;
 }
 
-td{
-    padding:11px;
-    border-bottom:1px solid #ddd;
-}
-
-.status{
-    color:#176b2b;
-    font-weight:bold;
+.placeholder{
+    padding:20px;
+    background:#f8fafc;
+    border:1px dashed #aaa;
+    border-radius:8px;
+    color:#555;
 }
 
 @media(max-width:700px){
-
     .form-grid{
         grid-template-columns:1fr;
     }
 
-    .full{
-        grid-column:auto;
+    table{
+        display:block;
+        overflow-x:auto;
     }
 
-    .header{
-        padding:15px;
+    header h1{
+        font-size:20px;
     }
-
-    .header h1{
-        font-size:18px;
-    }
-
-    .container{
-        width:95%;
-    }
-
-    .card{
-        padding:17px;
-    }
-
 }
-
 </style>
-
 </head>
-
 
 <body>
 
+<header>
+    <h1>🔐 Online Exam Portal - Admin Panel</h1>
+    <p>Student Management System</p>
 
-<!-- HEADER -->
-
-<header class="header">
-
-    <div>
-
-        <h1>
-            Online Exam Portal
-        </h1>
-
-        <p>
-            Administrator Panel
-        </p>
-
-    </div>
-
-    <button
-        class="logout"
-        onclick="logout()">
-
+    <button class="logout-btn" onclick="logoutAdmin()">
         Logout
-
     </button>
-
 </header>
-
-
-
-<!-- MAIN -->
 
 <div class="container">
 
+    <!-- CREATE STUDENT -->
 
-<!-- CREATE STUDENT -->
+    <div class="card">
 
-<div class="card">
+        <h2>➕ Create Student</h2>
 
-<h2>
-Create Student Account
-</h2>
+        <form id="studentForm">
 
-<p>
-Create a student account and save the
-student information to Google Sheets.
-</p>
+            <div class="form-grid">
+
+                <div>
+                    <label>Student Name *</label>
+                    <input
+                        type="text"
+                        id="studentName"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>Student ID *</label>
+                    <input
+                        type="text"
+                        id="studentId"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>Password *</label>
+                    <input
+                        type="password"
+                        id="password"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>Enrollment No.</label>
+                    <input
+                        type="text"
+                        id="enrollment"
+                    >
+                </div>
+
+                <div>
+                    <label>Mobile</label>
+                    <input
+                        type="text"
+                        id="mobile"
+                    >
+                </div>
+
+                <div>
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                    >
+                </div>
+
+                <div>
+                    <label>Board</label>
+
+                    <select id="board">
+
+                        <option value="">
+                            Select Board
+                        </option>
+
+                        <option value="NIOS">
+                            NIOS
+                        </option>
+
+                        <option value="CBSE">
+                            CBSE
+                        </option>
+
+                        <option value="ICSE">
+                            ICSE
+                        </option>
+
+                        <option value="Maharashtra Board">
+                            Maharashtra Board
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div>
+                    <label>Class</label>
+
+                    <input
+                        type="text"
+                        id="studentClass"
+                        placeholder="Example: 10"
+                    >
+
+                </div>
+
+            </div>
+
+            <button
+                type="submit"
+                class="create-btn"
+                id="createButton"
+            >
+                Create Student
+            </button>
+
+        </form>
+
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+    </div>
 
 
-<form id="studentForm">
+    <!-- STUDENT RECORDS -->
+
+    <div class="card">
+
+        <h2>👨‍🎓 Student Records</h2>
+
+        <table id="studentTable">
+
+            <thead>
+
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Enrollment</th>
+                    <th>Board</th>
+                    <th>Class</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="studentTableBody">
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 
-<div class="form-grid">
+    <!-- FUTURE FEATURES -->
 
+    <div class="card">
 
-<!-- NAME -->
+        <h2>📚 Other Admin Functions</h2>
 
-<div class="form-group">
+        <div class="placeholder">
 
-<label>
-Student Name
-</label>
+            <p>⏳ Student Subject Assignment - Coming Next</p>
 
-<input
-type="text"
-id="studentName"
-placeholder="Enter student name"
-required>
+            <p>⏳ Question Paper Management - Coming Next</p>
+
+            <p>⏳ Exam Scheduling - Coming Next</p>
+
+            <p>⏳ Answer Sheet / Submission Management - Coming Next</p>
+
+            <p>⏳ Marks & Result Management - Coming Next</p>
+
+        </div>
+
+    </div>
 
 </div>
-
-
-<!-- STUDENT ID -->
-
-<div class="form-group">
-
-<label>
-Student ID
-</label>
-
-<input
-type="text"
-id="studentId"
-placeholder="Example: STU001"
-required>
-
-</div>
-
-
-<!-- PASSWORD -->
-
-<div class="form-group">
-
-<label>
-Password
-</label>
-
-<input
-type="text"
-id="studentPassword"
-placeholder="Enter password"
-required>
-
-</div>
-
-
-<!-- ENROLLMENT -->
-
-<div class="form-group">
-
-<label>
-Enrollment No.
-</label>
-
-<input
-type="text"
-id="enrollment"
-placeholder="Enter enrollment number">
-
-</div>
-
-
-<!-- MOBILE -->
-
-<div class="form-group">
-
-<label>
-Mobile Number
-</label>
-
-<input
-type="text"
-id="mobile"
-placeholder="Enter mobile number">
-
-</div>
-
-
-<!-- EMAIL -->
-
-<div class="form-group">
-
-<label>
-Email Address
-</label>
-
-<input
-type="email"
-id="email"
-placeholder="Enter email">
-
-</div>
-
-
-<!-- BOARD -->
-
-<div class="form-group">
-
-<label>
-Board
-</label>
-
-<select id="board">
-
-<option value="">
-Select Board
-</option>
-
-<option value="NIOS">
-NIOS
-</option>
-
-<option value="CBSE">
-CBSE
-</option>
-
-<option value="ICSE">
-ICSE
-</option>
-
-<option value="Maharashtra Board">
-Maharashtra Board
-</option>
-
-<option value="Other">
-Other
-</option>
-
-</select>
-
-</div>
-
-
-<!-- CLASS -->
-
-<div class="form-group">
-
-<label>
-Class
-</label>
-
-<input
-type="text"
-id="studentClass"
-placeholder="Example: 10">
-
-</div>
-
-
-<!-- BUTTON -->
-
-<div class="form-group full">
-
-<button
-type="submit"
-class="create-btn"
-id="createButton">
-
-Create Student Account
-
-</button>
-
-</div>
-
-
-</div>
-
-</form>
-
-
-<div
-id="message"
-class="message">
-</div>
-
-
-</div>
-
-
-
-<!-- STUDENT LIST -->
-
-<div class="card">
-
-<h2>
-Student Accounts
-</h2>
-
-<div class="table-box">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-Student Name
-</th>
-
-<th>
-Student ID
-</th>
-
-<th>
-Enrollment
-</th>
-
-<th>
-Mobile
-</th>
-
-<th>
-Email
-</th>
-
-<th>
-Board
-</th>
-
-<th>
-Class
-</th>
-
-<th>
-Status
-</th>
-
-</tr>
-
-</thead>
-
-
-<tbody id="studentTable">
-
-</tbody>
-
-
-</table>
-
-</div>
-
-</div>
-
-
-</div>
-
 
 
 <script>
 
+/* ==============================
+   GOOGLE APPS SCRIPT API
+============================== */
 
-/*
-========================================
-ADMIN LOGIN CHECK
-========================================
-*/
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwZK14mHGJmBYAy9oOErqiQa7F0YI2KsWc3ZO9_G0KpOQAI0IpjnAra4c1toEzXP-KK9w/exec";
+
+
+/* ==============================
+   ADMIN LOGIN CHECK
+============================== */
 
 if(
-    sessionStorage.getItem(
-        "adminLoggedIn"
-    ) !== "true"
+    sessionStorage.getItem("adminLoggedIn")
+    !== "true"
 ){
 
     window.location.href =
@@ -536,433 +366,389 @@ if(
 }
 
 
+/* ==============================
+   MESSAGE
+============================== */
 
-/*
-========================================
-GOOGLE APPS SCRIPT URL
-========================================
-*/
+function showMessage(message, success){
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbwZK14mHGJmBYAy9oOErqiQa7F0YI2KsWc3ZO9_G0KpOQAI0IpjnAra4c1toEzXP-KK9w/exec";
+    const box =
+        document.getElementById("message");
 
+    box.textContent =
+        message;
 
+    box.className =
+        "message " +
+        (success ? "success" : "error");
 
-/*
-========================================
-GET ELEMENTS
-========================================
-*/
-
-const form =
-document.getElementById(
-    "studentForm"
-);
-
-const button =
-document.getElementById(
-    "createButton"
-);
-
-const message =
-document.getElementById(
-    "message"
-);
-
-const table =
-document.getElementById(
-    "studentTable"
-);
-
-
-
-/*
-========================================
-MESSAGE
-========================================
-*/
-
-function showMessage(
-    text,
-    type
-){
-
-    message.innerText =
-        text;
-
-    message.className =
-        "message " + type;
+    box.style.display =
+        "block";
 
 }
 
 
+/* ==============================
+   CREATE STUDENT - JSONP
+============================== */
 
-/*
-========================================
-CREATE STUDENT
-========================================
-*/
+function createStudentViaJSONP(data){
 
-form.addEventListener(
-    "submit",
-    function(event){
+    return new Promise(function(resolve){
 
-        event.preventDefault();
+        const callbackName =
+            "studentCallback_" +
+            Date.now();
 
+        let script = null;
 
-        const studentName =
-        document.getElementById(
-            "studentName"
-        ).value.trim();
+        let finished = false;
 
 
-        const studentId =
-        document.getElementById(
-            "studentId"
-        ).value.trim();
+        function cleanup(){
 
+            if(window[callbackName]){
 
-        const password =
-        document.getElementById(
-            "studentPassword"
-        ).value.trim();
+                delete window[callbackName];
 
+            }
 
-        const enrollment =
-        document.getElementById(
-            "enrollment"
-        ).value.trim();
+            if(
+                script &&
+                script.parentNode
+            ){
 
+                script.parentNode.removeChild(script);
 
-        const mobile =
-        document.getElementById(
-            "mobile"
-        ).value.trim();
-
-
-        const email =
-        document.getElementById(
-            "email"
-        ).value.trim();
-
-
-        const board =
-        document.getElementById(
-            "board"
-        ).value.trim();
-
-
-        const studentClass =
-        document.getElementById(
-            "studentClass"
-        ).value.trim();
-
-
-
-        /*
-        REQUIRED FIELDS
-        */
-
-        if(
-            studentName === "" ||
-            studentId === "" ||
-            password === ""
-        ){
-
-            showMessage(
-                "Please enter Student Name, Student ID and Password.",
-                "error"
-            );
-
-            return;
+            }
 
         }
 
 
+        window[callbackName] =
+            function(result){
 
-        /*
-        DISABLE BUTTON
-        */
+                if(finished){
+                    return;
+                }
+
+                finished = true;
+
+                cleanup();
+
+                resolve(result);
+
+            };
+
+
+        const url =
+            API_URL +
+            "?action=createStudent" +
+            "&callback=" +
+            encodeURIComponent(callbackName) +
+            "&studentId=" +
+            encodeURIComponent(data.studentId) +
+            "&studentName=" +
+            encodeURIComponent(data.studentName) +
+            "&password=" +
+            encodeURIComponent(data.password) +
+            "&enrollment=" +
+            encodeURIComponent(data.enrollment) +
+            "&mobile=" +
+            encodeURIComponent(data.mobile) +
+            "&email=" +
+            encodeURIComponent(data.email) +
+            "&board=" +
+            encodeURIComponent(data.board) +
+            "&studentClass=" +
+            encodeURIComponent(data.studentClass);
+
+
+        script =
+            document.createElement("script");
+
+        script.src =
+            url;
+
+        script.async =
+            true;
+
+
+        script.onerror =
+            function(){
+
+                if(finished){
+                    return;
+                }
+
+                finished = true;
+
+                cleanup();
+
+                resolve({
+                    success:false,
+                    message:
+                    "Could not connect to Google Apps Script."
+                });
+
+            };
+
+
+        document.body.appendChild(script);
+
+
+        /* Timeout */
+
+        setTimeout(function(){
+
+            if(finished){
+                return;
+            }
+
+            finished = true;
+
+            cleanup();
+
+            resolve({
+                success:false,
+                message:
+                "Connection timed out. Please try again."
+            });
+
+        },15000);
+
+    });
+
+}
+
+
+/* ==============================
+   FORM SUBMISSION
+============================== */
+
+document
+.getElementById("studentForm")
+.addEventListener(
+    "submit",
+    async function(event){
+
+        event.preventDefault();
+
+
+        const button =
+            document.getElementById(
+                "createButton"
+            );
+
 
         button.disabled =
             true;
 
-        button.innerText =
-            "Saving...";
+        button.textContent =
+            "Creating...";
 
 
         showMessage(
-            "Sending student information to Google Sheets...",
-            "info"
+            "Creating student...",
+            true
         );
 
 
-
-        /*
-        DATA
-        */
-
         const data = {
 
-            action:
-                "createStudent",
-
             studentId:
-                studentId,
+                document
+                .getElementById(
+                    "studentId"
+                )
+                .value
+                .trim(),
 
             studentName:
-                studentName,
+                document
+                .getElementById(
+                    "studentName"
+                )
+                .value
+                .trim(),
 
             password:
-                password,
+                document
+                .getElementById(
+                    "password"
+                )
+                .value,
 
             enrollment:
-                enrollment,
+                document
+                .getElementById(
+                    "enrollment"
+                )
+                .value
+                .trim(),
 
             mobile:
-                mobile,
+                document
+                .getElementById(
+                    "mobile"
+                )
+                .value
+                .trim(),
 
             email:
-                email,
+                document
+                .getElementById(
+                    "email"
+                )
+                .value
+                .trim(),
 
             board:
-                board,
+                document
+                .getElementById(
+                    "board"
+                )
+                .value,
 
             studentClass:
-                studentClass
+                document
+                .getElementById(
+                    "studentClass"
+                )
+                .value
+                .trim()
 
         };
 
 
+        try{
 
-        /*
-        =================================
-        SEND REQUEST
-        =================================
-        */
-
-        fetch(
-            API_URL,
-            {
-
-                method:"POST",
-
-                headers:{
-                    "Content-Type":
-                    "text/plain;charset=utf-8"
-                },
-
-                body:
-                JSON.stringify(data)
-
-            }
-        )
-
-        .then(
-            function(response){
-
-                return response.json();
-
-            }
-        )
-
-        .then(
-            function(result){
-
-                console.log(
-                    "API Response:",
-                    result
+            const result =
+                await createStudentViaJSONP(
+                    data
                 );
 
 
-                if(
-                    result.success === true
-                ){
-
-                    showMessage(
-                        "Student created successfully in Google Sheets.",
-                        "success"
-                    );
-
-
-                    addStudent(
-                        studentName,
-                        studentId,
-                        enrollment,
-                        mobile,
-                        email,
-                        board,
-                        studentClass
-                    );
-
-
-                    form.reset();
-
-                }
-
-                else{
-
-                    showMessage(
-                        result.message ||
-                        "Student was not created.",
-                        "error"
-                    );
-
-                }
-
-
-                button.disabled =
-                    false;
-
-                button.innerText =
-                    "Create Student Account";
-
-            }
-        )
-
-        .catch(
-            function(error){
-
-                console.error(
-                    "ERROR:",
-                    error
-                );
-
+            if(result.success){
 
                 showMessage(
-                    "Connection error: " +
-                    error.message,
-                    "error"
+                    "✅ Student created successfully.",
+                    true
                 );
 
 
-                button.disabled =
-                    false;
+                addStudentToTable(data);
 
-                button.innerText =
-                    "Create Student Account";
+
+                document
+                .getElementById(
+                    "studentForm"
+                )
+                .reset();
+
+
+            }else{
+
+                showMessage(
+                    "❌ " +
+                    (
+                        result.message ||
+                        "Student could not be created."
+                    ),
+                    false
+                );
 
             }
-        );
+
+
+        }catch(error){
+
+            showMessage(
+                "❌ Error: " +
+                error.message,
+                false
+            );
+
+        }
+
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "Create Student";
 
     }
 );
 
 
+/* ==============================
+   ADD STUDENT TO DISPLAY TABLE
+============================== */
 
-/*
-========================================
-ADD STUDENT TO TABLE
-========================================
-*/
+function addStudentToTable(data){
 
-function addStudent(
-    name,
-    id,
-    enrollment,
-    mobile,
-    email,
-    board,
-    studentClass
-){
+    const tbody =
+        document.getElementById(
+            "studentTableBody"
+        );
+
 
     const row =
-    document.createElement(
-        "tr"
-    );
+        document.createElement("tr");
 
 
     row.innerHTML =
 
-    "<td>" +
-    escapeHTML(name) +
-    "</td>" +
+        "<td>" +
+        escapeHtml(data.studentId) +
+        "</td>" +
 
-    "<td>" +
-    escapeHTML(id) +
-    "</td>" +
+        "<td>" +
+        escapeHtml(data.studentName) +
+        "</td>" +
 
-    "<td>" +
-    escapeHTML(enrollment) +
-    "</td>" +
+        "<td>" +
+        escapeHtml(data.enrollment) +
+        "</td>" +
 
-    "<td>" +
-    escapeHTML(mobile) +
-    "</td>" +
+        "<td>" +
+        escapeHtml(data.board) +
+        "</td>" +
 
-    "<td>" +
-    escapeHTML(email) +
-    "</td>" +
+        "<td>" +
+        escapeHtml(data.studentClass) +
+        "</td>" +
 
-    "<td>" +
-    escapeHTML(board) +
-    "</td>" +
-
-    "<td>" +
-    escapeHTML(studentClass) +
-    "</td>" +
-
-    "<td class='status'>" +
-    "Active" +
-    "</td>";
+        "<td>Active</td>";
 
 
-    table.appendChild(
-        row
-    );
+    tbody.appendChild(row);
 
 }
 
 
+/* ==============================
+   HTML SECURITY
+============================== */
 
-/*
-========================================
-HTML SECURITY
-========================================
-*/
+function escapeHtml(value){
 
-function escapeHTML(
-    value
-){
-
-    return String(value)
-
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-
-    .replace(
-        /</g,
-        "&lt;"
-    )
-
-    .replace(
-        />/g,
-        "&gt;"
-    )
-
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-
-    .replace(
-        /'/g,
-        "&#039;"
-    );
+    return String(value || "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
 }
 
 
+/* ==============================
+   LOGOUT
+============================== */
 
-/*
-========================================
-LOGOUT
-========================================
-*/
-
-function logout(){
+function logoutAdmin(){
 
     sessionStorage.removeItem(
         "adminLoggedIn"
@@ -979,7 +765,5 @@ function logout(){
 
 </script>
 
-
 </body>
-
 </html>
