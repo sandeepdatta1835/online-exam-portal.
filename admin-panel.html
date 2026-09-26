@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Admin Panel | Online Exam Portal</title>
 
 <style>
+
+*{
+    box-sizing:border-box;
+}
+
 body{
     margin:0;
-    font-family:Arial,sans-serif;
+    font-family:Arial,Helvetica,sans-serif;
     background:#f4f7fb;
 }
 
@@ -32,6 +39,7 @@ body{
     border:0;
     padding:10px 16px;
     border-radius:6px;
+    cursor:pointer;
 }
 
 .container{
@@ -64,12 +72,12 @@ label{
     display:block;
 }
 
-input,select{
+input,
+select{
     width:100%;
     padding:11px;
     border:1px solid #ccc;
     border-radius:6px;
-    box-sizing:border-box;
 }
 
 button{
@@ -118,12 +126,14 @@ td{
     border-radius:5px;
 }
 
-.delete{
-    background:#dc3545;
-    color:white;
-    border:0;
-    padding:7px;
-    border-radius:5px;
+.inactive{
+    color:#dc3545;
+    font-weight:bold;
+}
+
+.active{
+    color:#198754;
+    font-weight:bold;
 }
 
 .message{
@@ -143,6 +153,11 @@ td{
     color:#842029;
 }
 
+.info{
+    background:#cff4fc;
+    color:#055160;
+}
+
 @media(max-width:700px){
 
     .header-inner{
@@ -154,23 +169,36 @@ td{
     .form-grid{
         grid-template-columns:1fr;
     }
+
 }
+
 </style>
+
 </head>
 
 <body>
+
 
 <div class="header">
 
     <div class="header-inner">
 
         <div>
+
             <h1>🔐 Admin Panel</h1>
-            <div>Online Exam Portal</div>
+
+            <div>
+                Online Exam Portal
+            </div>
+
         </div>
 
-        <button class="logout" onclick="logout()">
+        <button
+            class="logout"
+            onclick="logout()">
+
             Logout
+
         </button>
 
     </div>
@@ -178,174 +206,264 @@ td{
 </div>
 
 
+
 <div class="container">
 
-    <div class="card">
 
-        <h2>Admin Dashboard</h2>
+<!-- DASHBOARD -->
 
-        <p>
-            Welcome, Administrator.
-        </p>
+<div class="card">
 
-        <p>
-            Total Students:
-            <strong id="studentCount">0</strong>
-        </p>
+    <h2>Admin Dashboard</h2>
 
-    </div>
+    <p>
+        Welcome, Administrator.
+    </p>
+
+    <p>
+        Total Students:
+        <strong id="studentCount">0</strong>
+    </p>
+
+</div>
 
 
-    <div class="card">
 
-        <h2>➕ Create New Student</h2>
+<!-- CREATE STUDENT -->
 
-        <form id="studentForm">
+<div class="card">
 
-            <div class="form-grid">
+    <h2>➕ Create New Student</h2>
 
-                <div>
-                    <label>Student Name *</label>
-                    <input
-                        id="studentName"
-                        required
-                        placeholder="Student name">
-                </div>
+    <form id="studentForm">
 
-                <div>
-                    <label>Student ID *</label>
-                    <input
-                        id="studentId"
-                        required
-                        placeholder="STU001">
-                </div>
 
-                <div>
-                    <label>Password *</label>
-                    <input
-                        id="studentPassword"
-                        required
-                        placeholder="Student@123">
-                </div>
+        <div class="form-grid">
 
-                <div>
-                    <label>Enrollment Number</label>
-                    <input
-                        id="enrollment"
-                        placeholder="Enrollment number">
-                </div>
 
-                <div>
-                    <label>Mobile Number</label>
-                    <input
-                        id="mobile"
-                        placeholder="Mobile number">
-                </div>
+            <div>
 
-                <div>
-                    <label>Email</label>
-                    <input
-                        id="email"
-                        type="email"
-                        placeholder="Email">
-                </div>
+                <label>
+                    Student Name *
+                </label>
 
-                <div>
-                    <label>Course / Board</label>
-
-                    <select id="course">
-
-                        <option value="">
-                            Select Board
-                        </option>
-
-                        <option>NIOS</option>
-                        <option>CBSE</option>
-                        <option>ICSE</option>
-                        <option>Maharashtra Board</option>
-                        <option>Other</option>
-
-                    </select>
-                </div>
-
-                <div>
-                    <label>Class</label>
-
-                    <select id="studentClass">
-
-                        <option value="">
-                            Select Class
-                        </option>
-
-                        <option>7</option>
-                        <option>8</option>
-                        <option>9</option>
-                        <option>10</option>
-                        <option>11</option>
-                        <option>12</option>
-                        <option>Senior Secondary</option>
-
-                    </select>
-                </div>
+                <input
+                    id="studentName"
+                    required
+                    placeholder="Student name">
 
             </div>
 
-            <br>
 
-            <button
-                type="submit"
-                class="create">
-                Create Student Account
-            </button>
+            <div>
 
-        </form>
+                <label>
+                    Student ID *
+                </label>
 
-        <div id="message" class="message"></div>
+                <input
+                    id="studentId"
+                    required
+                    placeholder="STU001">
 
-    </div>
+            </div>
 
 
-    <div class="card">
+            <div>
 
-        <h2>👨‍🎓 Student Accounts</h2>
+                <label>
+                    Password *
+                </label>
 
-        <input
-            id="search"
-            class="search"
-            placeholder="Search student..."
-            oninput="showStudents()">
+                <input
+                    id="studentPassword"
+                    required
+                    placeholder="Student@123">
 
-        <div class="table-wrap">
+            </div>
 
-            <table>
 
-                <thead>
+            <div>
 
-                    <tr>
-                        <th>Name</th>
-                        <th>Student ID</th>
-                        <th>Password</th>
-                        <th>Enrollment</th>
-                        <th>Mobile</th>
-                        <th>Course</th>
-                        <th>Class</th>
-                        <th>Action</th>
-                    </tr>
+                <label>
+                    Enrollment Number
+                </label>
 
-                </thead>
+                <input
+                    id="enrollment"
+                    placeholder="Enrollment number">
 
-                <tbody id="studentTable"></tbody>
+            </div>
 
-            </table>
+
+            <div>
+
+                <label>
+                    Mobile Number
+                </label>
+
+                <input
+                    id="mobile"
+                    placeholder="Mobile number">
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Email
+                </label>
+
+                <input
+                    id="email"
+                    type="email"
+                    placeholder="Email">
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Course / Board
+                </label>
+
+                <select id="course">
+
+                    <option value="">
+                        Select Board
+                    </option>
+
+                    <option>NIOS</option>
+                    <option>CBSE</option>
+                    <option>ICSE</option>
+                    <option>Maharashtra Board</option>
+                    <option>Other</option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Class
+                </label>
+
+                <select id="studentClass">
+
+                    <option value="">
+                        Select Class
+                    </option>
+
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>11</option>
+                    <option>12</option>
+                    <option>Senior Secondary</option>
+
+                </select>
+
+            </div>
+
 
         </div>
+
+
+        <br>
+
+
+        <button
+            type="submit"
+            class="create">
+
+            Create Student Account
+
+        </button>
+
+
+    </form>
+
+
+    <div
+        id="message"
+        class="message">
+    </div>
+
+</div>
+
+
+
+<!-- STUDENT ACCOUNTS -->
+
+<div class="card">
+
+    <h2>👨‍🎓 Student Accounts</h2>
+
+
+    <p class="info"
+       style="display:block">
+
+        Student records are now being prepared for the
+        Google Sheets database.
+
+    </p>
+
+
+    <input
+        id="search"
+        class="search"
+        placeholder="Search student..."
+        oninput="showStudents()">
+
+
+    <div class="table-wrap">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Name</th>
+
+                    <th>Student ID</th>
+
+                    <th>Enrollment</th>
+
+                    <th>Mobile</th>
+
+                    <th>Board</th>
+
+                    <th>Class</th>
+
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="studentTable">
+            </tbody>
+
+        </table>
 
     </div>
 
 </div>
 
 
+</div>
+
+
+
 <script>
+
 
 /*
 ========================================
@@ -364,9 +482,27 @@ if(
 }
 
 
+
 /*
 ========================================
-STUDENT FUNCTIONS
+GOOGLE APPS SCRIPT WEB APP
+========================================
+*/
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwZK14mHGJmBYAy9oOErqiQa7F0YI2KsWc3ZO9_G0KpOQAI0IpjnAra4c1toEzXP-KK9w/exec";
+
+
+
+/*
+========================================
+TEMPORARY LOCAL DISPLAY
+========================================
+
+This keeps the current browser display working.
+
+The real student record is sent to
+Google Sheets.
 ========================================
 */
 
@@ -390,6 +526,7 @@ function saveStudents(students){
 }
 
 
+
 /*
 ========================================
 CREATE STUDENT
@@ -398,98 +535,249 @@ CREATE STUDENT
 
 document
 .getElementById("studentForm")
-.addEventListener("submit",function(e){
+.addEventListener(
+    "submit",
+    async function(e){
 
-    e.preventDefault();
+        e.preventDefault();
 
-    const student = {
 
-        name:
+        const student = {
+
+            name:
+                document
+                .getElementById("studentName")
+                .value.trim(),
+
+            studentId:
+                document
+                .getElementById("studentId")
+                .value.trim(),
+
+            password:
+                document
+                .getElementById("studentPassword")
+                .value.trim(),
+
+            enrollment:
+                document
+                .getElementById("enrollment")
+                .value.trim(),
+
+            mobile:
+                document
+                .getElementById("mobile")
+                .value.trim(),
+
+            email:
+                document
+                .getElementById("email")
+                .value.trim(),
+
+            board:
+                document
+                .getElementById("course")
+                .value,
+
+            studentClass:
+                document
+                .getElementById("studentClass")
+                .value
+
+        };
+
+
+        if(
+            !student.name ||
+            !student.studentId ||
+            !student.password
+        ){
+
+            showMessage(
+                "Please enter Student Name, Student ID and Password.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        /*
+        DISABLE BUTTON
+        */
+
+        const button =
             document
-            .getElementById("studentName")
-            .value.trim(),
+            .querySelector(".create");
 
-        studentId:
+
+        button.disabled = true;
+
+        button.textContent =
+            "Creating...";
+
+
+        /*
+        SEND TO GOOGLE SHEETS
+        */
+
+        try{
+
+            const response =
+                await fetch(
+                    API_URL,
+                    {
+
+                        method:"POST",
+
+                        headers:{
+                            "Content-Type":
+                            "text/plain;charset=utf-8"
+                        },
+
+                        body:
+                        JSON.stringify({
+
+                            action:
+                            "createStudent",
+
+                            studentId:
+                            student.studentId,
+
+                            studentName:
+                            student.name,
+
+                            password:
+                            student.password,
+
+                            enrollment:
+                            student.enrollment,
+
+                            mobile:
+                            student.mobile,
+
+                            email:
+                            student.email,
+
+                            board:
+                            student.board,
+
+                            studentClass:
+                            student.studentClass
+
+                        })
+
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if(!result.success){
+
+                showMessage(
+                    result.message ||
+                    "Unable to create student.",
+                    "error"
+                );
+
+                button.disabled = false;
+
+                button.textContent =
+                    "Create Student Account";
+
+                return;
+
+            }
+
+
+            /*
+            ALSO KEEP LOCAL DISPLAY
+            */
+
+            let students =
+                getStudents();
+
+
+            students.push({
+
+                name:
+                student.name,
+
+                studentId:
+                student.studentId,
+
+                password:
+                student.password,
+
+                enrollment:
+                student.enrollment,
+
+                mobile:
+                student.mobile,
+
+                email:
+                student.email,
+
+                course:
+                student.board,
+
+                studentClass:
+                student.studentClass,
+
+                status:
+                "Active"
+
+            });
+
+
+            saveStudents(students);
+
+
+            /*
+            CLEAR FORM
+            */
+
             document
-            .getElementById("studentId")
-            .value.trim(),
-
-        password:
-            document
-            .getElementById("studentPassword")
-            .value.trim(),
-
-        enrollment:
-            document
-            .getElementById("enrollment")
-            .value.trim(),
-
-        mobile:
-            document
-            .getElementById("mobile")
-            .value.trim(),
-
-        email:
-            document
-            .getElementById("email")
-            .value.trim(),
-
-        course:
-            document
-            .getElementById("course")
-            .value,
-
-        studentClass:
-            document
-            .getElementById("studentClass")
-            .value,
-
-        createdDate:
-            new Date().toLocaleString()
-
-    };
+            .getElementById("studentForm")
+            .reset();
 
 
-    let students = getStudents();
+            showStudents();
 
 
-    const exists =
-        students.some(function(s){
-
-            return s.studentId.toLowerCase()
-                === student.studentId.toLowerCase();
-
-        });
+            showMessage(
+                "Student created successfully in Google Sheets.",
+                "success"
+            );
 
 
-    if(exists){
+        }
 
-        showMessage(
-            "Student ID already exists.",
-            "error"
-        );
+        catch(error){
 
-        return;
+            console.error(error);
+
+
+            showMessage(
+                "Connection error. Student was not created.",
+                "error"
+            );
+
+        }
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "Create Student Account";
 
     }
+);
 
-
-    students.push(student);
-
-    saveStudents(students);
-
-    document
-    .getElementById("studentForm")
-    .reset();
-
-    showStudents();
-
-    showMessage(
-        "Student account created successfully.",
-        "success"
-    );
-
-});
 
 
 /*
@@ -505,31 +793,41 @@ function showStudents(){
             "studentTable"
         );
 
+
     const search =
         document
         .getElementById("search")
         .value
         .toLowerCase();
 
-    const students = getStudents();
+
+    const students =
+        getStudents();
 
 
     const filtered =
-        students.filter(function(s){
+        students.filter(
+            function(s){
 
-            return (
-                s.name +
-                " " +
-                s.studentId +
-                " " +
-                s.enrollment +
-                " " +
-                s.mobile
-            )
-            .toLowerCase()
-            .includes(search);
+                return (
 
-        });
+                    String(s.name || "")
+                    + " " +
+
+                    String(s.studentId || "")
+                    + " " +
+
+                    String(s.enrollment || "")
+                    + " " +
+
+                    String(s.mobile || "")
+
+                )
+                .toLowerCase()
+                .includes(search);
+
+            }
+        );
 
 
     table.innerHTML = "";
@@ -538,240 +836,36 @@ function showStudents(){
     if(filtered.length === 0){
 
         table.innerHTML =
-        `<tr>
-            <td colspan="8"
+        `
+        <tr>
+
+            <td
+                colspan="7"
                 style="text-align:center">
+
                 No students found.
-            </td>
-        </tr>`;
-
-    }
-
-
-    filtered.forEach(function(s){
-
-        const row =
-            document.createElement("tr");
-
-
-        row.innerHTML = `
-
-            <td>${safe(s.name)}</td>
-
-            <td>${safe(s.studentId)}</td>
-
-            <td>${safe(s.password)}</td>
-
-            <td>${safe(s.enrollment)}</td>
-
-            <td>${safe(s.mobile)}</td>
-
-            <td>${safe(s.course)}</td>
-
-            <td>${safe(s.studentClass)}</td>
-
-            <td>
-
-                <button
-                    class="copy"
-                    onclick="copyStudent('${jsSafe(s.studentId)}')">
-                    Copy
-                </button>
-
-                <button
-                    class="delete"
-                    onclick="deleteStudent('${jsSafe(s.studentId)}')">
-                    Delete
-                </button>
 
             </td>
 
+        </tr>
         `;
 
-
-        table.appendChild(row);
-
-    });
-
-
-    document
-    .getElementById("studentCount")
-    .textContent = students.length;
-
-}
-
-
-/*
-========================================
-COPY
-========================================
-*/
-
-function copyStudent(id){
-
-    const student =
-        getStudents().find(function(s){
-
-            return s.studentId === id;
-
-        });
-
-
-    if(!student){
-
-        return;
-
     }
 
 
-    const text =
-        "Student Login Details\n\n" +
-        "Student ID: " +
-        student.studentId +
-        "\nPassword: " +
-        student.password;
+    filtered.forEach(
+        function(s){
+
+            const row =
+                document.createElement("tr");
 
 
-    navigator.clipboard
-    .writeText(text)
-    .then(function(){
-
-        alert(
-            "Student login details copied."
-        );
-
-    })
-    .catch(function(){
-
-        alert(text);
-
-    });
-
-}
+            const status =
+                s.status || "Active";
 
 
-/*
-========================================
-DELETE
-========================================
-*/
+            row.innerHTML = `
 
-function deleteStudent(id){
-
-    if(
-        !confirm(
-            "Delete this student account?"
-        )
-    ){
-
-        return;
-
-    }
-
-
-    const students =
-        getStudents().filter(function(s){
-
-            return s.studentId !== id;
-
-        });
-
-
-    saveStudents(students);
-
-    showStudents();
-
-}
-
-
-/*
-========================================
-MESSAGE
-========================================
-*/
-
-function showMessage(text,type){
-
-    const box =
-        document.getElementById(
-            "message"
-        );
-
-    box.textContent = text;
-
-    box.className =
-        "message " + type;
-
-    box.style.display = "block";
-
-
-    setTimeout(function(){
-
-        box.style.display = "none";
-
-    },4000);
-
-}
-
-
-/*
-========================================
-SECURITY HELPERS
-========================================
-*/
-
-function safe(value){
-
-    return String(value || "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
-}
-
-
-function jsSafe(value){
-
-    return String(value || "")
-    .replace(/\\/g,"\\\\")
-    .replace(/'/g,"\\'");
-
-}
-
-
-/*
-========================================
-LOGOUT
-========================================
-*/
-
-function logout(){
-
-    sessionStorage.removeItem(
-        "adminLoggedIn"
-    );
-
-    sessionStorage.removeItem(
-        "adminId"
-    );
-
-    window.location.href =
-        "admin-login.html";
-
-}
-
-
-/*
-========================================
-START
-========================================
-*/
-
-showStudents();
-
-</script>
-
-</body>
-    </html>
+                <td>
+                    ${safe(s.name)}
+               
