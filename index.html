@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Online Learning & Examination Portal</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f7fb;
+      color: #222;
+    }
+
+    /* HEADER */
+    header {
+      background: #ffffff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+      color: #173f8a;
+    }
+
+    .logo span {
+      display: block;
+      font-size: 11px;
+      color: #777;
+      font-weight: normal;
+      margin-top: 3px;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      color: #173f8a;
+    }
+
+    .login-btn {
+      background: #173f8a;
+      color: white !important;
+      padding: 9px 16px;
+      border-radius: 6px;
+    }
+
+    /* MOBILE MENU */
+    .menu-btn {
+      display: none;
+      font-size: 26px;
+      cursor: pointer;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #173f8a, #2563b8);
+      color: white;
+      padding: 65px 20px;
+    }
+
+    .hero-container {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    .hero-content {
+      max-width: 650px;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      line-height: 1.2;
+      margin-bottom: 18px;
+    }
+
+    .hero p {
+      font-size: 17px;
+      line-height: 1.7;
+      color: #e8efff;
+      margin-bottom: 28px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      padding: 13px 20px;
+      border-radius: 7px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .primary-btn {
+      background: white;
+      color: #173f8a;
+    }
+
+    .secondary-btn {
+      border: 1px solid white;
+      color: white;
+    }
+
+    .primary-btn:hover,
+    .secondary-btn:hover {
+      opacity: 0.9;
+    }
+
+    /* HERO ICON */
+    .hero-icon {
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 90px;
+    }
+
+    /* SECTION */
+    .section {
+      max-width: 1100px;
+      margin: auto;
+      padding: 55px 20px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .section-title h2 {
+      font-size: 28px;
+      color: #173f8a;
+      margin-bottom: 8px;
+    }
+
+    .section-title p {
+      color: #666;
+      font-size: 15px;
+    }
+
+    /* SERVICE CARDS */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 28px 22px;
+      border-radius: 10px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.07);
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card-icon {
+      font-size: 42px;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      color: #173f8a;
+      font-size: 19px;
+    }
+
+    .card p {
+      color: #666;
+      line-height: 1.6;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .card a {
+      text-decoration: none;
+      color: #173f8a;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    /* NOTICE */
+    .notice-box {
+      background: white;
+      border-left: 5px solid #173f8a;
+      padding: 22px;
+      border-radius: 7px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }
+
+    .notice {
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+
+    .notice:last-child {
+      border-bottom: none;
+    }
+
+    .notice strong {
+      color: #173f8a;
+    }
+
+    /* HOW IT WORKS */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .step {
+      text-align: center;
+      background: white;
+      padding: 25px 15px;
+      border-radius: 9px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }
+
+    .step-number {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #173f8a;
+      color: white;
+      margin: 0 auto 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .step h3 {
+      font-size: 16px;
+      margin-bottom: 7px;
+    }
+
+    .step p {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    /* CTA */
+    .cta {
+      background: #173f8a;
+      color: white;
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .cta h2 {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .cta p {
+      color: #e5edff;
+      margin-bottom: 22px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #111827;
+      color: white;
+      padding: 35px 20px 20px;
+    }
+
+    .footer-container {
+      max-width: 1100px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 30px;
+    }
+
+    footer h3 {
+      margin-bottom: 12px;
+    }
+
+    footer p,
+    footer a {
+      color: #b9c0cc;
+      font-size: 14px;
+      line-height: 1.7;
+      text-decoration: none;
+    }
+
+    .copyright {
+      text-align: center;
+      border-top: 1px solid #29303b;
+      margin-top: 25px;
+      padding-top: 18px;
+      color: #8e96a3;
+      font-size: 13px;
+    }
+
+    /* MOBILE */
+    @media (max-width: 800px) {
+
+      .menu-btn {
+        display: block;
+      }
+
+      nav {
+        display: none;
+        position: absolute;
+        top: 65px;
+        left: 0;
+        width: 100%;
+        background: white;
+        padding: 15px 20px;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.08);
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      nav.active {
+        display: flex;
+      }
+
+      nav a {
+        padding: 10px 0;
+      }
+
+      .login-btn {
+        text-align: center;
+      }
+
+      .hero-container {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .hero h1 {
+        font-size: 31px;
+      }
+
+      .hero p {
+        font-size: 15px;
+      }
+
+      .hero-buttons {
+        justify-content: center;
+      }
+
+      .hero-icon {
+        width: 150px;
+        height: 150px;
+        font-size: 65px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .steps {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 450px) {
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 45px 18px;
+      }
+
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .primary-btn,
+      .secondary-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+
+    <div class="header-container">
+
+      <div class="logo">
+        Online Exam Portal
+        <span>Learning • Examination • Submission</span>
+      </div>
+
+      <div class="menu-btn" onclick="toggleMenu()">
+        ☰
+      </div>
+
+      <nav id="mainNav">
+        <a href="index.html">Home</a>
+        <a href="question-papers.html">Question Papers</a>
+        <a href="subjects.html">Subjects</a>
+        <a href="online-exam.html">Online Exam</a>
+        <a href="submit-answer.html">Submit Answer</a>
+        <a href="login.html" class="login-btn">Student Login</a>
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <!-- HERO SECTION -->
+
+  <section class="hero">
+
+    <div class="hero-container">
+
+      <div class="hero-content">
+
+        <h1>
+          Online Learning & Examination Portal
+        </h1>
+
+        <p>
+          Download question papers, access study resources,
+          appear for online examinations and submit your
+          answer sheets securely online.
+        </p>
+
+        <div class="hero-buttons">
+
+          <a href="question-papers.html" class="primary-btn">
+            📄 Download Question Paper
+          </a>
+
+          <a href="online-exam.html" class="secondary-btn">
+            📝 Start Online Exam
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="hero-icon">
+        🎓
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- SERVICES -->
+
+  <section class="section">
+
+    <div class="section-title">
+
+      <h2>What You Can Do</h2>
+
+      <p>
+        Everything you need for your online examination.
+      </p>
+
+    </div>
+
+
+    <div class="cards">
+
+      <div class="card">
+
+        <div class="card-icon">📄</div>
+
+        <h3>Question Papers</h3>
+
+        <p>
+          Find and download question papers
+          according to class, subject and course.
+        </p>
+
+        <a href="question-papers.html">
+          View Question Papers →
+        </a>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-icon">📝</div>
+
+        <h3>Online Examination</h3>
+
+        <p>
+          Appear for online examinations with
+          a timer and automatic submission.
+        </p>
+
+        <a href="online-exam.html">
+          View Exams →
+        </a>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-icon">📷</div>
+
+        <h3>Submit Answer Sheet</h3>
+
+        <p>
+          Upload your handwritten answer-sheet
+          pages directly from your mobile phone.
+        </p>
+
+        <a href="submit-answer.html">
+          Submit Answer →
+        </a>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-icon">📚</div>
+
+        <h3>Study Material</h3>
+
+        <p>
+          Access notes, chapter material and
+          examination preparation resources.
+        </p>
+
+        <a href="subjects.html">
+          Explore Subjects →
+        </a>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-icon">👨‍🎓</div>
+
+        <h3>Student Dashboard</h3>
+
+        <p>
+          Manage your exams, submissions and
+          results from one place.
+        </p>
+
+        <a href="login.html">
+          Student Login →
+        </a>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-icon">📊</div>
+
+        <h3>Results</h3>
+
+        <p>
+          Check examination results and submission
+          status online.
+        </p>
+
+        <a href="login.html">
+          Check Result →
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- LATEST NOTICES -->
+
+  <section class="section">
+
+    <div class="section-title">
+
+      <h2>Latest Notices</h2>
+
+      <p>
+        Important examination and submission updates.
+      </p>
+
+    </div>
+
+    <div class="notice-box">
+
+      <div class="notice">
+        📢 <strong>New Question Papers:</strong>
+        New examination papers will be added regularly.
+      </div>
+
+      <div class="notice">
+        📝 <strong>Online Examination:</strong>
+        Check the examination schedule before starting your exam.
+      </div>
+
+      <div class="notice">
+        📷 <strong>Answer Sheet Submission:</strong>
+        Students can upload their answer-sheet pages online.
+      </div>
+
+      <div class="notice">
+        ⚠️ <strong>Important:</strong>
+        Keep your enrollment number ready before submitting your answer sheet.
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- HOW IT WORKS -->
+
+  <section class="section">
+
+    <div class="section-title">
+
+      <h2>How It Works</h2>
+
+      <p>
+        Follow these simple steps.
+      </p>
+
+    </div>
+
+
+    <div class="steps">
+
+      <div class="step">
+
+        <div class="step-number">1</div>
+
+        <h3>Login</h3>
+
+        <p>
+          Login using your student details.
+        </p>
+
+      </div>
+
+
+      <div class="step">
+
+        <div class="step-number">2</div>
+
+        <h3>Choose Exam</h3>
+
+        <p>
+          Select your class, subject and examination.
+        </p>
+
+      </div>
+
+
+      <div class="step">
+
+        <div class="step-number">3</div>
+
+        <h3>Appear</h3>
+
+        <p>
+          Complete the examination within the given time.
+        </p>
+
+      </div>
+
+
+      <div class="step">
+
+        <div class="step-number">4</div>
+
+        <h3>Submit</h3>
+
+        <p>
+          Upload your answer sheet and receive confirmation.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- CALL TO ACTION -->
+
+  <section class="cta">
+
+    <h2>Ready to Start?</h2>
+
+    <p>
+      Download your question paper or start your online examination.
+    </p>
+
+    <a href="question-papers.html" class="primary-btn">
+      View Question Papers
+    </a>
+
+  </section>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="footer-container">
+
+      <div>
+
+        <h3>Online Exam Portal</h3>
+
+        <p>
+          A simple online platform for educational
+          resources, examinations and answer-sheet submission.
+        </p>
+
+      </div>
+
+
+      <div>
+
+        <h3>Quick Links</h3>
+
+        <p>
+          <a href="index.html">Home</a><br>
+          <a href="question-papers.html">Question Papers</a><br>
+          <a href="subjects.html">Subjects</a><br>
+          <a href="online-exam.html">Online Exam</a>
+        </p>
+
+      </div>
+
+
+      <div>
+
+        <h3>Student</h3>
+
+        <p>
+          <a href="login.html">Login</a><br>
+          <a href="submit-answer.html">Submit Answer</a><br>
+          <a href="login.html">Results</a><br>
+          <a href="#">Contact</a>
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+      © 2026 Online Exam Portal. All Rights Reserved.
+
+    </div>
+
+  </footer>
+
+
+  <!-- JAVASCRIPT -->
+
+  <script>
+
+    function toggleMenu() {
+
+      const nav = document.getElementById("mainNav");
+
+      nav.classList.toggle("active");
+
+    }
+
+  </script>
+
+</body>
+</html>
