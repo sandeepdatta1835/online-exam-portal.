@@ -2,11 +2,8 @@
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Admin Panel - Online Exam Portal</title>
 
@@ -27,6 +24,7 @@ body{
     background:#17365d;
     color:white;
     padding:18px 20px;
+    position:relative;
 }
 
 .header h1{
@@ -39,8 +37,15 @@ body{
     font-size:14px;
 }
 
+.logout-top{
+    position:absolute;
+    right:15px;
+    top:18px;
+    background:#c62828;
+}
+
 .container{
-    max-width:1200px;
+    max-width:1250px;
     margin:25px auto;
     padding:0 15px;
 }
@@ -88,19 +93,34 @@ button:hover{
     background:#777;
 }
 
+.blue{
+    background:#1565c0;
+}
+
 input,
-select{
+select,
+textarea{
     width:100%;
     padding:10px;
     border:1px solid #ccc;
     border-radius:6px;
     margin:5px 0 12px;
+    font-family:Arial,sans-serif;
+}
+
+textarea{
+    min-height:90px;
+    resize:vertical;
 }
 
 .form-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
     gap:10px;
+}
+
+.table-wrap{
+    overflow-x:auto;
 }
 
 table{
@@ -115,6 +135,7 @@ td{
     padding:9px;
     text-align:left;
     font-size:13px;
+    vertical-align:top;
 }
 
 th{
@@ -124,10 +145,6 @@ th{
 
 tr:nth-child(even){
     background:#f8f8f8;
-}
-
-.table-wrap{
-    overflow-x:auto;
 }
 
 .message{
@@ -151,13 +168,61 @@ tr:nth-child(even){
     color:#0d47a1;
 }
 
+.warning{
+    background:#fff3cd;
+    color:#664d03;
+}
 
-/* SUBMISSION */
+.status{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:15px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.status-published{
+    background:#d1e7dd;
+    color:#0f5132;
+}
+
+.status-unpublished{
+    background:#f8d7da;
+    color:#842029;
+}
+
+.status-submitted{
+    background:#cff4fc;
+    color:#055160;
+}
+
+.status-draft{
+    background:#fff3cd;
+    color:#664d03;
+}
+
+.subject-box{
+    border:1px solid #ddd;
+    padding:10px;
+    margin:5px 0;
+    border-radius:6px;
+    background:#fafafa;
+}
+
+.subject-box label{
+    display:block;
+    cursor:pointer;
+}
+
+.subject-box input{
+    width:auto;
+    margin-right:8px;
+}
 
 .submission-card{
     border:1px solid #ddd;
-    border-radius:8px;
-    padding:15px;
+    border-radius:10px;
+    padding:18px;
     margin:15px 0;
     background:#fafafa;
 }
@@ -185,7 +250,7 @@ tr:nth-child(even){
 
 .photos{
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+    grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
     gap:12px;
     margin-top:15px;
 }
@@ -200,7 +265,7 @@ tr:nth-child(even){
 
 .photo-card img{
     width:100%;
-    height:150px;
+    height:170px;
     object-fit:cover;
     border-radius:5px;
 }
@@ -213,33 +278,92 @@ tr:nth-child(even){
     font-weight:bold;
 }
 
-.no-photo{
-    color:#777;
-    font-size:13px;
+.photo-number{
+    font-weight:bold;
+    margin-bottom:6px;
 }
 
-.status{
-    display:inline-block;
-    padding:5px 9px;
-    border-radius:15px;
-    background:#e8f5e9;
-    color:#1b5e20;
+.result-box{
+    background:#f8f9fa;
+    border:1px solid #ddd;
+    border-radius:8px;
+    padding:15px;
+    margin-top:15px;
+}
+
+.result-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+    align-items:center;
+}
+
+.marks-input{
+    width:120px;
+    margin:0;
+}
+
+.remarks-input{
+    min-width:220px;
+    min-height:70px;
+}
+
+.small{
     font-size:12px;
+    color:#666;
+}
+
+.empty{
+    padding:20px;
+    text-align:center;
+    color:#777;
+}
+
+@media(max-width:600px){
+
+    .header{
+        padding-right:120px;
+    }
+
+    .header h1{
+        font-size:20px;
+    }
+
+    .logout-top{
+        top:15px;
+        right:10px;
+        padding:8px 10px;
+        font-size:12px;
+    }
+
+    .card{
+        padding:15px;
+    }
+
+    th,
+    td{
+        font-size:12px;
+    }
+
 }
 
 </style>
 
 </head>
 
-
 <body>
-
 
 <div class="header">
 
     <h1>Online Exam Portal</h1>
 
     <p>Administrator Panel</p>
+
+    <button
+        class="logout-top"
+        onclick="logout()">
+        🚪 Logout
+    </button>
 
 </div>
 
@@ -261,77 +385,62 @@ tr:nth-child(even){
 
         <div>
             <label>Student ID</label>
-
             <input
                 type="text"
                 id="newStudentId"
                 placeholder="Example: STD001">
         </div>
 
-
         <div>
             <label>Student Name</label>
-
             <input
                 type="text"
                 id="newStudentName"
                 placeholder="Student name">
         </div>
 
-
         <div>
             <label>Password</label>
-
             <input
                 type="text"
                 id="newStudentPassword"
                 placeholder="Password">
         </div>
 
-
         <div>
             <label>Enrollment No.</label>
-
             <input
                 type="text"
                 id="newEnrollmentNo"
                 placeholder="Enrollment number">
         </div>
 
-
         <div>
             <label>Mobile</label>
-
             <input
                 type="text"
                 id="newMobile"
                 placeholder="Mobile">
         </div>
 
-
         <div>
             <label>Email</label>
-
             <input
                 type="email"
                 id="newEmail"
                 placeholder="Email">
         </div>
 
-
         <div>
             <label>Board</label>
-
             <input
                 type="text"
                 id="newBoard"
                 placeholder="NIOS">
         </div>
 
-
         <div>
             <label>Class</label>
-
             <input
                 type="text"
                 id="newClass"
@@ -340,13 +449,10 @@ tr:nth-child(even){
 
     </div>
 
-
     <button
         class="green"
         onclick="createStudent()">
-
-        Create Student
-
+        ➕ Create Student
     </button>
 
 </div>
@@ -359,13 +465,10 @@ tr:nth-child(even){
 
 <div class="card">
 
-    <h2>👥 Students</h2>
+    <h2>👥 Students Enrolled</h2>
 
-    <button
-        onclick="loadStudents()">
-
+    <button onclick="loadStudents()">
         🔄 Refresh Students
-
     </button>
 
     <div id="studentsMessage"></div>
@@ -377,7 +480,6 @@ tr:nth-child(even){
             <thead>
 
                 <tr>
-
                     <th>Student ID</th>
                     <th>Name</th>
                     <th>Enrollment</th>
@@ -385,15 +487,13 @@ tr:nth-child(even){
                     <th>Email</th>
                     <th>Board</th>
                     <th>Class</th>
+                    <th>Assigned Subjects</th>
                     <th>Status</th>
-
                 </tr>
 
             </thead>
 
-            <tbody id="studentsTable">
-
-            </tbody>
+            <tbody id="studentsTable"></tbody>
 
         </table>
 
@@ -404,7 +504,7 @@ tr:nth-child(even){
 
 
 <!-- =====================================================
-     SUBJECT ASSIGNMENT
+     ASSIGN SUBJECTS
 ====================================================== -->
 
 <div class="card">
@@ -412,7 +512,6 @@ tr:nth-child(even){
     <h2>📚 Assign Subjects</h2>
 
     <div id="assignmentMessage"></div>
-
 
     <label>Select Student</label>
 
@@ -424,22 +523,16 @@ tr:nth-child(even){
 
     </select>
 
-
     <label>Select Subjects</label>
 
     <div id="subjectsList">
-
         Loading subjects...
-
     </div>
-
 
     <button
         class="green"
         onclick="assignSubjects()">
-
-        Assign Subjects
-
+        ✅ Assign Subjects
     </button>
 
 </div>
@@ -454,16 +547,11 @@ tr:nth-child(even){
 
     <h2>📄 Question Papers</h2>
 
-    <button
-        onclick="loadQuestionPapers()">
-
+    <button onclick="loadQuestionPapers()">
         🔄 Refresh Question Papers
-
     </button>
 
-
     <div id="questionPaperMessage"></div>
-
 
     <div class="table-wrap">
 
@@ -472,24 +560,21 @@ tr:nth-child(even){
             <thead>
 
                 <tr>
-
                     <th>ID</th>
                     <th>Paper Name</th>
                     <th>Subject Code</th>
                     <th>Subject</th>
                     <th>Board</th>
                     <th>Class</th>
+                    <th>Exam Type</th>
+                    <th>Year</th>
                     <th>Status</th>
                     <th>Action</th>
-
                 </tr>
 
             </thead>
 
-
-            <tbody id="questionPaperTable">
-
-            </tbody>
+            <tbody id="questionPaperTable"></tbody>
 
         </table>
 
@@ -500,33 +585,31 @@ tr:nth-child(even){
 
 
 <!-- =====================================================
-     ANSWER SHEET SUBMISSIONS
+     SUBMISSIONS
 ====================================================== -->
 
 <div class="card">
 
     <h2>📤 Student Answer Sheet Submissions</h2>
 
-    <p>
-        View answer sheets submitted by students.
+    <p class="small">
+        Every submitted answer paper will appear here.
+        You can view the answer photos and evaluate the submission.
     </p>
-
 
     <button
         class="green"
         onclick="loadSubmissions()">
-
         🔄 Refresh Submissions
-
     </button>
-
 
     <div id="submissionMessage"></div>
 
-
     <div id="submissionsContainer">
 
-        Click "Refresh Submissions" to load submissions.
+        <div class="empty">
+            Click "Refresh Submissions" to load submissions.
+        </div>
 
     </div>
 
@@ -542,67 +625,49 @@ tr:nth-child(even){
 
     <h2>📊 Results</h2>
 
-    <button
-        onclick="loadResults()">
+    <p class="small">
+        Enter marks and evaluator remarks, save the result,
+        and publish it when it is ready for the student.
+    </p>
 
+    <button onclick="loadResults()">
         🔄 Refresh Results
-
     </button>
-
 
     <div id="resultsMessage"></div>
 
+    <div id="resultsContainer">
 
-    <div class="table-wrap">
+        <div class="table-wrap">
 
-        <table>
+            <table>
 
-            <thead>
+                <thead>
 
-                <tr>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Question Paper</th>
+                        <th>Marks</th>
+                        <th>Remarks</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
 
-                    <th>Student ID</th>
-                    <th>Question Paper</th>
-                    <th>Marks</th>
-                    <th>Remarks</th>
-                    <th>Date</th>
+                </thead>
 
-                </tr>
+                <tbody id="resultsTable"></tbody>
 
-            </thead>
+            </table>
 
-
-            <tbody id="resultsTable">
-
-            </tbody>
-
-        </table>
+        </div>
 
     </div>
 
 </div>
 
 
-
-<!-- =====================================================
-     LOGOUT
-====================================================== -->
-
-<div class="card">
-
-    <button
-        class="red"
-        onclick="logout()">
-
-        🚪 Logout Admin
-
-    </button>
-
 </div>
-
-
-</div>
-
 
 
 <script>
@@ -627,11 +692,9 @@ async function apiGet(action, extraParams = {}){
         "?action=" +
         encodeURIComponent(action);
 
-
     Object.keys(extraParams).forEach(function(key){
 
-        const value =
-            extraParams[key];
+        const value = extraParams[key];
 
         if(
             value !== undefined &&
@@ -649,14 +712,20 @@ async function apiGet(action, extraParams = {}){
 
     });
 
-
     const response =
         await fetch(url);
 
+    if(!response.ok){
+
+        throw new Error(
+            "Server error: " +
+            response.status
+        );
+
+    }
 
     const data =
         await response.json();
-
 
     return data;
 }
@@ -677,14 +746,37 @@ function escapeHTML(value){
 
     }
 
-
     return String(value)
-
         .replace(/&/g,"&amp;")
         .replace(/</g,"&lt;")
         .replace(/>/g,"&gt;")
         .replace(/"/g,"&quot;")
         .replace(/'/g,"&#039;");
+}
+
+
+/* =====================================================
+   MESSAGE
+====================================================== */
+
+function showMessage(
+    elementId,
+    message,
+    type
+){
+
+    const element =
+        document.getElementById(elementId);
+
+    if(!element){
+        return;
+    }
+
+    element.innerHTML =
+        `<div class="message ${type}">
+            ${escapeHTML(message)}
+        </div>`;
+
 }
 
 
@@ -695,33 +787,59 @@ function escapeHTML(value){
 async function createStudent(){
 
     const studentId =
-        document.getElementById("newStudentId").value.trim();
+        document
+        .getElementById("newStudentId")
+        .value
+        .trim();
 
     const studentName =
-        document.getElementById("newStudentName").value.trim();
+        document
+        .getElementById("newStudentName")
+        .value
+        .trim();
 
     const password =
-        document.getElementById("newStudentPassword").value.trim();
+        document
+        .getElementById("newStudentPassword")
+        .value
+        .trim();
 
     const enrollmentNo =
-        document.getElementById("newEnrollmentNo").value.trim();
+        document
+        .getElementById("newEnrollmentNo")
+        .value
+        .trim();
 
     const mobile =
-        document.getElementById("newMobile").value.trim();
+        document
+        .getElementById("newMobile")
+        .value
+        .trim();
 
     const email =
-        document.getElementById("newEmail").value.trim();
+        document
+        .getElementById("newEmail")
+        .value
+        .trim();
 
     const board =
-        document.getElementById("newBoard").value.trim();
+        document
+        .getElementById("newBoard")
+        .value
+        .trim();
 
     const className =
-        document.getElementById("newClass").value.trim();
+        document
+        .getElementById("newClass")
+        .value
+        .trim();
 
 
-    if(!studentId ||
-       !studentName ||
-       !password){
+    if(
+        !studentId ||
+        !studentName ||
+        !password
+    ){
 
         showMessage(
             "studentMessage",
@@ -756,45 +874,35 @@ async function createStudent(){
 
             showMessage(
                 "studentMessage",
-                "✅ Student created successfully.",
+                "Student created successfully.",
                 "success"
             );
 
 
-            document
-                .getElementById("newStudentId")
-                .value="";
+            [
+                "newStudentId",
+                "newStudentName",
+                "newStudentPassword",
+                "newEnrollmentNo",
+                "newMobile",
+                "newEmail"
+            ].forEach(function(id){
 
-            document
-                .getElementById("newStudentName")
-                .value="";
+                document
+                    .getElementById(id)
+                    .value = "";
 
-            document
-                .getElementById("newStudentPassword")
-                .value="";
-
-            document
-                .getElementById("newEnrollmentNo")
-                .value="";
-
-            document
-                .getElementById("newMobile")
-                .value="";
-
-            document
-                .getElementById("newEmail")
-                .value="";
+            });
 
 
-            loadStudents();
+            await loadStudents();
 
         }else{
 
             showMessage(
                 "studentMessage",
-                "❌ " +
-                (data.message ||
-                 "Unable to create student."),
+                data.message ||
+                "Unable to create student.",
                 "error"
             );
 
@@ -804,7 +912,7 @@ async function createStudent(){
 
         showMessage(
             "studentMessage",
-            "❌ " + error.message,
+            error.message,
             "error"
         );
 
@@ -820,11 +928,12 @@ async function createStudent(){
 async function loadStudents(){
 
     const table =
-        document.getElementById("studentsTable");
-
+        document.getElementById(
+            "studentsTable"
+        );
 
     table.innerHTML =
-        "<tr><td colspan='8'>Loading...</td></tr>";
+        "<tr><td colspan='9'>Loading...</td></tr>";
 
 
     try{
@@ -839,14 +948,16 @@ async function loadStudents(){
             [];
 
 
-        table.innerHTML="";
+        table.innerHTML = "";
 
 
-        if(!Array.isArray(students) ||
-           students.length===0){
+        if(
+            !Array.isArray(students) ||
+            students.length === 0
+        ){
 
             table.innerHTML =
-                "<tr><td colspan='8'>No students found.</td></tr>";
+                "<tr><td colspan='9'>No students found.</td></tr>";
 
             loadStudentDropdown([]);
 
@@ -861,47 +972,69 @@ async function loadStudents(){
                 document.createElement("tr");
 
 
+            const assignedSubjects =
+                student.Subjects ||
+                student.subjects ||
+                student.AssignedSubjects ||
+                student.assignedSubjects ||
+                "No subjects assigned";
+
+
             tr.innerHTML = `
 
                 <td>${escapeHTML(
                     student.StudentID ||
-                    student.studentId
+                    student.studentId ||
+                    ""
                 )}</td>
 
                 <td>${escapeHTML(
                     student.StudentName ||
-                    student.studentName
+                    student.studentName ||
+                    ""
                 )}</td>
 
                 <td>${escapeHTML(
                     student.EnrollmentNo ||
-                    student.enrollmentNo
+                    student.enrollmentNo ||
+                    ""
                 )}</td>
 
                 <td>${escapeHTML(
                     student.Mobile ||
-                    student.mobile
+                    student.mobile ||
+                    ""
                 )}</td>
 
                 <td>${escapeHTML(
                     student.Email ||
-                    student.email
+                    student.email ||
+                    ""
                 )}</td>
 
                 <td>${escapeHTML(
                     student.Board ||
-                    student.board
+                    student.board ||
+                    ""
                 )}</td>
 
                 <td>${escapeHTML(
                     student.Class ||
-                    student.class
+                    student.class ||
+                    ""
                 )}</td>
 
-                <td>${escapeHTML(
-                    student.Status ||
-                    student.status
-                )}</td>
+                <td>
+                    ${escapeHTML(assignedSubjects)}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        student.Status ||
+                        student.status ||
+                        ""
+                    )}
+                </td>
 
             `;
 
@@ -917,7 +1050,12 @@ async function loadStudents(){
     }catch(error){
 
         table.innerHTML =
-            "<tr><td colspan='8'>Unable to load students.</td></tr>";
+            `<tr>
+                <td colspan="9">
+                    Unable to load students:
+                    ${escapeHTML(error.message)}
+                </td>
+            </tr>`;
 
     }
 
@@ -931,7 +1069,9 @@ async function loadStudents(){
 function loadStudentDropdown(students){
 
     const select =
-        document.getElementById("assignmentStudent");
+        document.getElementById(
+            "assignmentStudent"
+        );
 
 
     select.innerHTML =
@@ -956,10 +1096,12 @@ function loadStudentDropdown(students){
             const option =
                 document.createElement("option");
 
-            option.value=id;
+            option.value = id;
 
             option.textContent =
-                id + " - " + name;
+                id +
+                " - " +
+                name;
 
             select.appendChild(option);
 
@@ -977,7 +1119,9 @@ function loadStudentDropdown(students){
 async function loadSubjects(){
 
     const container =
-        document.getElementById("subjectsList");
+        document.getElementById(
+            "subjectsList"
+        );
 
 
     container.innerHTML =
@@ -996,12 +1140,12 @@ async function loadSubjects(){
             [];
 
 
-        container.innerHTML="";
+        container.innerHTML = "";
 
 
         if(
             !Array.isArray(subjects) ||
-            subjects.length===0
+            subjects.length === 0
         ){
 
             container.innerHTML =
@@ -1036,28 +1180,32 @@ async function loadSubjects(){
             }
 
 
-            const label =
-                document.createElement("label");
+            const box =
+                document.createElement("div");
+
+            box.className =
+                "subject-box";
 
 
-            label.style.display="block";
+            box.innerHTML = `
 
+                <label>
 
-            label.innerHTML = `
+                    <input
+                        type="checkbox"
+                        class="subjectCheck"
+                        value="${escapeHTML(id)}">
 
-                <input
-                    type="checkbox"
-                    class="subjectCheck"
-                    value="${escapeHTML(id)}">
+                    ${escapeHTML(code)}
+                    -
+                    ${escapeHTML(name)}
 
-                ${escapeHTML(code)}
-                - 
-                ${escapeHTML(name)}
+                </label>
 
             `;
 
 
-            container.appendChild(label);
+            container.appendChild(box);
 
         });
 
@@ -1080,7 +1228,9 @@ async function assignSubjects(){
 
     const studentId =
         document
-        .getElementById("assignmentStudent")
+        .getElementById(
+            "assignmentStudent"
+        )
         .value;
 
 
@@ -1103,7 +1253,7 @@ async function assignSubjects(){
     }
 
 
-    if(checks.length===0){
+    if(checks.length === 0){
 
         showMessage(
             "assignmentMessage",
@@ -1142,28 +1292,29 @@ async function assignSubjects(){
 
             showMessage(
                 "assignmentMessage",
-                "✅ Subjects assigned successfully.",
+                "Subjects assigned successfully.",
                 "success"
             );
+
+
+            await loadStudents();
 
         }else{
 
             showMessage(
                 "assignmentMessage",
-                "❌ " +
-                (data.message ||
-                 "Unable to assign subjects."),
+                data.message ||
+                "Unable to assign subjects.",
                 "error"
             );
 
         }
 
-
     }catch(error){
 
         showMessage(
             "assignmentMessage",
-            "❌ " + error.message,
+            error.message,
             "error"
         );
 
@@ -1185,7 +1336,7 @@ async function loadQuestionPapers(){
 
 
     table.innerHTML =
-        "<tr><td colspan='8'>Loading...</td></tr>";
+        "<tr><td colspan='10'>Loading...</td></tr>";
 
 
     try{
@@ -1203,14 +1354,16 @@ async function loadQuestionPapers(){
             [];
 
 
-        table.innerHTML="";
+        table.innerHTML = "";
 
 
-        if(!Array.isArray(papers) ||
-           papers.length===0){
+        if(
+            !Array.isArray(papers) ||
+            papers.length === 0
+        ){
 
             table.innerHTML =
-                "<tr><td colspan='8'>No question papers found.</td></tr>";
+                "<tr><td colspan='10'>No question papers found.</td></tr>";
 
             return;
 
@@ -1222,12 +1375,19 @@ async function loadQuestionPapers(){
             const id =
                 paper.QuestionPaperID ||
                 paper.questionPaperId ||
+                paper.ID ||
                 "";
 
             const status =
                 paper.Status ||
                 paper.status ||
-                "";
+                "Unpublished";
+
+
+            const published =
+                String(status)
+                .toLowerCase() ===
+                "published";
 
 
             const tr =
@@ -1240,50 +1400,83 @@ async function loadQuestionPapers(){
 
                 <td>${escapeHTML(
                     paper.PaperName ||
-                    paper.paperName
+                    paper.paperName ||
+                    ""
                 )}</td>
 
                 <td>${escapeHTML(
                     paper.SubjectCode ||
-                    paper.subjectCode
+                    paper.subjectCode ||
+                    ""
                 )}</td>
 
                 <td>${escapeHTML(
                     paper.SubjectName ||
-                    paper.subjectName
+                    paper.subjectName ||
+                    ""
                 )}</td>
 
                 <td>${escapeHTML(
                     paper.Board ||
-                    paper.board
+                    paper.board ||
+                    ""
                 )}</td>
 
                 <td>${escapeHTML(
                     paper.Class ||
-                    paper.class
+                    paper.class ||
+                    ""
                 )}</td>
 
-                <td>${escapeHTML(status)}</td>
+                <td>${escapeHTML(
+                    paper.ExamType ||
+                    paper.examType ||
+                    ""
+                )}</td>
+
+                <td>${escapeHTML(
+                    paper.Year ||
+                    paper.year ||
+                    ""
+                )}</td>
+
+                <td>
+
+                    <span class="status ${
+                        published
+                        ? "status-published"
+                        : "status-unpublished"
+                    }">
+
+                        ${escapeHTML(status)}
+
+                    </span>
+
+                </td>
 
                 <td>
 
                     ${
-                        String(status).toLowerCase()==="published"
+                        published
 
                         ?
 
                         `<button
-                            class="orange"
-                            onclick="changePaperStatus('${escapeHTML(id)}','unpublish')">
-                            Unpublish
+                            class="red"
+                            onclick="unpublishQuestionPaper('${escapeJS(id)}')">
+
+                            🔴 Unpublish
+
                         </button>`
 
                         :
 
                         `<button
                             class="green"
-                            onclick="changePaperStatus('${escapeHTML(id)}','publish')">
-                            Publish
+                            onclick="publishQuestionPaper('${escapeJS(id)}')">
+
+                            🟢 Publish
+
                         </button>`
                     }
 
@@ -1300,7 +1493,12 @@ async function loadQuestionPapers(){
     }catch(error){
 
         table.innerHTML =
-            "<tr><td colspan='8'>Unable to load question papers.</td></tr>";
+            `<tr>
+                <td colspan="10">
+                    Unable to load question papers:
+                    ${escapeHTML(error.message)}
+                </td>
+            </tr>`;
 
     }
 
@@ -1308,27 +1506,45 @@ async function loadQuestionPapers(){
 
 
 /* =====================================================
-   PUBLISH / UNPUBLISH
+   ESCAPE JAVASCRIPT STRING
 ====================================================== */
 
-async function changePaperStatus(
-    questionPaperId,
-    action
+function escapeJS(value){
+
+    return String(value || "")
+        .replace(/\\/g,"\\\\")
+        .replace(/'/g,"\\'")
+        .replace(/"/g,"&quot;")
+        .replace(/\n/g,"\\n")
+        .replace(/\r/g,"\\r");
+
+}
+
+
+/* =====================================================
+   PUBLISH QUESTION PAPER
+====================================================== */
+
+async function publishQuestionPaper(
+    questionPaperId
 ){
+
+    if(
+        !confirm(
+            "Publish this question paper?"
+        )
+    ){
+
+        return;
+
+    }
+
 
     try{
 
-        const apiAction =
-            action==="publish"
-            ?
-            "publishQuestionPaper"
-            :
-            "unpublishQuestionPaper";
-
-
         const data =
             await apiGet(
-                apiAction,
+                "publishQuestionPaper",
                 {
                     questionPaperId:
                         questionPaperId
@@ -1338,20 +1554,33 @@ async function changePaperStatus(
 
         if(data.success){
 
-            loadQuestionPapers();
+            showMessage(
+                "questionPaperMessage",
+                "Question paper published successfully.",
+                "success"
+            );
+
+
+            await loadQuestionPapers();
 
         }else{
 
-            alert(
+            showMessage(
+                "questionPaperMessage",
                 data.message ||
-                "Unable to change status."
+                "Unable to publish question paper.",
+                "error"
             );
 
         }
 
     }catch(error){
 
-        alert(error.message);
+        showMessage(
+            "questionPaperMessage",
+            error.message,
+            "error"
+        );
 
     }
 
@@ -1359,7 +1588,73 @@ async function changePaperStatus(
 
 
 /* =====================================================
-   ⭐ LOAD SUBMISSIONS
+   UNPUBLISH QUESTION PAPER
+====================================================== */
+
+async function unpublishQuestionPaper(
+    questionPaperId
+){
+
+    if(
+        !confirm(
+            "Unpublish this question paper?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        const data =
+            await apiGet(
+                "unpublishQuestionPaper",
+                {
+                    questionPaperId:
+                        questionPaperId
+                }
+            );
+
+
+        if(data.success){
+
+            showMessage(
+                "questionPaperMessage",
+                "Question paper unpublished successfully.",
+                "success"
+            );
+
+
+            await loadQuestionPapers();
+
+        }else{
+
+            showMessage(
+                "questionPaperMessage",
+                data.message ||
+                "Unable to unpublish question paper.",
+                "error"
+            );
+
+        }
+
+    }catch(error){
+
+        showMessage(
+            "questionPaperMessage",
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   SUBMISSIONS
 ====================================================== */
 
 async function loadSubmissions(){
@@ -1370,24 +1665,11 @@ async function loadSubmissions(){
         );
 
 
-    showMessage(
-        "submissionMessage",
-        "Loading student submissions...",
-        "info"
-    );
-
-
     container.innerHTML =
-        "Loading submissions...";
+        '<div class="empty">Loading submissions...</div>';
 
 
     try{
-
-        /*
-         IMPORTANT:
-         This calls the existing Apps Script
-         getSubmissions action.
-        */
 
         const data =
             await apiGet(
@@ -1395,76 +1677,34 @@ async function loadSubmissions(){
             );
 
 
-        console.log(
-            "SUBMISSIONS RESPONSE:",
-            data
-        );
-
-
-        if(!data.success){
-
-            container.innerHTML =
-                '<div class="error">' +
-                escapeHTML(
-                    data.message ||
-                    "Unable to load submissions."
-                ) +
-                '</div>';
-
-            return;
-
-        }
-
-
-        let submissions =
+        const submissions =
             data.submissions ||
             data.data ||
             [];
 
 
-        if(!Array.isArray(submissions)){
-
-            submissions=[];
-
-        }
+        container.innerHTML = "";
 
 
-        if(submissions.length===0){
+        if(
+            !Array.isArray(submissions) ||
+            submissions.length === 0
+        ){
 
             container.innerHTML =
-                '<div class="info">' +
-                'No student answer-sheet submissions found.' +
-                '</div>';
-
-
-            showMessage(
-                "submissionMessage",
-                "No submissions found.",
-                "info"
-            );
+                '<div class="empty">No submissions found.</div>';
 
             return;
 
         }
 
 
-        container.innerHTML="";
-
-
-        showMessage(
-            "submissionMessage",
-            "✅ " +
-            submissions.length +
-            " submission(s) found.",
-            "success"
-        );
-
-
         submissions.forEach(function(submission){
 
-            renderSubmission(
-                submission,
-                container
+            container.appendChild(
+                createSubmissionCard(
+                    submission
+                )
             );
 
         });
@@ -1472,24 +1712,11 @@ async function loadSubmissions(){
 
     }catch(error){
 
-        console.error(
-            "SUBMISSION ERROR:",
-            error
-        );
-
-
         container.innerHTML =
-            '<div class="error">' +
-            '❌ Unable to load submissions.<br><br>' +
-            escapeHTML(error.message) +
-            '</div>';
-
-
-        showMessage(
-            "submissionMessage",
-            "Unable to load submissions.",
-            "error"
-        );
+            `<div class="message error">
+                Unable to load submissions:
+                ${escapeHTML(error.message)}
+            </div>`;
 
     }
 
@@ -1497,13 +1724,19 @@ async function loadSubmissions(){
 
 
 /* =====================================================
-   RENDER ONE SUBMISSION
+   CREATE SUBMISSION CARD
 ====================================================== */
 
-function renderSubmission(
-    submission,
-    container
+function createSubmissionCard(
+    submission
 ){
+
+    const card =
+        document.createElement("div");
+
+    card.className =
+        "submission-card";
+
 
     const submissionId =
         submission.SubmissionID ||
@@ -1517,7 +1750,7 @@ function renderSubmission(
         "";
 
 
-    const paperId =
+    const questionPaperId =
         submission.QuestionPaperID ||
         submission.questionPaperId ||
         "";
@@ -1532,7 +1765,6 @@ function renderSubmission(
     const submittedDate =
         submission.SubmittedDateTime ||
         submission.submittedDateTime ||
-        submission.SubmittedDate ||
         "";
 
 
@@ -1542,24 +1774,62 @@ function renderSubmission(
         "Submitted";
 
 
-    const marks =
-        submission.MarksObtained ||
-        submission.marksObtained ||
-        "";
+    let photosHTML = "";
 
 
-    const remarks =
-        submission.EvaluatorRemarks ||
-        submission.evaluatorRemarks ||
-        "";
+    for(let i = 1; i <= 20; i++){
+
+        const key =
+            "AnswerPhoto" + i;
+
+        const lowerKey =
+            "answerPhoto" + i;
+
+        const url =
+            submission[key] ||
+            submission[lowerKey] ||
+            "";
 
 
-    const card =
-        document.createElement("div");
+        if(url){
+
+            photosHTML += `
+
+                <div class="photo-card">
+
+                    <div class="photo-number">
+                        Answer Photo ${i}
+                    </div>
+
+                    <img
+                        src="${escapeAttribute(url)}"
+                        alt="Answer Photo ${i}"
+                        onerror="this.style.display='none';">
+
+                    <a
+                        href="${escapeAttribute(url)}"
+                        target="_blank"
+                        rel="noopener">
+
+                        🔗 Open Photo
+
+                    </a>
+
+                </div>
+
+            `;
+
+        }
+
+    }
 
 
-    card.className =
-        "submission-card";
+    if(!photosHTML){
+
+        photosHTML =
+            '<div class="no-photo">No answer photos available.</div>';
+
+    }
 
 
     card.innerHTML = `
@@ -1588,7 +1858,7 @@ function renderSubmission(
 
                 <strong>Question Paper ID</strong>
 
-                ${escapeHTML(paperId)}
+                ${escapeHTML(questionPaperId)}
 
             </div>
 
@@ -1604,7 +1874,7 @@ function renderSubmission(
 
             <div class="submission-info">
 
-                <strong>Submitted Date / Time</strong>
+                <strong>Submitted</strong>
 
                 ${escapeHTML(submittedDate)}
 
@@ -1615,7 +1885,7 @@ function renderSubmission(
 
                 <strong>Status</strong>
 
-                <span class="status">
+                <span class="status status-submitted">
 
                     ${escapeHTML(status)}
 
@@ -1623,159 +1893,213 @@ function renderSubmission(
 
             </div>
 
-
-            <div class="submission-info">
-
-                <strong>Marks Obtained</strong>
-
-                ${escapeHTML(marks)}
-
-            </div>
-
-
-            <div class="submission-info">
-
-                <strong>Evaluator Remarks</strong>
-
-                ${escapeHTML(remarks)}
-
-            </div>
-
         </div>
 
 
         <h3>
-            📝 Answer Sheet Photos
+            📝 Answer Sheets
         </h3>
 
 
-        <div class="photos"
-             id="photos-${escapeHTML(submissionId)}">
+        <div class="photos">
+
+            ${photosHTML}
+
+        </div>
+
+
+        <div class="result-box">
+
+            <h3>
+                📊 Evaluate Submission
+            </h3>
+
+
+            <div class="form-grid">
+
+                <div>
+
+                    <label>
+                        Marks Obtained
+                    </label>
+
+                    <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        id="marks_${escapeAttribute(submissionId)}"
+                        class="marks-input"
+                        placeholder="Marks">
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Evaluator Remarks
+                    </label>
+
+                    <textarea
+                        id="remarks_${escapeAttribute(submissionId)}"
+                        class="remarks-input"
+                        placeholder="Enter remarks"></textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="result-actions">
+
+                <button
+                    class="green"
+                    onclick="saveResultFromSubmission(
+                        '${escapeJS(submissionId)}',
+                        '${escapeJS(studentId)}',
+                        '${escapeJS(questionPaperId)}'
+                    )">
+
+                    💾 Save Result
+
+                </button>
+
+
+                <button
+                    class="orange"
+                    onclick="saveAndPublishResult(
+                        '${escapeJS(submissionId)}',
+                        '${escapeJS(studentId)}',
+                        '${escapeJS(questionPaperId)}'
+                    )">
+
+                    📢 Save & Publish Result
+
+                </button>
+
+            </div>
+
+
+            <div
+                id="resultMessage_${escapeAttribute(submissionId)}">
+            </div>
 
         </div>
 
     `;
 
 
-    container.appendChild(card);
+    return card;
+
+}
 
 
-    const photosContainer =
-        card.querySelector(".photos");
+/* =====================================================
+   ESCAPE ATTRIBUTE
+====================================================== */
+
+function escapeAttribute(value){
+
+    return String(value || "")
+        .replace(/&/g,"&amp;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;");
+
+}
 
 
-    /*
-       Read AnswerPhoto1 to AnswerPhoto20
-    */
+/* =====================================================
+   SAVE RESULT FROM SUBMISSION
+====================================================== */
 
-    let photoCount=0;
+async function saveResultFromSubmission(
+    submissionId,
+    studentId,
+    questionPaperId
+){
 
-
-    for(
-        let i=1;
-        i<=20;
-        i++
-    ){
-
-        const possibleKeys = [
-
-            "AnswerPhoto" + i,
-
-            "answerPhoto" + i,
-
-            "AnswerPhoto" + i,
-
-            "answerphoto" + i
-
-        ];
-
-
-        let photoURL="";
-
-
-        for(
-            const key of possibleKeys
-        ){
-
-            if(
-                submission[key] &&
-                String(submission[key]).trim()!==""
-            ){
-
-                photoURL =
-                    String(
-                        submission[key]
-                    ).trim();
-
-                break;
-
-            }
-
-        }
-
-
-        if(!photoURL){
-            continue;
-        }
-
-
-        photoCount++;
-
-
-        const photoCard =
-            document.createElement("div");
-
-
-        photoCard.className =
-            "photo-card";
-
-
-        photoCard.innerHTML = `
-
-            <div>
-                <strong>
-                    Answer Photo ${i}
-                </strong>
-            </div>
-
-            <img
-                src="${escapeHTML(photoURL)}"
-                alt="Answer Photo ${i}"
-                loading="lazy"
-                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-
-            <div
-                class="no-photo"
-                style="display:none;">
-
-                Image could not be displayed.
-
-            </div>
-
-            <a
-                href="${escapeHTML(photoURL)}"
-                target="_blank">
-
-                🔗 Open Photo
-
-            </a>
-
-        `;
-
-
-        photosContainer.appendChild(
-            photoCard
+    const marksElement =
+        document.getElementById(
+            "marks_" + submissionId
         );
+
+    const remarksElement =
+        document.getElementById(
+            "remarks_" + submissionId
+        );
+
+
+    const marks =
+        marksElement
+        ? marksElement.value.trim()
+        : "";
+
+
+    const remarks =
+        remarksElement
+        ? remarksElement.value.trim()
+        : "";
+
+
+    if(marks === ""){
+
+        showSubmissionResultMessage(
+            submissionId,
+            "Please enter marks.",
+            "error"
+        );
+
+        return;
 
     }
 
 
-    if(photoCount===0){
+    try{
 
-        photosContainer.innerHTML =
-            '<div class="no-photo">' +
-            'No answer photos found for this submission.' +
-            '</div>';
+        const data =
+            await apiGet(
+                "saveResult",
+                {
+                    studentId:studentId,
+                    questionPaperId:questionPaperId,
+                    marksObtained:marks,
+                    evaluatorRemarks:remarks,
+                    status:"Draft"
+                }
+            );
+
+
+        if(data.success){
+
+            showSubmissionResultMessage(
+                submissionId,
+                "Result saved as Draft.",
+                "success"
+            );
+
+
+            await loadResults();
+
+        }else{
+
+            showSubmissionResultMessage(
+                submissionId,
+                data.message ||
+                "Unable to save result.",
+                "error"
+            );
+
+        }
+
+    }catch(error){
+
+        showSubmissionResultMessage(
+            submissionId,
+            error.message,
+            "error"
+        );
 
     }
 
@@ -1783,7 +2107,133 @@ function renderSubmission(
 
 
 /* =====================================================
-   RESULTS
+   SAVE AND PUBLISH RESULT
+====================================================== */
+
+async function saveAndPublishResult(
+    submissionId,
+    studentId,
+    questionPaperId
+){
+
+    const marksElement =
+        document.getElementById(
+            "marks_" + submissionId
+        );
+
+    const remarksElement =
+        document.getElementById(
+            "remarks_" + submissionId
+        );
+
+
+    const marks =
+        marksElement
+        ? marksElement.value.trim()
+        : "";
+
+
+    const remarks =
+        remarksElement
+        ? remarksElement.value.trim()
+        : "";
+
+
+    if(marks === ""){
+
+        showSubmissionResultMessage(
+            submissionId,
+            "Please enter marks.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !confirm(
+            "Save and publish this result to the student?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        const saved =
+            await apiGet(
+                "saveResult",
+                {
+                    studentId:studentId,
+                    questionPaperId:questionPaperId,
+                    marksObtained:marks,
+                    evaluatorRemarks:remarks,
+                    status:"Published"
+                }
+            );
+
+
+        if(saved.success){
+
+            showSubmissionResultMessage(
+                submissionId,
+                "Result saved and published successfully.",
+                "success"
+            );
+
+
+            await loadResults();
+
+        }else{
+
+            showSubmissionResultMessage(
+                submissionId,
+                saved.message ||
+                "Unable to publish result.",
+                "error"
+            );
+
+        }
+
+    }catch(error){
+
+        showSubmissionResultMessage(
+            submissionId,
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   SUBMISSION RESULT MESSAGE
+====================================================== */
+
+function showSubmissionResultMessage(
+    submissionId,
+    message,
+    type
+){
+
+    showMessage(
+        "resultMessage_" + submissionId,
+        message,
+        type
+    );
+
+}
+
+
+/* =====================================================
+   LOAD RESULTS
 ====================================================== */
 
 async function loadResults(){
@@ -1795,7 +2245,7 @@ async function loadResults(){
 
 
     table.innerHTML =
-        "<tr><td colspan='5'>Loading...</td></tr>";
+        "<tr><td colspan='7'>Loading...</td></tr>";
 
 
     try{
@@ -1812,14 +2262,16 @@ async function loadResults(){
             [];
 
 
-        table.innerHTML="";
+        table.innerHTML = "";
 
 
-        if(!Array.isArray(results) ||
-           results.length===0){
+        if(
+            !Array.isArray(results) ||
+            results.length === 0
+        ){
 
             table.innerHTML =
-                "<tr><td colspan='5'>No results found.</td></tr>";
+                "<tr><td colspan='7'>No results found.</td></tr>";
 
             return;
 
@@ -1828,38 +2280,129 @@ async function loadResults(){
 
         results.forEach(function(result){
 
+            const studentId =
+                result.StudentID ||
+                result.studentId ||
+                "";
+
+            const questionPaperId =
+                result.QuestionPaperID ||
+                result.questionPaperId ||
+                "";
+
+            const marks =
+                result.MarksObtained ||
+                result.marksObtained ||
+                "";
+
+            const remarks =
+                result.EvaluatorRemarks ||
+                result.evaluatorRemarks ||
+                "";
+
+            const status =
+                result.Status ||
+                result.status ||
+                "Draft";
+
+            const date =
+                result.CreatedDate ||
+                result.createdDate ||
+                "";
+
+
+            const published =
+                String(status)
+                .toLowerCase() ===
+                "published";
+
+
             const tr =
                 document.createElement("tr");
 
 
             tr.innerHTML = `
 
-                <td>${escapeHTML(
-                    result.StudentID ||
-                    result.studentId
-                )}</td>
+                <td>
+                    ${escapeHTML(studentId)}
+                </td>
 
-                <td>${escapeHTML(
-                    result.QuestionPaperID ||
-                    result.questionPaperId
-                )}</td>
 
-                <td>${escapeHTML(
-                    result.MarksObtained ||
-                    result.marksObtained
-                )}</td>
+                <td>
+                    ${escapeHTML(questionPaperId)}
+                </td>
 
-                <td>${escapeHTML(
-                    result.EvaluatorRemarks ||
-                    result.evaluatorRemarks
-                )}</td>
 
-                <td>${escapeHTML(
-                    result.CreatedDate ||
-                    result.createdDate ||
-                    result.Date ||
-                    ""
-                )}</td>
+                <td>
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        class="marks-input"
+                        id="result_marks_${escapeAttribute(studentId)}_${escapeAttribute(questionPaperId)}"
+                        value="${escapeAttribute(marks)}">
+
+                </td>
+
+
+                <td>
+
+                    <textarea
+                        class="remarks-input"
+                        id="result_remarks_${escapeAttribute(studentId)}_${escapeAttribute(questionPaperId)}"
+                        placeholder="Evaluator remarks">${escapeHTML(remarks)}</textarea>
+
+                </td>
+
+
+                <td>
+
+                    <span class="status ${
+                        published
+                        ? "status-published"
+                        : "status-draft"
+                    }">
+
+                        ${escapeHTML(status)}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+                    ${escapeHTML(date)}
+                </td>
+
+
+                <td>
+
+                    <button
+                        class="green"
+                        onclick="updateExistingResult(
+                            '${escapeJS(studentId)}',
+                            '${escapeJS(questionPaperId)}',
+                            false
+                        )">
+
+                        💾 Save
+
+                    </button>
+
+
+                    <button
+                        class="orange"
+                        onclick="updateExistingResult(
+                            '${escapeJS(studentId)}',
+                            '${escapeJS(questionPaperId)}',
+                            true
+                        )">
+
+                        📢 Publish
+
+                    </button>
+
+                </td>
 
             `;
 
@@ -1872,7 +2415,12 @@ async function loadResults(){
     }catch(error){
 
         table.innerHTML =
-            "<tr><td colspan='5'>Unable to load results.</td></tr>";
+            `<tr>
+                <td colspan="7">
+                    Unable to load results:
+                    ${escapeHTML(error.message)}
+                </td>
+            </tr>`;
 
     }
 
@@ -1880,25 +2428,121 @@ async function loadResults(){
 
 
 /* =====================================================
-   MESSAGE
+   UPDATE EXISTING RESULT
 ====================================================== */
 
-function showMessage(
-    elementId,
-    message,
-    type
+async function updateExistingResult(
+    studentId,
+    questionPaperId,
+    publish
 ){
 
-    const element =
+    const marksElement =
         document.getElementById(
-            elementId
+            "result_marks_" +
+            studentId +
+            "_" +
+            questionPaperId
         );
 
 
-    element.innerHTML =
-        `<div class="message ${type}">
-            ${escapeHTML(message)}
-        </div>`;
+    const remarksElement =
+        document.getElementById(
+            "result_remarks_" +
+            studentId +
+            "_" +
+            questionPaperId
+        );
+
+
+    const marks =
+        marksElement
+        ? marksElement.value.trim()
+        : "";
+
+
+    const remarks =
+        remarksElement
+        ? remarksElement.value.trim()
+        : "";
+
+
+    if(marks === ""){
+
+        showMessage(
+            "resultsMessage",
+            "Please enter marks.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        publish &&
+        !confirm(
+            "Publish this result to the student?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        const data =
+            await apiGet(
+                "saveResult",
+                {
+                    studentId:studentId,
+                    questionPaperId:questionPaperId,
+                    marksObtained:marks,
+                    evaluatorRemarks:remarks,
+                    status:
+                        publish
+                        ? "Published"
+                        : "Draft"
+                }
+            );
+
+
+        if(data.success){
+
+            showMessage(
+                "resultsMessage",
+                publish
+                ? "Result published successfully."
+                : "Result saved as Draft.",
+                "success"
+            );
+
+
+            await loadResults();
+
+        }else{
+
+            showMessage(
+                "resultsMessage",
+                data.message ||
+                "Unable to save result.",
+                "error"
+            );
+
+        }
+
+    }catch(error){
+
+        showMessage(
+            "resultsMessage",
+            error.message,
+            "error"
+        );
+
+    }
 
 }
 
@@ -1909,18 +2553,10 @@ function showMessage(
 
 function logout(){
 
-    localStorage.removeItem(
-        "adminLoggedIn"
-    );
-
-    localStorage.removeItem(
-        "adminLogin"
-    );
-
-    localStorage.removeItem(
-        "isAdminLoggedIn"
-    );
-
+    localStorage.removeItem("adminLoggedIn");
+    localStorage.removeItem("adminLogin");
+    localStorage.removeItem("isAdmin");
+    localStorage.removeItem("admin");
 
     window.location.href =
         "admin-login.html";
@@ -1932,17 +2568,24 @@ function logout(){
    INITIAL LOAD
 ====================================================== */
 
-loadStudents();
+window.addEventListener(
+    "DOMContentLoaded",
+    async function(){
 
-loadSubjects();
+        await loadStudents();
 
-loadQuestionPapers();
+        await loadSubjects();
 
-loadResults();
+        await loadQuestionPapers();
+
+        await loadSubmissions();
+
+        await loadResults();
+
+    }
+);
 
 </script>
 
-
 </body>
-
 </html>
