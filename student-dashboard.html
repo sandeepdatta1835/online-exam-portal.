@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,70 +8,52 @@
 
 <style>
 body{
-    margin:0;
     font-family:Arial,sans-serif;
-    background:#f4f6f9;
+    background:#f4f6f8;
+    margin:0;
 }
-
 header{
-    background:#1d4ed8;
+    background:#1f2937;
     color:white;
+    padding:18px;
+}
+.container{
+    max-width:900px;
+    margin:auto;
     padding:20px;
 }
-
-.container{
-    width:94%;
-    max-width:1100px;
-    margin:20px auto;
-}
-
 .card{
     background:white;
     padding:20px;
+    margin-bottom:15px;
     border-radius:10px;
-    margin-bottom:20px;
-    box-shadow:0 2px 10px rgba(0,0,0,.08);
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
-
-.student-id{
-    font-size:24px;
-    font-weight:bold;
-    color:#1d4ed8;
-}
-
-.subject{
-    display:inline-block;
-    background:#eff6ff;
-    border:1px solid #bfdbfe;
-    padding:12px;
-    margin:5px;
-    border-radius:8px;
-}
-
 button{
-    background:#1d4ed8;
-    color:white;
+    padding:13px 16px;
     border:0;
-    padding:12px 18px;
-    border-radius:6px;
+    border-radius:8px;
     margin:5px;
     cursor:pointer;
 }
-
-.logout{
-    background:#dc2626;
+.primary{
+    background:#2563eb;
+    color:white;
 }
-
-.paper{
-    border:1px solid #ddd;
-    border-radius:8px;
-    padding:15px;
-    margin:10px 0;
-}
-
 .success{
-    color:#15803d;
-    font-weight:bold;
+    background:#16a34a;
+    color:white;
+}
+.danger{
+    background:#dc2626;
+    color:white;
+}
+.subject{
+    display:inline-block;
+    background:#eef2ff;
+    padding:8px 12px;
+    margin:5px;
+    border-radius:15px;
 }
 </style>
 </head>
@@ -79,41 +61,36 @@ button{
 <body>
 
 <header>
-<div class="container">
-<h1>Online Exam</h1>
-<p>Student Dashboard</p>
-</div>
+<h2>Online Exam</h2>
+<div>Student Dashboard</div>
 </header>
 
 <div class="container">
 
 <div class="card">
 
-<h2>Welcome</h2>
+<h2 id="studentName">
+Loading...
+</h2>
 
-<p class="student-id">
-Student ID:
+<p>
+<b>Student ID:</b>
 <span id="studentId"></span>
 </p>
 
 <p>
-<strong>Name:</strong>
-<span id="studentName"></span>
-</p>
-
-<p>
-<strong>Enrollment:</strong>
+<b>Enrollment No:</b>
 <span id="enrollment"></span>
 </p>
 
 <p>
-<strong>Board:</strong>
+<b>Board:</b>
 <span id="board"></span>
 </p>
 
 <p>
-<strong>Class:</strong>
-<span id="studentClass"></span>
+<b>Class:</b>
+<span id="className"></span>
 </p>
 
 </div>
@@ -121,10 +98,10 @@ Student ID:
 
 <div class="card">
 
-<h2>My Assigned Subjects</h2>
+<h3>My Assigned Subjects</h3>
 
 <div id="subjects">
-Loading subjects...
+Loading...
 </div>
 
 </div>
@@ -132,37 +109,23 @@ Loading subjects...
 
 <div class="card">
 
-<h2>My Published Question Papers</h2>
+<h3>Quick Actions</h3>
 
-<div id="papers">
-Loading question papers...
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h2>Quick Actions</h2>
-
-<button onclick="location.href='question-papers.html'">
+<button
+class="primary"
+onclick="location.href='question-papers.html'">
 Question Papers
 </button>
 
-<button onclick="location.href='submit-answer.html'">
-Submit Answer
-</button>
-
-<button onclick="location.href='result.html'">
+<button
+class="success"
+onclick="location.href='result.html'">
 My Results
 </button>
 
-<button onclick="location.href='online-exam.html'">
-Online Exams
-</button>
-
-<button class="logout"
-        onclick="logout()">
+<button
+class="danger"
+onclick="logout()">
 Logout
 </button>
 
@@ -170,285 +133,161 @@ Logout
 
 </div>
 
-
 <script>
 
 const API =
 "https://script.google.com/macros/s/AKfycbzwMrFz4dBr4h_fp6zFT0mCkXSEw0_cqKgZxWBppnUWNTRoxBa9ee4B7Ljx30n9FCiOiA/exec";
 
-
 const studentId =
-    localStorage.getItem("studentId");
+localStorage.getItem("studentId");
 
 if(!studentId){
-
-    window.location.href =
-        "login.html";
+    location.href="login.html";
 }
 
+document.getElementById("studentId")
+.textContent = studentId;
 
-function api(action, params = {}){
 
-    return new Promise(function(resolve,reject){
+function api(action){
 
-        const callbackName =
-            "cb_" +
-            Date.now() +
-            Math.floor(Math.random()*10000);
+    return new Promise(
+        (resolve,reject)=>{
 
-        const script =
-            document.createElement("script");
-
-        const query =
-            new URLSearchParams();
-
-        query.append("action",action);
-        query.append("callback",callbackName);
-
-        Object.keys(params).forEach(function(key){
-
-            query.append(
-                key,
-                params[key]
-            );
-
-        });
-
-        window[callbackName] =
-            function(data){
-
-                delete window[callbackName];
-
-                script.remove();
-
-                resolve(data);
-            };
-
-        script.onerror =
-            function(){
-
-                delete window[callbackName];
-
-                script.remove();
-
-                reject(
-                    new Error("API connection failed")
+            const callback =
+                "cb_" +
+                Date.now() +
+                "_" +
+                Math.floor(
+                    Math.random()*10000
                 );
-            };
 
-        script.src =
-            API + "?" + query.toString();
+            const script =
+                document.createElement(
+                    "script"
+                );
 
-        document.body.appendChild(script);
-    });
+            window[callback] =
+                function(data){
+
+                    delete window[callback];
+
+                    script.remove();
+
+                    if(data.success){
+                        resolve(data);
+                    }else{
+                        reject(
+                            new Error(
+                                data.message ||
+                                "Error"
+                            )
+                        );
+                    }
+                };
+
+            script.src =
+                API +
+                "?action=" +
+                encodeURIComponent(action) +
+                "&studentId=" +
+                encodeURIComponent(studentId) +
+                "&callback=" +
+                callback;
+
+            script.onerror =
+                () =>
+                reject(
+                    new Error(
+                        "API connection failed."
+                    )
+                );
+
+            document.body.appendChild(
+                script
+            );
+        }
+    );
 }
 
 
 async function loadStudent(){
 
-    const result =
-        await api(
-            "getStudent",
-            {
-                studentId:
-                    studentId
-            }
-        );
+    try{
 
-    if(!result.success){
+        const result =
+            await api("getStudent");
 
-        alert(result.message);
+        const s =
+            result.student;
 
-        logout();
+        document.getElementById(
+            "studentName"
+        ).textContent =
+        s.studentName;
 
-        return;
-    }
+        document.getElementById(
+            "enrollment"
+        ).textContent =
+        s.enrollmentNo || "-";
 
-    const student =
-        result.data;
+        document.getElementById(
+            "board"
+        ).textContent =
+        s.board || "-";
 
-    document.getElementById(
-        "studentId"
-    ).textContent =
-        student.studentId;
+        document.getElementById(
+            "className"
+        ).textContent =
+        s.className || "-";
 
-    document.getElementById(
-        "studentName"
-    ).textContent =
-        student.studentName;
+        const subjects =
+            s.studentSubjects || [];
 
-    document.getElementById(
-        "enrollment"
-    ).textContent =
-        student.enrollmentNo || "-";
+        const box =
+            document.getElementById(
+                "subjects"
+            );
 
-    document.getElementById(
-        "board"
-    ).textContent =
-        student.board || "-";
+        if(!subjects.length){
 
-    document.getElementById(
-        "studentClass"
-    ).textContent =
-        student.studentClass || "-";
+            box.innerHTML =
+            "No subjects assigned.";
 
-    loadSubjects(
-        student.studentSubjects || []
-    );
+            return;
+        }
 
-    loadPapers();
-}
+        box.innerHTML =
+            subjects.map(
+                x =>
+                `<span class="subject">
+                ${x.subjectCode} -
+                ${x.subjectName}
+                </span>`
+            ).join("");
 
+    }catch(err){
 
-function loadSubjects(subjects){
-
-    const box =
         document.getElementById(
             "subjects"
-        );
-
-    if(subjects.length === 0){
-
-        box.innerHTML =
-            "<p>No subjects have been assigned yet.</p>";
-
-        return;
+        ).textContent =
+        err.message;
     }
-
-    box.innerHTML = "";
-
-    subjects.forEach(function(subject){
-
-        box.innerHTML += `
-            <div class="subject">
-                <strong>
-                    ${escapeHtml(subject.subjectCode)}
-                </strong>
-                -
-                ${escapeHtml(subject.subjectName)}
-                <br>
-                ${escapeHtml(subject.board)}
-                | Class ${escapeHtml(subject.studentClass)}
-            </div>
-        `;
-    });
-}
-
-
-async function loadPapers(){
-
-    const result =
-        await api(
-            "getPublishedQuestionPapers",
-            {
-                studentId:
-                    studentId
-            }
-        );
-
-    const box =
-        document.getElementById(
-            "papers"
-        );
-
-    if(!result.success){
-
-        box.innerHTML =
-            "<p>" +
-            escapeHtml(result.message) +
-            "</p>";
-
-        return;
-    }
-
-    const papers =
-        result.data || [];
-
-    if(papers.length === 0){
-
-        box.innerHTML =
-            "<p>No published question papers available.</p>";
-
-        return;
-    }
-
-    box.innerHTML = "";
-
-    papers.forEach(function(paper){
-
-        box.innerHTML += `
-            <div class="paper">
-
-                <h3>
-                    ${escapeHtml(paper.paperName)}
-                </h3>
-
-                <p>
-                    <strong>Subject:</strong>
-                    ${escapeHtml(paper.subjectCode)}
-                    -
-                    ${escapeHtml(paper.subjectName)}
-                </p>
-
-                <p>
-                    <strong>Year:</strong>
-                    ${escapeHtml(paper.year)}
-                </p>
-
-                <p class="success">
-                    Published
-                </p>
-
-                ${
-                    paper.fileUrl
-                    ?
-                    `<a href="${escapeHtml(paper.fileUrl)}"
-                        target="_blank">
-                        Open Question Paper
-                    </a>`
-                    :
-                    "Question paper file not added."
-                }
-
-                <br><br>
-
-                <button onclick="
-                    window.location.href =
-                    'submit-answer.html?questionPaperId=${encodeURIComponent(paper.questionPaperId)}&subjectId=${encodeURIComponent(paper.subjectId)}'
-                ">
-                    Submit Answer
-                </button>
-
-            </div>
-        `;
-    });
 }
 
 
 function logout(){
 
-    localStorage.removeItem("studentId");
-    localStorage.removeItem("studentName");
-    localStorage.removeItem("enrollment");
-    localStorage.removeItem("mobile");
-    localStorage.removeItem("email");
-    localStorage.removeItem("board");
-    localStorage.removeItem("studentClass");
-    localStorage.removeItem("studentSubjects");
+    localStorage.removeItem(
+        "studentId"
+    );
 
-    window.location.href =
+    localStorage.removeItem(
+        "studentName"
+    );
+
+    location.href =
         "login.html";
-}
-
-
-function escapeHtml(value){
-
-    return String(value || "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
 }
 
 
