@@ -1,416 +1,1193 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Online Exam - Live Photo</title>
+<title>Live Photo Verification - Online Exam Portal</title>
 
 <style>
-body{
-    font-family:Arial,sans-serif;
-    background:#f4f6f8;
-    margin:0;
+* {
+  box-sizing: border-box;
 }
-.container{
-    max-width:600px;
-    margin:auto;
-    padding:20px;
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f5f8;
+  color: #222;
 }
-.card{
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
+
+header {
+  background: #1e3c72;
+  color: white;
+  padding: 18px;
+  text-align: center;
 }
-video{
-    width:100%;
-    border-radius:10px;
-    background:#000;
+
+header h1 {
+  margin: 0;
+  font-size: 22px;
 }
-button{
-    width:100%;
-    padding:14px;
-    margin-top:12px;
-    border:0;
-    border-radius:8px;
-    cursor:pointer;
+
+.container {
+  max-width: 650px;
+  margin: 25px auto;
+  padding: 15px;
 }
-.primary{
-    background:#2563eb;
-    color:white;
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.1);
+  margin-bottom: 20px;
 }
-.success{
-    background:#16a34a;
-    color:white;
+
+h2 {
+  color: #1e3c72;
+  margin-top: 0;
 }
-.danger{
-    background:#dc2626;
-    color:white;
+
+.info {
+  background: #e8f1ff;
+  color: #164b91;
+  padding: 12px;
+  border-radius: 7px;
+  margin-bottom: 15px;
 }
-#downloadButton{
-    display:none;
+
+.video-box {
+  width: 100%;
+  background: #111;
+  border-radius: 10px;
+  overflow: hidden;
+  text-align: center;
 }
-#status{
-    margin-top:15px;
-    padding:10px;
+
+video {
+  width: 100%;
+  max-height: 450px;
+  display: block;
+  object-fit: cover;
+}
+
+canvas {
+  display: none;
+}
+
+.preview {
+  width: 100%;
+  border-radius: 10px;
+  display: none;
+}
+
+button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 12px;
+  border: 0;
+  border-radius: 7px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.camera-btn {
+  background: #1e3c72;
+  color: white;
+}
+
+.capture-btn {
+  background: #198754;
+  color: white;
+}
+
+.download-btn {
+  background: #fd7e14;
+  color: white;
+}
+
+.back-btn {
+  background: #6c757d;
+  color: white;
+}
+
+button:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+.message {
+  display: none;
+  padding: 12px;
+  border-radius: 7px;
+  margin-top: 15px;
+  white-space: pre-wrap;
+}
+
+.success {
+  display: block;
+  background: #e4f7e9;
+  color: #176b2c;
+}
+
+.error {
+  display: block;
+  background: #ffe5e5;
+  color: #a00000;
+}
+
+.warning {
+  display: block;
+  background: #fff3cd;
+  color: #664d03;
+}
+
+.status {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.details {
+  background: #f7f8fa;
+  padding: 12px;
+  border-radius: 7px;
+  margin-bottom: 15px;
+}
+
+.details div {
+  padding: 5px 0;
+}
+
+@media(max-width:600px) {
+  .container {
+    margin: 10px auto;
+  }
+
+  .card {
+    padding: 15px;
+  }
 }
 </style>
 </head>
 
 <body>
 
+<header>
+  <h1>Live Photo Verification</h1>
+</header>
+
 <div class="container">
 
-<div class="card">
+  <div class="card">
 
-<h2>Live Photo Verification</h2>
+    <h2>Student Verification</h2>
 
-<p>
-Before downloading the question paper,
-you must take a live photo.
-</p>
+    <div class="details">
 
-<p>
-<b>Student ID:</b>
-<span id="studentId"></span>
-</p>
+      <div>
+        <strong>Student ID:</strong>
+        <span id="studentIdText">Loading...</span>
+      </div>
 
-<video
-    id="video"
-    autoplay
-    playsinline>
-</video>
+      <div>
+        <strong>Question Paper ID:</strong>
+        <span id="paperIdText">Loading...</span>
+      </div>
 
-<button
-    class="primary"
-    onclick="startCamera()">
-    Start Camera
-</button>
+    </div>
 
-<button
-    class="success"
-    onclick="takePhoto()">
-    Take Live Photo
-</button>
+    <div class="info">
+      Please take a live photo before downloading the question paper.
+      The photo is used to record your verification for this question paper.
+    </div>
 
-<canvas
-    id="canvas"
-    style="display:none">
-</canvas>
 
-<img
-    id="preview"
-    style="display:none;width:100%;margin-top:15px;border-radius:10px;">
+    <!-- CAMERA -->
 
-<div id="status"></div>
+    <div class="video-box">
 
-<button
-    id="downloadButton"
-    class="success"
-    onclick="downloadPaper()">
-    Download Question Paper
-</button>
+      <video
+        id="video"
+        autoplay
+        playsinline
+        muted
+      ></video>
 
-<button
-    class="danger"
-    onclick="window.location.href='question-papers.html'">
-    Back
-</button>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <img
+      id="preview"
+      class="preview"
+      alt="Live photo preview"
+    >
+
+
+    <button
+      id="startCameraBtn"
+      class="camera-btn"
+      onclick="startCamera()"
+    >
+      📷 Start Camera
+    </button>
+
+
+    <button
+      id="captureBtn"
+      class="capture-btn"
+      onclick="capturePhoto()"
+      disabled
+    >
+      📸 Take Live Photo
+    </button>
+
+
+    <button
+      id="retakeBtn"
+      class="back-btn"
+      onclick="retakePhoto()"
+      style="display:none;"
+    >
+      🔄 Retake Photo
+    </button>
+
+
+    <button
+      id="downloadBtn"
+      class="download-btn"
+      onclick="downloadQuestionPaper()"
+      disabled
+    >
+      📄 Download Question Paper
+    </button>
+
+
+    <div
+      id="status"
+      class="status"
+    ></div>
+
+
+    <div
+      id="message"
+      class="message"
+    ></div>
+
+  </div>
+
+
+  <div class="card">
+
+    <button
+      class="back-btn"
+      onclick="goBack()"
+    >
+      ← Back to Question Papers
+    </button>
+
+  </div>
 
 </div>
 
-</div>
 
 <script>
 
-const API =
+/* =========================================================
+   API
+   ========================================================= */
+
+const API_URL =
 "https://script.google.com/macros/s/AKfycbzwMrFz4dBr4h_fp6zFT0mCkXSEw0_cqKgZxWBppnUWNTRoxBa9ee4B7Ljx30n9FCiOiA/exec";
 
+
+/* =========================================================
+   STUDENT / PAPER
+   ========================================================= */
+
 const studentId =
-localStorage.getItem("studentId");
+  localStorage.getItem("studentId");
+
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
 
 const questionPaperId =
-new URLSearchParams(location.search)
-.get("questionPaperId");
+  params.get("questionPaperId");
 
-if(!studentId){
-    window.location.href="login.html";
-}
+
+document.getElementById(
+  "studentIdText"
+).textContent =
+  studentId || "Not found";
+
+
+document.getElementById(
+  "paperIdText"
+).textContent =
+  questionPaperId || "Not found";
+
+
+/* =========================================================
+   VARIABLES
+   ========================================================= */
 
 let stream = null;
-let livePhotoUrl = "";
-let paper = null;
 
-function api(action, params={}){
+let capturedImage = null;
 
-    return new Promise((resolve,reject)=>{
+let livePhotoUrl = null;
 
-        const callback =
-            "cb_" + Date.now() +
-            "_" + Math.floor(Math.random()*10000);
+let paperFileUrl = null;
 
-        const script =
-            document.createElement("script");
 
-        window[callback] = function(data){
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
 
-            delete window[callback];
+const video =
+  document.getElementById("video");
 
-            script.remove();
+const canvas =
+  document.getElementById("canvas");
 
-            if(data.success){
-                resolve(data);
-            }else{
-                reject(
-                    new Error(data.message || "Error")
-                );
-            }
-        };
+const preview =
+  document.getElementById("preview");
 
-        params.action = action;
-        params.studentId = studentId;
-        params.callback = callback;
+const startCameraBtn =
+  document.getElementById(
+    "startCameraBtn"
+  );
 
-        const query =
-            Object.keys(params)
-            .map(k =>
-                encodeURIComponent(k) +
-                "=" +
-                encodeURIComponent(params[k])
-            )
-            .join("&");
+const captureBtn =
+  document.getElementById(
+    "captureBtn"
+  );
 
-        script.src =
-            API + "?" + query;
+const retakeBtn =
+  document.getElementById(
+    "retakeBtn"
+  );
 
-        script.onerror = () =>
-            reject(
-                new Error("API connection failed.")
-            );
+const downloadBtn =
+  document.getElementById(
+    "downloadBtn"
+  );
 
-        document.body.appendChild(script);
-    });
+const statusBox =
+  document.getElementById(
+    "status"
+  );
+
+const message =
+  document.getElementById(
+    "message"
+  );
+
+
+/* =========================================================
+   VALIDATION
+   ========================================================= */
+
+if (!studentId) {
+
+  showMessage(
+    "Student login is missing. Please login again.",
+    "error"
+  );
+
+  downloadBtn.disabled = true;
+
 }
 
 
-async function loadPaper(){
+if (!questionPaperId) {
 
-    try{
+  showMessage(
+    "Question Paper ID is missing.",
+    "error"
+  );
 
-        const data =
-            await api(
-                "getPublishedQuestionPapers"
-            );
+  downloadBtn.disabled = true;
 
-        paper =
-            data.papers.find(
-                x =>
-                x.questionPaperId ===
-                questionPaperId
-            );
-
-        if(!paper){
-
-            document.getElementById("status")
-            .textContent =
-            "Question paper not found or not available.";
-
-            return;
-        }
-
-    }catch(err){
-
-        document.getElementById("status")
-        .textContent =
-        err.message;
-    }
 }
 
 
-async function startCamera(){
+/* =========================================================
+   MESSAGE
+   ========================================================= */
 
-    try{
+function showMessage(
+  text,
+  type
+) {
 
-        stream =
-            await navigator.mediaDevices.getUserMedia({
-                video:{
-                    facingMode:"user"
-                },
-                audio:false
-            });
+  message.textContent =
+    text;
 
-        document.getElementById("video")
-            .srcObject = stream;
+  message.className =
+    "message " + type;
 
-        setStatus(
-            "Camera started. Look at the camera and take your live photo."
-        );
-
-    }catch(err){
-
-        setStatus(
-            "Camera permission is required. Please allow camera access."
-        );
-    }
 }
 
 
-async function takePhoto(){
+function clearMessage() {
 
-    if(!stream){
+  message.textContent =
+    "";
 
-        setStatus(
-            "Please start the camera first."
-        );
+  message.className =
+    "message";
 
-        return;
-    }
-
-    const video =
-        document.getElementById("video");
-
-    const canvas =
-        document.getElementById("canvas");
-
-    const maxWidth = 900;
-
-    let width =
-        video.videoWidth;
-
-    let height =
-        video.videoHeight;
-
-    if(width > maxWidth){
-
-        height =
-            Math.round(
-                height *
-                maxWidth /
-                width
-            );
-
-        width = maxWidth;
-    }
-
-    canvas.width = width;
-    canvas.height = height;
-
-    const ctx =
-        canvas.getContext("2d");
-
-    ctx.drawImage(
-        video,
-        0,
-        0,
-        width,
-        height
-    );
-
-    const dataUrl =
-        canvas.toDataURL(
-            "image/jpeg",
-            0.7
-        );
-
-    document.getElementById("preview")
-        .src = dataUrl;
-
-    document.getElementById("preview")
-        .style.display = "block";
-
-    setStatus(
-        "Uploading live photo..."
-    );
-
-    try{
-
-        const result =
-            await postData({
-                action:"uploadLivePhoto",
-                studentId:studentId,
-                questionPaperId:questionPaperId,
-                fileName:"live-photo.jpg",
-                mimeType:"image/jpeg",
-                base64:dataUrl
-            });
-
-        livePhotoUrl =
-            result.url;
-
-        setStatus(
-            "Live photo verified successfully. You can now download the question paper."
-        );
-
-        document.getElementById("downloadButton")
-            .style.display = "block";
-
-        if(stream){
-
-            stream.getTracks()
-                .forEach(track => track.stop());
-
-        }
-
-    }catch(err){
-
-        setStatus(
-            "Live photo upload failed: " +
-            err.message
-        );
-    }
 }
 
 
-function downloadPaper(){
+/* =========================================================
+   START CAMERA
+   ========================================================= */
 
-    if(!livePhotoUrl){
+async function startCamera() {
 
-        alert(
-            "Please complete live photo verification first."
-        );
+  clearMessage();
 
-        return;
+  statusBox.textContent =
+    "Starting camera...";
+
+
+  try {
+
+    if (
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia
+    ) {
+
+      throw new Error(
+        "Camera is not supported by this browser."
+      );
+
     }
 
-    if(!paper || !paper.fileUrl){
 
-        alert(
-            "Question paper file is not available."
-        );
+    stream =
+      await navigator.mediaDevices.getUserMedia({
 
-        return;
-    }
-
-    window.open(
-        paper.fileUrl,
-        "_blank"
-    );
-}
-
-
-function postData(data){
-
-    return fetch(API,{
-        method:"POST",
-        headers:{
-            "Content-Type":
-            "text/plain;charset=utf-8"
+        video: {
+          facingMode: "user",
+          width: {
+            ideal: 720
+          },
+          height: {
+            ideal: 720
+          }
         },
-        body:JSON.stringify(data)
-    })
-    .then(r => r.json());
+
+        audio: false
+
+      });
+
+
+    video.srcObject =
+      stream;
+
+
+    await video.play();
+
+
+    captureBtn.disabled =
+      false;
+
+
+    startCameraBtn.disabled =
+      true;
+
+
+    statusBox.textContent =
+      "Camera ready. Please take your live photo.";
+
+
+  } catch (error) {
+
+    console.error(
+      "Camera error:",
+      error
+    );
+
+
+    statusBox.textContent =
+      "";
+
+
+    showMessage(
+      "Camera could not be started.\n\n" +
+      error.message +
+      "\n\nPlease allow camera permission and try again.",
+      "error"
+    );
+
+  }
+
 }
 
 
-function setStatus(message){
+/* =========================================================
+   CAPTURE PHOTO
+   ========================================================= */
 
-    document.getElementById("status")
-        .textContent = message;
+function capturePhoto() {
+
+  clearMessage();
+
+
+  if (!stream) {
+
+    showMessage(
+      "Please start the camera first.",
+      "warning"
+    );
+
+    return;
+
+  }
+
+
+  if (
+    video.videoWidth === 0 ||
+    video.videoHeight === 0
+  ) {
+
+    showMessage(
+      "Camera is not ready yet. Please wait a moment and try again.",
+      "warning"
+    );
+
+    return;
+
+  }
+
+
+  const width =
+    video.videoWidth;
+
+  const height =
+    video.videoHeight;
+
+
+  canvas.width =
+    width;
+
+  canvas.height =
+    height;
+
+
+  const context =
+    canvas.getContext("2d");
+
+
+  context.drawImage(
+    video,
+    0,
+    0,
+    width,
+    height
+  );
+
+
+  /*
+   * Compress image.
+   */
+
+  capturedImage =
+    canvas.toDataURL(
+      "image/jpeg",
+      0.75
+    );
+
+
+  preview.src =
+    capturedImage;
+
+
+  preview.style.display =
+    "block";
+
+
+  video.style.display =
+    "none";
+
+
+  captureBtn.style.display =
+    "none";
+
+
+  retakeBtn.style.display =
+    "block";
+
+
+  statusBox.textContent =
+    "Photo captured. Uploading verification...";
+
+
+  uploadLivePhoto();
+
 }
 
 
-loadPaper();
+/* =========================================================
+   UPLOAD LIVE PHOTO
+   ========================================================= */
+
+async function uploadLivePhoto() {
+
+  if (!capturedImage) {
+
+    showMessage(
+      "Please capture the photo first.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  downloadBtn.disabled =
+    true;
+
+
+  try {
+
+    /*
+     * IMPORTANT:
+     * Send the base64 image using POST.
+     */
+
+    const payload = {
+
+      action:
+        "uploadLivePhoto",
+
+      studentId:
+        studentId,
+
+      questionPaperId:
+        questionPaperId,
+
+      image:
+        capturedImage
+
+    };
+
+
+    const response =
+      await fetch(
+        API_URL,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "text/plain;charset=utf-8"
+          },
+
+          body:
+            JSON.stringify(payload)
+        }
+      );
+
+
+    const text =
+      await response.text();
+
+
+    console.log(
+      "Live photo response:",
+      text
+    );
+
+
+    let result;
+
+
+    try {
+
+      result =
+        JSON.parse(text);
+
+    } catch (e) {
+
+      throw new Error(
+        "Invalid response from server."
+      );
+
+    }
+
+
+    if (
+      result.success !== true
+    ) {
+
+      throw new Error(
+        result.message ||
+        "Live photo upload failed."
+      );
+
+    }
+
+
+    /*
+     * Accept different backend response names.
+     */
+
+    livePhotoUrl =
+      result.url ||
+      result.fileUrl ||
+      result.livePhotoUrl ||
+      result.fileURL ||
+      "";
+
+
+    /*
+     * SAVE VERIFICATION LOCALLY
+     */
+
+    const verificationKey =
+      "livePhoto_" +
+      studentId +
+      "_" +
+      questionPaperId;
+
+
+    const verificationData = {
+
+      verified: true,
+
+      studentId:
+        studentId,
+
+      questionPaperId:
+        questionPaperId,
+
+      livePhotoUrl:
+        livePhotoUrl,
+
+      verifiedAt:
+        new Date().toISOString()
+
+    };
+
+
+    localStorage.setItem(
+      verificationKey,
+      JSON.stringify(
+        verificationData
+      )
+    );
+
+
+    /*
+     * Also save URL separately
+     * for compatibility with old code.
+     */
+
+    localStorage.setItem(
+      "livePhotoUrl_" +
+      studentId +
+      "_" +
+      questionPaperId,
+      livePhotoUrl
+    );
+
+
+    /*
+     * Stop camera.
+     */
+
+    stopCamera();
+
+
+    /*
+     * Verification completed.
+     */
+
+    statusBox.textContent =
+      "✓ Live photo verification completed.";
+
+
+    statusBox.style.color =
+      "#198754";
+
+
+    showMessage(
+      "Live photo verification completed successfully. You can now download the question paper.",
+      "success"
+    );
+
+
+    downloadBtn.disabled =
+      false;
+
+
+  } catch (error) {
+
+    console.error(
+      "Live photo upload error:",
+      error
+    );
+
+
+    statusBox.textContent =
+      "";
+
+
+    showMessage(
+      "Live photo verification failed.\n\n" +
+      error.message,
+      "error"
+    );
+
+
+    downloadBtn.disabled =
+      true;
+
+  }
+
+}
+
+
+/* =========================================================
+   RETAKE
+   ========================================================= */
+
+function retakePhoto() {
+
+  capturedImage =
+    null;
+
+  livePhotoUrl =
+    null;
+
+
+  preview.style.display =
+    "none";
+
+
+  video.style.display =
+    "block";
+
+
+  retakeBtn.style.display =
+    "none";
+
+
+  captureBtn.style.display =
+    "block";
+
+
+  captureBtn.disabled =
+    false;
+
+
+  downloadBtn.disabled =
+    true;
+
+
+  clearMessage();
+
+
+  statusBox.textContent =
+    "Please take another live photo.";
+
+
+  startCamera();
+
+}
+
+
+/* =========================================================
+   STOP CAMERA
+   ========================================================= */
+
+function stopCamera() {
+
+  if (!stream) {
+    return;
+  }
+
+
+  stream
+    .getTracks()
+    .forEach(function(track) {
+
+      track.stop();
+
+    });
+
+
+  stream =
+    null;
+
+}
+
+
+/* =========================================================
+   GET QUESTION PAPER
+   ========================================================= */
+
+async function getQuestionPaper() {
+
+  const url =
+    new URL(API_URL);
+
+
+  url.searchParams.set(
+    "action",
+    "getQuestionPapers"
+  );
+
+
+  try {
+
+    const response =
+      await fetch(
+        url.toString(),
+        {
+          method: "GET",
+          cache: "no-store"
+        }
+      );
+
+
+    const text =
+      await response.text();
+
+
+    const result =
+      JSON.parse(text);
+
+
+    const papers =
+      result.papers ||
+      result.questionPapers ||
+      result.data ||
+      result.rows ||
+      [];
+
+
+    const paper =
+      papers.find(
+        function(p) {
+
+          const id =
+            p.QuestionPaperID ||
+            p.questionPaperId ||
+            p.id ||
+            "";
+
+          return String(id) ===
+            String(questionPaperId);
+
+        }
+      );
+
+
+    if (paper) {
+
+      paperFileUrl =
+        paper.FileURL ||
+        paper.fileUrl ||
+        paper.url ||
+        "";
+
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      "Paper lookup error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   DOWNLOAD QUESTION PAPER
+   ========================================================= */
+
+async function downloadQuestionPaper() {
+
+  clearMessage();
+
+
+  /*
+   * FINAL VERIFICATION CHECK
+   */
+
+  const verificationKey =
+    "livePhoto_" +
+    studentId +
+    "_" +
+    questionPaperId;
+
+
+  const saved =
+    localStorage.getItem(
+      verificationKey
+    );
+
+
+  if (!saved) {
+
+    showMessage(
+      "Please complete live photo verification first.",
+      "warning"
+    );
+
+    return;
+
+  }
+
+
+  let verification;
+
+
+  try {
+
+    verification =
+      JSON.parse(saved);
+
+  } catch (error) {
+
+    localStorage.removeItem(
+      verificationKey
+    );
+
+
+    showMessage(
+      "Please complete live photo verification again.",
+      "warning"
+    );
+
+    return;
+
+  }
+
+
+  if (
+    !verification.verified
+  ) {
+
+    showMessage(
+      "Please complete live photo verification first.",
+      "warning"
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * Get paper URL.
+   */
+
+  if (!paperFileUrl) {
+
+    await getQuestionPaper();
+
+  }
+
+
+  if (!paperFileUrl) {
+
+    showMessage(
+      "Question paper file could not be found. Please contact the administrator.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * Save current verification
+   * for answer submission.
+   */
+
+  localStorage.setItem(
+    "activeLivePhotoUrl",
+    verification.livePhotoUrl || ""
+  );
+
+
+  /*
+   * Open the PDF / file.
+   */
+
+  window.open(
+    paperFileUrl,
+    "_blank"
+  );
+
+
+  showMessage(
+    "Question paper opened successfully. You can now download or view it.",
+    "success"
+  );
+
+}
+
+
+/* =========================================================
+   BACK
+   ========================================================= */
+
+function goBack() {
+
+  stopCamera();
+
+  window.location.href =
+    "question-papers.html";
+
+}
+
+
+/* =========================================================
+   CLEANUP
+   ========================================================= */
+
+window.addEventListener(
+  "beforeunload",
+  function() {
+
+    stopCamera();
+
+  }
+);
+
+
+/* =========================================================
+   LOAD PAPER
+   ========================================================= */
+
+if (
+  studentId &&
+  questionPaperId
+) {
+
+  getQuestionPaper();
+
+}
 
 </script>
 
