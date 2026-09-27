@@ -1,255 +1,569 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Admin Login | Online Exam Portal</title>
+  <title>Admin Login - Online Exam Portal</title>
 
-<style>
-*{
-    box-sizing:border-box;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-body{
-    margin:0;
-    font-family:Arial,Helvetica,sans-serif;
-    background:#f4f7fb;
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
 
-.login-container{
-    width:100%;
-    max-width:420px;
-    padding:20px;
-}
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+    }
 
-.login-card{
-    background:#ffffff;
-    padding:30px;
-    border-radius:12px;
-    box-shadow:0 5px 25px rgba(0,0,0,0.12);
-}
+    .login-card {
+      background: white;
+      border-radius: 16px;
+      padding: 30px 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
 
-.icon{
-    text-align:center;
-    font-size:50px;
-    margin-bottom:10px;
-}
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 15px;
+      background: #1e3c72;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 36px;
+      font-weight: bold;
+    }
 
-h1{
-    text-align:center;
-    color:#173b7a;
-    margin:0;
-}
+    h1 {
+      text-align: center;
+      margin: 0;
+      color: #1e3c72;
+      font-size: 26px;
+    }
 
-.subtitle{
-    text-align:center;
-    color:#666;
-    margin:8px 0 25px;
-}
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin: 8px 0 25px;
+      font-size: 14px;
+    }
 
-label{
-    display:block;
-    font-weight:bold;
-    margin-bottom:7px;
-}
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 7px;
+      color: #333;
+    }
 
-input{
-    width:100%;
-    padding:13px;
-    border:1px solid #ccc;
-    border-radius:6px;
-    font-size:16px;
-    margin-bottom:18px;
-}
+    .input-group {
+      margin-bottom: 18px;
+    }
 
-input:focus{
-    outline:none;
-    border-color:#173b7a;
-}
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+    }
 
-.login-btn{
-    width:100%;
-    padding:13px;
-    background:#173b7a;
-    color:white;
-    border:none;
-    border-radius:6px;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-}
+    input:focus {
+      border-color: #1e3c72;
+      box-shadow: 0 0 0 2px rgba(30,60,114,0.1);
+    }
 
-.login-btn:hover{
-    background:#102d60;
-}
+    .password-box {
+      position: relative;
+    }
 
-.error{
-    display:none;
-    background:#f8d7da;
-    color:#842029;
-    padding:12px;
-    border-radius:6px;
-    margin-bottom:18px;
-    text-align:center;
-}
+    .password-box input {
+      padding-right: 50px;
+    }
 
-.back{
-    display:block;
-    text-align:center;
-    margin-top:20px;
-    color:#173b7a;
-    text-decoration:none;
-}
+    .show-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 20px;
+      color: #555;
+    }
 
-.info{
-    margin-top:20px;
-    padding:12px;
-    background:#fff3cd;
-    color:#664d03;
-    border-radius:6px;
-    font-size:13px;
-    line-height:1.5;
-}
-</style>
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: #1e3c72;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    .login-btn:hover {
+      background: #162d55;
+    }
+
+    .login-btn:disabled {
+      background: #888;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 18px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .error {
+      display: block;
+      background: #ffe5e5;
+      color: #b00020;
+      border: 1px solid #ffb3b3;
+    }
+
+    .success {
+      display: block;
+      background: #e5f8e9;
+      color: #137333;
+      border: 1px solid #a8dfb2;
+    }
+
+    .back-home {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #1e3c72;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back-home:hover {
+      text-decoration: underline;
+    }
+
+    .api-status {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 12px;
+      color: #777;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #999;
+      margin-right: 5px;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      margin-top: 12px;
+      color: #555;
+      font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+      .login-card {
+        padding: 25px 20px;
+      }
+
+      h1 {
+        font-size: 23px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="login-container">
+  <div class="login-container">
 
     <div class="login-card">
 
-        <div class="icon">🔐</div>
+      <div class="logo">A</div>
 
-        <h1>Admin Login</h1>
+      <h1>Admin Login</h1>
 
-        <div class="subtitle">
-            Online Exam Portal
+      <div class="subtitle">
+        Online Exam Portal - Administration
+      </div>
+
+      <div id="message" class="message"></div>
+
+      <form id="adminLoginForm">
+
+        <div class="input-group">
+          <label for="adminId">Admin ID</label>
+
+          <input
+            type="text"
+            id="adminId"
+            placeholder="Enter Admin ID"
+            autocomplete="username"
+            required
+          >
         </div>
 
-        <div id="errorMessage" class="error">
-            Invalid Admin ID or Password.
-        </div>
+        <div class="input-group">
 
-        <form id="adminLoginForm">
+          <label for="adminPassword">Password</label>
 
-            <label for="adminId">
-                Admin ID
-            </label>
+          <div class="password-box">
 
             <input
-                type="text"
-                id="adminId"
-                placeholder="Enter Admin ID"
-                required
-            >
-
-            <label for="adminPassword">
-                Password
-            </label>
-
-            <input
-                type="password"
-                id="adminPassword"
-                placeholder="Enter Password"
-                required
+              type="password"
+              id="adminPassword"
+              placeholder="Enter Password"
+              autocomplete="current-password"
+              required
             >
 
             <button
-                type="submit"
-                class="login-btn"
+              type="button"
+              class="show-password"
+              id="showPassword"
+              aria-label="Show password"
             >
-                Login
+              👁
             </button>
 
-        </form>
+          </div>
 
-        <div class="info">
-            Admin access is restricted. Please use your authorized
-            administrator credentials.
         </div>
 
-        <a href="index.html" class="back">
-            ← Back to Home
-        </a>
+        <button
+          type="submit"
+          class="login-btn"
+          id="loginButton"
+        >
+          Login as Admin
+        </button>
+
+        <div class="loading" id="loading">
+          Checking login...
+        </div>
+
+      </form>
+
+      <a href="index.html" class="back-home">
+        ← Back to Home
+      </a>
+
+      <div class="api-status">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="apiStatus">Checking server...</span>
+      </div>
 
     </div>
 
-</div>
+  </div>
 
 
-<script>
+  <script>
 
-/*
-=========================================
-TEMPORARY TEST LOGIN
-=========================================
+    /* =========================================================
+       GOOGLE APPS SCRIPT API
+       ========================================================= */
 
-IMPORTANT:
-This is NOT secure authentication.
-The real version will use Google Apps Script
-and Google Sheets.
-*/
-
-const ADMIN_ID = "admin";
-const ADMIN_PASSWORD = "Admin@123";
+    const API_URL =
+      "https://script.google.com/macros/s/AKfycbzwMrFz4dBr4h_fp6zFT0mCkXSEw0_cqKgZxWBppnUWNTRoxBa9ee4B7Ljx30n9FCiOiA/exec";
 
 
-document
-.getElementById("adminLoginForm")
-.addEventListener("submit", function(event){
+    /* =========================================================
+       ELEMENTS
+       ========================================================= */
 
-    event.preventDefault();
-
-    const adminId =
-        document
-        .getElementById("adminId")
-        .value
-        .trim();
-
-    const adminPassword =
-        document
-        .getElementById("adminPassword")
-        .value;
-
-    const errorMessage =
-        document
-        .getElementById("errorMessage");
+    const form = document.getElementById("adminLoginForm");
+    const adminIdInput = document.getElementById("adminId");
+    const adminPasswordInput = document.getElementById("adminPassword");
+    const loginButton = document.getElementById("loginButton");
+    const loading = document.getElementById("loading");
+    const message = document.getElementById("message");
+    const showPassword = document.getElementById("showPassword");
+    const apiStatus = document.getElementById("apiStatus");
+    const statusDot = document.getElementById("statusDot");
 
 
-    if(
-        adminId === ADMIN_ID &&
-        adminPassword === ADMIN_PASSWORD
-    ){
+    /* =========================================================
+       SHOW / HIDE PASSWORD
+       ========================================================= */
 
-        sessionStorage.setItem(
-            "adminLoggedIn",
-            "true"
-        );
+    showPassword.addEventListener("click", function () {
 
-        sessionStorage.setItem(
-            "adminId",
-            adminId
-        );
+      if (adminPasswordInput.type === "password") {
 
-        window.location.replace(
-            "admin-panel.html"
-        );
+        adminPasswordInput.type = "text";
+        showPassword.textContent = "🙈";
 
-    }else{
+      } else {
 
-        errorMessage.style.display = "block";
+        adminPasswordInput.type = "password";
+        showPassword.textContent = "👁";
+
+      }
+
+    });
+
+
+    /* =========================================================
+       MESSAGE
+       ========================================================= */
+
+    function showMessage(text, type) {
+
+      message.textContent = text;
+
+      message.className = "message " + type;
 
     }
 
-});
 
-</script>
+    function hideMessage() {
+
+      message.textContent = "";
+
+      message.className = "message";
+
+    }
+
+
+    /* =========================================================
+       CHECK API
+       ========================================================= */
+
+    async function checkAPI() {
+
+      try {
+
+        const response = await fetch(
+          API_URL + "?action=test",
+          {
+            method: "GET",
+            cache: "no-store"
+          }
+        );
+
+        const result = await response.json();
+
+        if (result.success) {
+
+          apiStatus.textContent = "Server Connected";
+
+          statusDot.style.background = "#28a745";
+
+        } else {
+
+          apiStatus.textContent = "Server Error";
+
+          statusDot.style.background = "#dc3545";
+
+        }
+
+      } catch (error) {
+
+        apiStatus.textContent = "Server Connection Failed";
+
+        statusDot.style.background = "#dc3545";
+
+      }
+
+    }
+
+
+    /* =========================================================
+       ADMIN LOGIN
+       ========================================================= */
+
+    form.addEventListener("submit", async function (event) {
+
+      event.preventDefault();
+
+      hideMessage();
+
+      const adminId =
+        adminIdInput.value.trim();
+
+      const password =
+        adminPasswordInput.value.trim();
+
+
+      if (!adminId) {
+
+        showMessage(
+          "Please enter Admin ID.",
+          "error"
+        );
+
+        adminIdInput.focus();
+
+        return;
+      }
+
+
+      if (!password) {
+
+        showMessage(
+          "Please enter password.",
+          "error"
+        );
+
+        adminPasswordInput.focus();
+
+        return;
+      }
+
+
+      loginButton.disabled = true;
+
+      loginButton.textContent = "Logging in...";
+
+      loading.style.display = "block";
+
+
+      try {
+
+        /*
+         * Admin credentials are checked here.
+         *
+         * Current prototype supports:
+         *
+         * Admin ID: admin
+         * Password: admin123
+         *
+         * You can change these values below.
+         */
+
+        const ADMIN_ID = "admin";
+        const ADMIN_PASSWORD = "admin123";
+
+
+        /*
+         * Local admin login
+         */
+
+        if (
+          adminId === ADMIN_ID &&
+          password === ADMIN_PASSWORD
+        ) {
+
+          showMessage(
+            "Login successful. Opening Admin Panel...",
+            "success"
+          );
+
+
+          /*
+           * Save admin login
+           */
+
+          localStorage.setItem(
+            "adminLoggedIn",
+            "true"
+          );
+
+          localStorage.setItem(
+            "adminId",
+            adminId
+          );
+
+          localStorage.setItem(
+            "adminLoginTime",
+            new Date().toISOString()
+          );
+
+
+          /*
+           * Open Admin Panel
+           */
+
+          setTimeout(function () {
+
+            window.location.href =
+              "admin-panel.html";
+
+          }, 700);
+
+
+          return;
+        }
+
+
+        /*
+         * Invalid login
+         */
+
+        showMessage(
+          "Invalid Admin ID or Password.",
+          "error"
+        );
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+          "Login failed. Please try again.",
+          "error"
+        );
+
+      } finally {
+
+        loginButton.disabled = false;
+
+        loginButton.textContent =
+          "Login as Admin";
+
+        loading.style.display = "none";
+
+      }
+
+    });
+
+
+    /* =========================================================
+       PREVENT OLD ADMIN SESSION
+       ========================================================= */
+
+    window.addEventListener("load", function () {
+
+      /*
+       * Do not automatically redirect here.
+       * User can login again if required.
+       */
+
+      checkAPI();
+
+    });
+
+  </script>
 
 </body>
 </html>
