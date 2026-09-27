@@ -1,0 +1,2021 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Submit Answer Sheet - Online Exam Portal</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f6f9;
+    color:#222;
+}
+
+.header{
+    background:#17365d;
+    color:white;
+    padding:18px 20px;
+    position:relative;
+}
+
+.header h1{
+    margin:0;
+    font-size:24px;
+}
+
+.header p{
+    margin:6px 0 0;
+    font-size:14px;
+}
+
+.back-btn{
+    position:absolute;
+    right:15px;
+    top:18px;
+    background:#777;
+}
+
+.container{
+    max-width:1000px;
+    margin:25px auto;
+    padding:0 15px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+h2{
+    color:#17365d;
+    margin-top:0;
+}
+
+.paper-info{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:10px;
+}
+
+.info-box{
+    border:1px solid #ddd;
+    background:#fafafa;
+    border-radius:7px;
+    padding:12px;
+}
+
+.info-box strong{
+    display:block;
+    font-size:12px;
+    color:#666;
+    margin-bottom:5px;
+}
+
+.message{
+    padding:12px;
+    border-radius:7px;
+    margin:10px 0;
+}
+
+.success{
+    background:#e8f5e9;
+    color:#1b5e20;
+}
+
+.error{
+    background:#ffebee;
+    color:#b71c1c;
+}
+
+.warning{
+    background:#fff3cd;
+    color:#664d03;
+}
+
+.info{
+    background:#e3f2fd;
+    color:#0d47a1;
+}
+
+button{
+    border:0;
+    padding:11px 16px;
+    border-radius:6px;
+    cursor:pointer;
+    color:white;
+    background:#17365d;
+    margin:4px;
+}
+
+button:hover{
+    opacity:.9;
+}
+
+button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+.green{
+    background:#198754;
+}
+
+.red{
+    background:#c62828;
+}
+
+.orange{
+    background:#ef6c00;
+}
+
+.gray{
+    background:#777;
+}
+
+input[type="file"]{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    margin:10px 0;
+}
+
+.photo-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+    gap:12px;
+    margin-top:15px;
+}
+
+.photo-card{
+    border:1px solid #ddd;
+    border-radius:8px;
+    padding:8px;
+    background:#fafafa;
+    text-align:center;
+}
+
+.photo-card img{
+    width:100%;
+    height:150px;
+    object-fit:cover;
+    border-radius:5px;
+}
+
+.photo-number{
+    font-weight:bold;
+    margin-bottom:6px;
+}
+
+.photo-card a{
+    display:block;
+    margin-top:8px;
+    color:#17365d;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.progress{
+    width:100%;
+    height:20px;
+    background:#ddd;
+    border-radius:10px;
+    overflow:hidden;
+    margin:10px 0;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:#198754;
+    transition:width .3s;
+}
+
+.hidden{
+    display:none;
+}
+
+.submission-box{
+    border:1px solid #ddd;
+    border-radius:8px;
+    padding:15px;
+    margin-top:15px;
+    background:#fafafa;
+}
+
+.submission-row{
+    padding:8px 0;
+    border-bottom:1px solid #eee;
+}
+
+.submission-row:last-child{
+    border-bottom:0;
+}
+
+.status{
+    display:inline-block;
+    padding:6px 10px;
+    border-radius:15px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.status-submitted{
+    background:#cff4fc;
+    color:#055160;
+}
+
+.status-allowed{
+    background:#fff3cd;
+    color:#664d03;
+}
+
+.center{
+    text-align:center;
+}
+
+.small{
+    color:#666;
+    font-size:13px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+    <h1>Online Exam Portal</h1>
+
+    <p>Submit Answer Sheet</p>
+
+    <button
+        class="back-btn"
+        onclick="goDashboard()">
+
+        ← Dashboard
+
+    </button>
+
+</div>
+
+
+<div class="container">
+
+
+<!-- =====================================================
+     QUESTION PAPER
+====================================================== -->
+
+<div class="card">
+
+    <h2>📄 Question Paper</h2>
+
+    <div id="paperMessage"></div>
+
+    <div
+        id="paperInfo"
+        class="paper-info">
+
+        Loading question paper...
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     SUBMISSION STATUS
+====================================================== -->
+
+<div class="card">
+
+    <h2>📤 My Submission</h2>
+
+    <div id="submissionStatus">
+
+        Checking submission status...
+
+    </div>
+
+    <div
+        id="existingSubmission">
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     UPLOAD ANSWER SHEET
+====================================================== -->
+
+<div
+    class="card"
+    id="uploadCard">
+
+    <h2>📝 Upload Answer Sheet</h2>
+
+    <div class="message info">
+
+        <strong>Important:</strong>
+
+        <br><br>
+
+        Upload your answer sheet photos in the correct order.
+
+        <br>
+
+        Maximum:
+        <strong>20 photos</strong>.
+
+        <br><br>
+
+        You can submit only once unless the administrator
+        allows re-submission.
+
+    </div>
+
+
+    <label>
+        <strong>Select Answer Photos</strong>
+    </label>
+
+
+    <input
+        type="file"
+        id="answerFiles"
+        accept="image/*"
+        multiple>
+
+
+    <div
+        id="fileMessage"
+        class="small">
+
+        No photos selected.
+
+    </div>
+
+
+    <div class="progress">
+
+        <div
+            id="progressBar"
+            class="progress-bar">
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="photoPreview"
+        class="photo-grid">
+
+    </div>
+
+
+    <div class="center">
+
+        <button
+            id="verifyButton"
+            class="orange"
+            onclick="startLiveVerification()"
+            disabled>
+
+            📷 Take Live Photo & Continue
+
+        </button>
+
+    </div>
+
+
+    <div id="verificationMessage"></div>
+
+
+    <div class="center">
+
+        <button
+            id="submitButton"
+            class="green"
+            onclick="submitAnswerSheet()"
+            disabled>
+
+            📤 Submit Answer Sheet
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FINAL MESSAGE
+====================================================== -->
+
+<div
+    id="finalMessage"
+    class="card hidden">
+
+</div>
+
+
+</div>
+
+
+<script>
+
+
+/* =====================================================
+   API
+====================================================== */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbzwMrFz4dBr4h_fp6zFT0mCkXSEw0_cqKgZxWBppnUWNTRoxBa9ee4B7Ljx30n9FCiOiA/exec";
+
+
+/* =====================================================
+   VARIABLES
+====================================================== */
+
+let questionPaperId = "";
+
+let studentId = "";
+
+let paperData = null;
+
+let selectedFiles = [];
+
+let compressedPhotos = [];
+
+let livePhotoVerified = false;
+
+
+/* =====================================================
+   STUDENT ID
+====================================================== */
+
+function getStudentId(){
+
+    const keys = [
+
+        "studentId",
+        "StudentID",
+        "studentID",
+        "loggedInStudentId",
+        "loggedInStudentID",
+        "currentStudentId"
+
+    ];
+
+
+    for(
+        const key of keys
+    ){
+
+        const value =
+            localStorage.getItem(key);
+
+
+        if(value){
+
+            return value;
+
+        }
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =====================================================
+   QUESTION PAPER ID
+====================================================== */
+
+function getQuestionPaperId(){
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    return (
+
+        params.get("questionPaperId") ||
+
+        params.get("QuestionPaperID") ||
+
+        ""
+
+    );
+
+}
+
+
+/* =====================================================
+   API GET
+====================================================== */
+
+async function apiGet(
+    action,
+    params = {}
+){
+
+    let url =
+        API_URL +
+        "?action=" +
+        encodeURIComponent(action);
+
+
+    Object.keys(params)
+    .forEach(function(key){
+
+        const value =
+            params[key];
+
+
+        if(
+            value !== undefined &&
+            value !== null &&
+            value !== ""
+        ){
+
+            url +=
+                "&" +
+                encodeURIComponent(key) +
+                "=" +
+                encodeURIComponent(value);
+
+        }
+
+    });
+
+
+    const response =
+        await fetch(url);
+
+
+    if(!response.ok){
+
+        throw new Error(
+            "Server error: " +
+            response.status
+        );
+
+    }
+
+
+    return await response.json();
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+====================================================== */
+
+function escapeHTML(value){
+
+    if(
+        value === null ||
+        value === undefined
+    ){
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
+   ESCAPE ATTRIBUTE
+====================================================== */
+
+function escapeAttribute(value){
+
+    return String(value || "")
+
+        .replace(/&/g,"&amp;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;");
+
+}
+
+
+/* =====================================================
+   PAGE LOAD
+====================================================== */
+
+window.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        questionPaperId =
+            getQuestionPaperId();
+
+
+        studentId =
+            getStudentId();
+
+
+        if(!studentId){
+
+            showPaperMessage(
+                "Please login as a student first.",
+                "error"
+            );
+
+            document.getElementById(
+                "uploadCard"
+            ).classList.add("hidden");
+
+            return;
+
+        }
+
+
+        if(!questionPaperId){
+
+            showPaperMessage(
+                "Question paper ID is missing.",
+                "error"
+            );
+
+            document.getElementById(
+                "uploadCard"
+            ).classList.add("hidden");
+
+            return;
+
+        }
+
+
+        loadPaper();
+
+        checkSubmissionStatus();
+
+        checkLivePhotoVerification();
+
+    }
+);
+
+
+/* =====================================================
+   LOAD QUESTION PAPER
+====================================================== */
+
+async function loadPaper(){
+
+    try{
+
+        const data =
+            await apiGet(
+                "getQuestionPapers"
+            );
+
+
+        const papers =
+            data.questionPapers ||
+            data.papers ||
+            data.data ||
+            [];
+
+
+        const found =
+            papers.find(
+                function(paper){
+
+                    const id =
+                        paper.QuestionPaperID ||
+                        paper.questionPaperId ||
+                        paper.ID ||
+                        "";
+
+
+                    return String(id) ===
+                           String(questionPaperId);
+
+                }
+            );
+
+
+        if(!found){
+
+            showPaperMessage(
+                "Question paper not found.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        paperData =
+            found;
+
+
+        document.getElementById(
+            "paperInfo"
+        ).innerHTML = `
+
+            <div class="info-box">
+
+                <strong>
+                    Question Paper ID
+                </strong>
+
+                ${escapeHTML(
+                    found.QuestionPaperID ||
+                    found.questionPaperId ||
+                    found.ID ||
+                    ""
+                )}
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong>
+                    Paper Name
+                </strong>
+
+                ${escapeHTML(
+                    found.PaperName ||
+                    found.paperName ||
+                    ""
+                )}
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong>
+                    Subject
+                </strong>
+
+                ${escapeHTML(
+                    found.SubjectCode ||
+                    found.subjectCode ||
+                    ""
+                )}
+
+                -
+
+                ${escapeHTML(
+                    found.SubjectName ||
+                    found.subjectName ||
+                    ""
+                )}
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong>
+                    Board
+                </strong>
+
+                ${escapeHTML(
+                    found.Board ||
+                    found.board ||
+                    ""
+                )}
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong>
+                    Class
+                </strong>
+
+                ${escapeHTML(
+                    found.Class ||
+                    found.class ||
+                    ""
+                )}
+
+            </div>
+
+        `;
+
+
+    }catch(error){
+
+        showPaperMessage(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   CHECK EXISTING SUBMISSION
+====================================================== */
+
+async function checkSubmissionStatus(){
+
+    const statusBox =
+        document.getElementById(
+            "submissionStatus"
+        );
+
+
+    statusBox.innerHTML =
+        "Checking submission status...";
+
+
+    try{
+
+        const data =
+            await apiGet(
+                "getSubmissions",
+                {
+                    studentId:
+                        studentId,
+
+                    questionPaperId:
+                        questionPaperId
+                }
+            );
+
+
+        const submissions =
+            data.submissions ||
+            data.data ||
+            [];
+
+
+        if(
+            !Array.isArray(submissions)
+        ){
+
+            throw new Error(
+                "Invalid submission data received."
+            );
+
+        }
+
+
+        const ownSubmissions =
+            submissions.filter(
+                function(item){
+
+                    const sid =
+                        item.StudentID ||
+                        item.studentId ||
+                        "";
+
+
+                    const qid =
+                        item.QuestionPaperID ||
+                        item.questionPaperId ||
+                        "";
+
+
+                    return (
+
+                        String(sid) ===
+                        String(studentId)
+
+                    ) && (
+
+                        String(qid) ===
+                        String(questionPaperId)
+
+                    );
+
+                }
+            );
+
+
+        if(
+            ownSubmissions.length === 0
+        ){
+
+            statusBox.innerHTML = `
+
+                <div class="message info">
+
+                    ℹ️ You have not submitted an
+                    answer sheet for this paper yet.
+
+                </div>
+
+            `;
+
+
+            enableUpload();
+
+
+            return;
+
+        }
+
+
+        const latest =
+            ownSubmissions[
+                ownSubmissions.length - 1
+            ];
+
+
+        displayExistingSubmission(
+            latest
+        );
+
+
+        const allowed =
+            String(
+
+                latest.ResubmissionAllowed ||
+                latest.resubmissionAllowed ||
+                "No"
+
+            ).toLowerCase();
+
+
+        if(
+            allowed === "yes" ||
+            allowed === "true"
+        ){
+
+            statusBox.innerHTML += `
+
+                <div class="message warning">
+
+                    🔄 The administrator has allowed
+                    you to submit again.
+
+                    <br><br>
+
+                    You may upload a new answer sheet.
+
+                </div>
+
+            `;
+
+
+            enableUpload();
+
+        }else{
+
+            disableUpload();
+
+        }
+
+
+    }catch(error){
+
+        statusBox.innerHTML = `
+
+            <div class="message error">
+
+                Unable to check submission status.
+
+                <br><br>
+
+                ${escapeHTML(
+                    error.message
+                )}
+
+            </div>
+
+        `;
+
+
+        disableUpload();
+
+    }
+
+}
+
+
+/* =====================================================
+   DISPLAY EXISTING SUBMISSION
+====================================================== */
+
+function displayExistingSubmission(
+    submission
+){
+
+    const container =
+        document.getElementById(
+            "existingSubmission"
+        );
+
+
+    const submissionId =
+        submission.SubmissionID ||
+        submission.submissionId ||
+        "";
+
+
+    const date =
+        submission.SubmittedDateTime ||
+        submission.submittedDateTime ||
+        "";
+
+
+    const status =
+        submission.Status ||
+        submission.status ||
+        "Submitted";
+
+
+    let photosHTML = "";
+
+    let photoCount = 0;
+
+
+    for(
+        let i = 1;
+        i <= 20;
+        i++
+    ){
+
+        const url =
+            submission[
+                "AnswerPhoto" + i
+            ] ||
+
+            submission[
+                "answerPhoto" + i
+            ] ||
+
+            "";
+
+
+        if(!url){
+
+            continue;
+
+        }
+
+
+        photoCount++;
+
+
+        photosHTML += `
+
+            <div class="photo-card">
+
+                <div class="photo-number">
+
+                    Answer Photo ${i}
+
+                </div>
+
+
+                <img
+                    src="${escapeAttribute(url)}"
+                    alt="Answer Photo ${i}"
+                    onerror="this.style.display='none';">
+
+
+                <a
+                    href="${escapeAttribute(url)}"
+                    target="_blank"
+                    rel="noopener">
+
+                    🔗 Open Photo
+
+                </a>
+
+            </div>
+
+        `;
+
+    }
+
+
+    container.innerHTML = `
+
+        <div class="submission-box">
+
+            <div class="submission-row">
+
+                <strong>
+                    Submission ID:
+                </strong>
+
+                ${escapeHTML(
+                    submissionId
+                )}
+
+            </div>
+
+
+            <div class="submission-row">
+
+                <strong>
+                    Submitted Date/Time:
+                </strong>
+
+                ${escapeHTML(
+                    date
+                )}
+
+            </div>
+
+
+            <div class="submission-row">
+
+                <strong>
+                    Status:
+                </strong>
+
+                <span class="status status-submitted">
+
+                    ${escapeHTML(
+                        status
+                    )}
+
+                </span>
+
+            </div>
+
+
+            <div class="submission-row">
+
+                <strong>
+                    Answer Photos:
+                </strong>
+
+                ${photoCount}
+
+            </div>
+
+
+            ${
+                photoCount > 0
+
+                ?
+
+                `
+
+                <h3>
+                    🖼️ Submitted Answer Sheet
+                </h3>
+
+                <div class="photo-grid">
+
+                    ${photosHTML}
+
+                </div>
+
+                `
+
+                :
+
+                ""
+
+            }
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   ENABLE UPLOAD
+====================================================== */
+
+function enableUpload(){
+
+    document.getElementById(
+        "uploadCard"
+    ).classList.remove(
+        "hidden"
+    );
+
+}
+
+
+/* =====================================================
+   DISABLE UPLOAD
+====================================================== */
+
+function disableUpload(){
+
+    document.getElementById(
+        "uploadCard"
+    ).classList.add(
+        "hidden"
+    );
+
+}
+
+
+/* =====================================================
+   FILE SELECTION
+====================================================== */
+
+document.getElementById(
+    "answerFiles"
+).addEventListener(
+    "change",
+    function(event){
+
+        selectedFiles =
+            Array.from(
+                event.target.files
+            );
+
+
+        if(
+            selectedFiles.length > 20
+        ){
+
+            selectedFiles =
+                selectedFiles.slice(
+                    0,
+                    20
+                );
+
+
+            showFileMessage(
+                "Maximum 20 photos are allowed.",
+                "error"
+            );
+
+        }else{
+
+            showFileMessage(
+                selectedFiles.length +
+                " photo(s) selected.",
+                "info"
+            );
+
+        }
+
+
+        livePhotoVerified =
+            false;
+
+
+        document.getElementById(
+            "submitButton"
+        ).disabled = true;
+
+
+        document.getElementById(
+            "verifyButton"
+        ).disabled =
+            selectedFiles.length === 0;
+
+
+        previewPhotos();
+
+    }
+);
+
+
+/* =====================================================
+   PREVIEW SELECTED PHOTOS
+====================================================== */
+
+function previewPhotos(){
+
+    const container =
+        document.getElementById(
+            "photoPreview"
+        );
+
+
+    container.innerHTML = "";
+
+
+    selectedFiles.forEach(
+        function(file,index){
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function(event){
+
+                    const div =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    div.className =
+                        "photo-card";
+
+
+                    div.innerHTML = `
+
+                        <div class="photo-number">
+
+                            Answer Photo
+                            ${index + 1}
+
+                        </div>
+
+
+                        <img
+                            src="${event.target.result}"
+                            alt="Answer Photo">
+
+                    `;
+
+
+                    container.appendChild(
+                        div
+                    );
+
+                };
+
+
+            reader.readAsDataURL(
+                file
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   COMPRESS IMAGE
+====================================================== */
+
+function compressImage(file){
+
+    return new Promise(
+        function(resolve,reject){
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function(event){
+
+                    const img =
+                        new Image();
+
+
+                    img.onload =
+                        function(){
+
+                            let width =
+                                img.width;
+
+                            let height =
+                                img.height;
+
+
+                            const maxWidth =
+                                1200;
+
+
+                            if(
+                                width >
+                                maxWidth
+                            ){
+
+                                height =
+                                    height *
+                                    maxWidth /
+                                    width;
+
+                                width =
+                                    maxWidth;
+
+                            }
+
+
+                            const canvas =
+                                document.createElement(
+                                    "canvas"
+                                );
+
+
+                            canvas.width =
+                                width;
+
+                            canvas.height =
+                                height;
+
+
+                            const context =
+                                canvas.getContext(
+                                    "2d"
+                                );
+
+
+                            context.drawImage(
+                                img,
+                                0,
+                                0,
+                                width,
+                                height
+                            );
+
+
+                            const dataURL =
+                                canvas.toDataURL(
+                                    "image/jpeg",
+                                    0.65
+                                );
+
+
+                            resolve(
+                                dataURL
+                            );
+
+                        };
+
+
+                    img.onerror =
+                        reject;
+
+
+                    img.src =
+                        event.target.result;
+
+                };
+
+
+            reader.onerror =
+                reject;
+
+
+            reader.readAsDataURL(
+                file
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   START LIVE PHOTO
+====================================================== */
+
+function startLiveVerification(){
+
+    if(
+        selectedFiles.length === 0
+    ){
+
+        showFileMessage(
+            "Please select answer photos first.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "live-photo.html" +
+        "?questionPaperId=" +
+        encodeURIComponent(
+            questionPaperId
+        ) +
+        "&type=submission";
+
+}
+
+
+/* =====================================================
+   CHECK LIVE PHOTO VERIFICATION
+====================================================== */
+
+function checkLivePhotoVerification(){
+
+    if(!studentId ||
+       !questionPaperId){
+
+        return;
+
+    }
+
+
+    const verifiedKey =
+        "livePhotoVerified_submission_" +
+        studentId +
+        "_" +
+        questionPaperId;
+
+
+    const capturedKey =
+        "submissionLivePhotoCaptured_" +
+        studentId +
+        "_" +
+        questionPaperId;
+
+
+    const verified =
+        localStorage.getItem(
+            verifiedKey
+        );
+
+
+    const captured =
+        localStorage.getItem(
+            capturedKey
+        );
+
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const urlVerified =
+        params.get("verified");
+
+
+    if(
+        verified === "yes" ||
+        captured === "yes" ||
+        urlVerified === "1"
+    ){
+
+        livePhotoVerified =
+            true;
+
+
+        document.getElementById(
+            "submitButton"
+        ).disabled = false;
+
+
+        document.getElementById(
+            "verificationMessage"
+        ).innerHTML = `
+
+            <div class="message success">
+
+                ✅ Live photo verification completed.
+
+                <br><br>
+
+                You can now submit your answer sheet.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   SUBMIT ANSWER SHEET
+====================================================== */
+
+async function submitAnswerSheet(){
+
+    if(
+        selectedFiles.length === 0
+    ){
+
+        showSubmitMessage(
+            "Please select answer photos.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(!livePhotoVerified){
+
+        showSubmitMessage(
+            "Please complete live photo verification first.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const confirmSubmit =
+        confirm(
+
+            "Are you sure you want to submit your answer sheet?\n\n" +
+
+            "You can submit again only if the administrator allows re-submission."
+
+        );
+
+
+    if(!confirmSubmit){
+
+        return;
+
+    }
+
+
+    const submitButton =
+        document.getElementById(
+            "submitButton"
+        );
+
+
+    submitButton.disabled = true;
+
+
+    showSubmitMessage(
+        "Preparing answer photos. Please wait...",
+        "info"
+    );
+
+
+    try{
+
+        compressedPhotos = [];
+
+
+        for(
+            let i = 0;
+            i < selectedFiles.length;
+            i++
+        ){
+
+            const photo =
+                await compressImage(
+                    selectedFiles[i]
+                );
+
+
+            compressedPhotos.push(
+                photo
+            );
+
+
+            const percent =
+                Math.round(
+                    (
+                        (i + 1) /
+                        selectedFiles.length
+                    ) *
+                    100
+                );
+
+
+            document.getElementById(
+                "progressBar"
+            ).style.width =
+                percent + "%";
+
+        }
+
+
+        const submissionId =
+            "SUB-" +
+            Date.now() +
+            "-" +
+            Math.floor(
+                Math.random() * 10000
+            );
+
+
+        const answerPhotos = {};
+
+
+        compressedPhotos.forEach(
+            function(photo,index){
+
+                answerPhotos[
+                    "answerPhoto" +
+                    (index + 1)
+                ] =
+                    photo;
+
+            }
+        );
+
+
+        showSubmitMessage(
+            "Submitting answer sheet. Please do not close this page...",
+            "info"
+        );
+
+
+        const requestBody = {
+
+            action:
+                "submitAnswer",
+
+            submissionId:
+                submissionId,
+
+            studentId:
+                studentId,
+
+            questionPaperId:
+                questionPaperId,
+
+            livePhotoCaptured:
+                "yes",
+
+            answerPhotos:
+                answerPhotos
+
+        };
+
+
+        const response =
+            await fetch(
+
+                API_URL +
+                "?action=submitAnswer",
+
+                {
+
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                        "text/plain;charset=utf-8"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            requestBody
+                        )
+
+                }
+
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!data.success){
+
+            throw new Error(
+                data.message ||
+                "Unable to submit answer sheet."
+            );
+
+        }
+
+
+        document.getElementById(
+            "uploadCard"
+        ).classList.add(
+            "hidden"
+        );
+
+
+        document.getElementById(
+            "finalMessage"
+        ).classList.remove(
+            "hidden"
+        );
+
+
+        document.getElementById(
+            "finalMessage"
+        ).innerHTML = `
+
+            <div class="message success">
+
+                <h2>
+                    ✅ Answer Sheet Submitted Successfully
+                </h2>
+
+
+                <p>
+
+                    Your answer sheet has been
+                    submitted successfully.
+
+                </p>
+
+
+                <p>
+
+                    <strong>
+                        Submission ID:
+                    </strong>
+
+                    ${escapeHTML(
+                        submissionId
+                    )}
+
+                </p>
+
+
+                <p>
+
+                    Your submission is now locked.
+
+                    <br>
+
+                    You cannot submit another answer sheet
+                    unless the administrator allows
+                    re-submission.
+
+                </p>
+
+
+                <button
+                    class="green"
+                    onclick="goDashboard()">
+
+                    🏠 View My Submission
+
+                </button>
+
+            </div>
+
+        `;
+
+
+        clearVerificationData();
+
+
+    }catch(error){
+
+        submitButton.disabled = false;
+
+
+        showSubmitMessage(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   CLEAR LIVE PHOTO DATA
+====================================================== */
+
+function clearVerificationData(){
+
+    localStorage.removeItem(
+
+        "livePhotoVerified_submission_" +
+        studentId +
+        "_" +
+        questionPaperId
+
+    );
+
+
+    localStorage.removeItem(
+
+        "submissionLivePhotoCaptured_" +
+        studentId +
+        "_" +
+        questionPaperId
+
+    );
+
+
+    localStorage.removeItem(
+        "submissionLivePhotoLocal"
+    );
+
+}
+
+
+/* =====================================================
+   MESSAGES
+====================================================== */
+
+function showPaperMessage(
+    message,
+    type
+){
+
+    document.getElementById(
+        "paperMessage"
+    ).innerHTML = `
+
+        <div class="message ${type}">
+
+            ${escapeHTML(message)}
+
+        </div>
+
+    `;
+
+}
+
+
+function showFileMessage(
+    message,
+    type
+){
+
+    document.getElementById(
+        "fileMessage"
+    ).innerHTML = `
+
+        <div class="message ${type}">
+
+            ${escapeHTML(message)}
+
+        </div>
+
+    `;
+
+}
+
+
+function showSubmitMessage(
+    message,
+    type
+){
+
+    document.getElementById(
+        "verificationMessage"
+    ).innerHTML = `
+
+        <div class="message ${type}">
+
+            ${escapeHTML(message)}
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+====================================================== */
+
+function goDashboard(){
+
+    window.location.href =
+        "student-dashboard.html";
+
+}
+
+</script>
+
+
+</body>
+
+</html>
