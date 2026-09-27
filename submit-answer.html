@@ -1,77 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Online Exam - Submit Answer</title>
 
 <style>
 body{
-    margin:0;
     font-family:Arial,sans-serif;
-    background:#f4f6f9;
+    background:#f4f6f8;
+    margin:0;
 }
-
-header{
-    background:#1d4ed8;
-    color:white;
+.container{
+    max-width:700px;
+    margin:auto;
     padding:20px;
 }
-
-.container{
-    width:94%;
-    max-width:800px;
-    margin:20px auto;
-}
-
 .card{
     background:white;
     padding:20px;
     border-radius:10px;
-    box-shadow:0 2px 10px rgba(0,0,0,.08);
+    margin-bottom:15px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
-
-.info{
-    background:#eff6ff;
-    padding:15px;
-    border-left:5px solid #2563eb;
-    margin-bottom:20px;
-}
-
-input,
-textarea{
+input[type=file]{
     width:100%;
-    padding:12px;
-    margin:7px 0 15px;
-    border:1px solid #ccc;
-    border-radius:6px;
-    box-sizing:border-box;
+    padding:10px;
 }
-
 button{
-    background:#1d4ed8;
-    color:white;
+    width:100%;
+    padding:14px;
     border:0;
-    padding:12px 20px;
-    border-radius:6px;
-    cursor:pointer;
+    border-radius:8px;
+    margin-top:12px;
 }
-
 .success{
-    background:#dcfce7;
-    color:#166534;
-    padding:15px;
-    margin-top:15px;
-    display:none;
+    background:#16a34a;
+    color:white;
 }
-
-.error{
-    background:#fee2e2;
-    color:#991b1b;
-    padding:15px;
+.danger{
+    background:#dc2626;
+    color:white;
+}
+.preview{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
     margin-top:15px;
+}
+.preview img{
+    width:100%;
+    border-radius:7px;
+}
+#submitButton{
     display:none;
 }
 </style>
@@ -79,402 +61,547 @@ button{
 
 <body>
 
-<header>
-<div class="container">
-<h1>Online Exam</h1>
-<p>Submit Answer Sheet</p>
-</div>
-</header>
-
 <div class="container">
 
 <div class="card">
 
-<h2>Answer Sheet Submission</h2>
-
-<div class="info">
+<h2>Submit Answer Paper</h2>
 
 <p>
-<strong>Student ID:</strong>
+<b>Student ID:</b>
 <span id="studentId"></span>
 </p>
 
 <p>
-<strong>Student Name:</strong>
-<span id="studentName"></span>
-</p>
-
-<p>
-<strong>Question Paper:</strong>
+<b>Question Paper:</b>
 <span id="paperName">Loading...</span>
 </p>
 
 <p>
-<strong>Subject:</strong>
-<span id="subjectName">Loading...</span>
+<b>Subject:</b>
+<span id="subjectName"></span>
+</p>
+
+<p>
+<b>Live Photo:</b>
+<span id="liveStatus">Not available</span>
 </p>
 
 </div>
 
 
-<label>
-Google Drive Answer Sheet Link
-</label>
+<div class="card">
+
+<h3>Upload Answer Paper</h3>
+
+<p>
+Upload maximum <b>20 photos</b> of your answer paper.
+</p>
 
 <input
-    type="url"
-    id="answerFileUrl"
-    placeholder="Paste your Google Drive answer sheet link"
->
+    id="answerFiles"
+    type="file"
+    accept="image/*"
+    multiple>
 
+<div id="count"></div>
 
-<label>
-Remarks
-</label>
+<div
+    id="preview"
+    class="preview">
+</div>
 
-<textarea
-    id="remarks"
-    rows="4"
-    placeholder="Optional message for admin"
-></textarea>
-
-
-<button onclick="submitAnswer()">
-Submit Answer Sheet
+<button
+    id="submitButton"
+    class="success"
+    onclick="submitAnswers()">
+    Submit Answer Paper
 </button>
 
-
-<div id="success"
-     class="success">
-</div>
-
-<div id="error"
-     class="error">
-</div>
-
-<br><br>
-
-<button onclick="
-location.href='student-dashboard.html'
-">
-Back to Dashboard
+<button
+    class="danger"
+    onclick="window.location.href='question-papers.html'">
+    Back
 </button>
 
-</div>
+<div id="status"></div>
 
 </div>
 
+</div>
 
 <script>
 
 const API =
 "https://script.google.com/macros/s/AKfycbzwMrFz4dBr4h_fp6zFT0mCkXSEw0_cqKgZxWBppnUWNTRoxBa9ee4B7Ljx30n9FCiOiA/exec";
 
-
 const studentId =
-    localStorage.getItem("studentId");
-
-
-if(!studentId){
-
-    location.href =
-        "login.html";
-}
-
-
-const params =
-    new URLSearchParams(
-        window.location.search
-    );
-
+localStorage.getItem("studentId");
 
 const questionPaperId =
-    params.get(
-        "questionPaperId"
-    ) || "";
+new URLSearchParams(location.search)
+.get("questionPaperId");
 
-
-const subjectId =
-    params.get(
-        "subjectId"
-    ) || "";
-
-
-document.getElementById(
-    "studentId"
-).textContent =
-    studentId;
-
-
-document.getElementById(
-    "studentName"
-).textContent =
-    localStorage.getItem(
-        "studentName"
-    ) || "";
-
-
-function api(action,params={}){
-
-    return new Promise(function(resolve,reject){
-
-        const callback =
-            "cb_" +
-            Date.now() +
-            Math.floor(Math.random()*10000);
-
-        const script =
-            document.createElement("script");
-
-        const query =
-            new URLSearchParams();
-
-        query.append(
-            "action",
-            action
-        );
-
-        query.append(
-            "callback",
-            callback
-        );
-
-        Object.keys(params).forEach(function(key){
-
-            query.append(
-                key,
-                params[key]
-            );
-
-        });
-
-        window[callback] =
-            function(data){
-
-                delete window[callback];
-
-                script.remove();
-
-                resolve(data);
-            };
-
-        script.onerror =
-            function(){
-
-                delete window[callback];
-
-                script.remove();
-
-                reject(
-                    new Error(
-                        "API connection failed"
-                    )
-                );
-            };
-
-        script.src =
-            API + "?" + query.toString();
-
-        document.body.appendChild(
-            script
-        );
-    });
+if(!studentId){
+    window.location.href="login.html";
 }
 
+let paper = null;
+let selectedFiles = [];
+
+
+/************************************************
+ * LOAD PAPER
+ ************************************************/
 
 async function loadPaper(){
-
-    if(!questionPaperId){
-
-        document.getElementById(
-            "paperName"
-        ).textContent =
-            "No question paper selected.";
-
-        return;
-    }
 
     try{
 
         const result =
             await api(
-                "getPublishedQuestionPapers",
-                {
-                    studentId:
-                        studentId
-                }
+                "getPublishedQuestionPapers"
             );
 
-        if(!result.success){
-
-            showError(
-                result.message
-            );
-
-            return;
-        }
-
-        const papers =
-            result.data || [];
-
-        const paper =
-            papers.find(
-                function(item){
-
-                    return item.questionPaperId ===
-                        questionPaperId;
-                }
+        paper =
+            result.papers.find(
+                x =>
+                x.questionPaperId ===
+                questionPaperId
             );
 
         if(!paper){
 
-            showError(
-                "This question paper is not assigned or published for your Student ID."
+            setStatus(
+                "Question paper is not available."
             );
 
             return;
         }
 
-        document.getElementById(
-            "paperName"
-        ).textContent =
+        document.getElementById("paperName")
+            .textContent =
             paper.paperName;
 
-        document.getElementById(
-            "subjectName"
-        ).textContent =
+        document.getElementById("subjectName")
+            .textContent =
             paper.subjectCode +
             " - " +
             paper.subjectName;
 
-    }catch(error){
+        /*
+         * Live photo is stored during the
+         * question paper download process.
+         *
+         * We retrieve it from localStorage.
+         */
+        const key =
+            "livePhoto_" +
+            studentId +
+            "_" +
+            questionPaperId;
 
-        showError(
-            error.message
-        );
-    }
-}
+        const livePhotoUrl =
+            localStorage.getItem(key);
 
+        if(livePhotoUrl){
 
-async function submitAnswer(){
-
-    const answerFileUrl =
-        document.getElementById(
-            "answerFileUrl"
-        ).value.trim();
-
-    const remarks =
-        document.getElementById(
-            "remarks"
-        ).value.trim();
-
-    if(!questionPaperId){
-
-        showError(
-            "Question Paper ID is missing."
-        );
-
-        return;
-    }
-
-    if(!answerFileUrl){
-
-        showError(
-            "Please enter the Google Drive answer sheet link."
-        );
-
-        return;
-    }
-
-    try{
-
-        const result =
-            await api(
-                "submitAnswer",
-                {
-                    studentId:
-                        studentId,
-
-                    examId:"",
-
-                    subjectId:
-                        subjectId,
-
-                    questionPaperId:
-                        questionPaperId,
-
-                    submissionType:
-                        "Answer Sheet",
-
-                    answerFileUrl:
-                        answerFileUrl,
-
-                    evaluatorRemarks:
-                        remarks
-                }
-            );
-
-        if(result.success){
-
-            document.getElementById(
-                "success"
-            ).textContent =
-                result.message +
-                " Submission ID: " +
-                result.submissionId;
-
-            document.getElementById(
-                "success"
-            ).style.display =
-                "block";
-
-            document.getElementById(
-                "error"
-            ).style.display =
-                "none";
-
-            document.getElementById(
-                "answerFileUrl"
-            ).value = "";
-
-            document.getElementById(
-                "remarks"
-            ).value = "";
+            document.getElementById("liveStatus")
+                .textContent =
+                "Verified";
 
         }else{
 
-            showError(
-                result.message
-            );
+            document.getElementById("liveStatus")
+                .textContent =
+                "Please download the paper first.";
+
         }
 
-    }catch(error){
+    }catch(err){
 
-        showError(
-            error.message
+        setStatus(err.message);
+    }
+}
+
+
+/************************************************
+ * FILE SELECTION
+ ************************************************/
+
+document.getElementById("answerFiles")
+.addEventListener(
+    "change",
+    function(){
+
+        const files =
+            Array.from(this.files);
+
+        if(files.length > 20){
+
+            alert(
+                "Maximum 20 photos are allowed."
+            );
+
+            this.value = "";
+
+            return;
+        }
+
+        selectedFiles = files;
+
+        document.getElementById("count")
+            .textContent =
+            files.length +
+            " photo(s) selected.";
+
+        showPreview();
+
+        document.getElementById("submitButton")
+            .style.display =
+            files.length > 0
+            ? "block"
+            : "none";
+    }
+);
+
+
+function showPreview(){
+
+    const box =
+        document.getElementById("preview");
+
+    box.innerHTML = "";
+
+    selectedFiles.forEach(file => {
+
+        const img =
+            document.createElement("img");
+
+        img.src =
+            URL.createObjectURL(file);
+
+        box.appendChild(img);
+    });
+}
+
+
+/************************************************
+ * SUBMIT
+ ************************************************/
+
+async function submitAnswers(){
+
+    if(selectedFiles.length < 1){
+
+        alert(
+            "Please select answer paper photos."
+        );
+
+        return;
+    }
+
+    if(selectedFiles.length > 20){
+
+        alert(
+            "Maximum 20 photos are allowed."
+        );
+
+        return;
+    }
+
+    const key =
+        "livePhoto_" +
+        studentId +
+        "_" +
+        questionPaperId;
+
+    const livePhotoUrl =
+        localStorage.getItem(key);
+
+    if(!livePhotoUrl){
+
+        alert(
+            "Live photo verification is required."
+        );
+
+        window.location.href =
+            "live-photo.html?questionPaperId=" +
+            encodeURIComponent(questionPaperId);
+
+        return;
+    }
+
+    setStatus(
+        "Preparing answer photos..."
+    );
+
+    const photos = [];
+
+    try{
+
+        for(let i=0;i<selectedFiles.length;i++){
+
+            setStatus(
+                "Preparing photo " +
+                (i+1) +
+                " of " +
+                selectedFiles.length +
+                "..."
+            );
+
+            const compressed =
+                await compressImage(
+                    selectedFiles[i]
+                );
+
+            photos.push({
+                base64:compressed,
+                mimeType:"image/jpeg"
+            });
+        }
+
+        setStatus(
+            "Uploading answer paper. Please do not close this page..."
+        );
+
+        const result =
+            await postData({
+
+                action:"submitAnswer",
+
+                studentId:
+                studentId,
+
+                questionPaperId:
+                questionPaperId,
+
+                livePhotoUrl:
+                livePhotoUrl,
+
+                answerPhotos:
+                photos
+            });
+
+        setStatus(
+            "Answer paper submitted successfully. Submission ID: " +
+            result.submissionId
+        );
+
+        document.getElementById("submitButton")
+            .style.display = "none";
+
+        document.getElementById("answerFiles")
+            .disabled = true;
+
+    }catch(err){
+
+        setStatus(
+            "Submission failed: " +
+            err.message
         );
     }
 }
 
 
-function showError(message){
+/************************************************
+ * IMAGE COMPRESSION
+ ************************************************/
 
-    document.getElementById(
-        "error"
-    ).textContent =
-        message;
+function compressImage(file){
 
-    document.getElementById(
-        "error"
-    ).style.display =
-        "block";
+    return new Promise(
+        (resolve,reject)=>{
 
-    document.getElementById(
-        "success"
-    ).style.display =
-        "none";
+            const reader =
+                new FileReader();
+
+            reader.onload =
+                function(e){
+
+                    const img =
+                        new Image();
+
+                    img.onload =
+                        function(){
+
+                            const maxWidth =
+                                1400;
+
+                            let width =
+                                img.width;
+
+                            let height =
+                                img.height;
+
+                            if(width > maxWidth){
+
+                                height =
+                                    Math.round(
+                                        height *
+                                        maxWidth /
+                                        width
+                                    );
+
+                                width =
+                                    maxWidth;
+                            }
+
+                            const canvas =
+                                document.createElement(
+                                    "canvas"
+                                );
+
+                            canvas.width =
+                                width;
+
+                            canvas.height =
+                                height;
+
+                            const ctx =
+                                canvas.getContext(
+                                    "2d"
+                                );
+
+                            ctx.drawImage(
+                                img,
+                                0,
+                                0,
+                                width,
+                                height
+                            );
+
+                            resolve(
+                                canvas.toDataURL(
+                                    "image/jpeg",
+                                    0.65
+                                )
+                            );
+                        };
+
+                    img.onerror =
+                        reject;
+
+                    img.src =
+                        e.target.result;
+                };
+
+            reader.onerror =
+                reject;
+
+            reader.readAsDataURL(file);
+        }
+    );
 }
 
+
+/************************************************
+ * API
+ ************************************************/
+
+function api(action, params={}){
+
+    return new Promise(
+        (resolve,reject)=>{
+
+            const callback =
+                "cb_" +
+                Date.now() +
+                "_" +
+                Math.floor(
+                    Math.random()*10000
+                );
+
+            const script =
+                document.createElement(
+                    "script"
+                );
+
+            window[callback] =
+                function(data){
+
+                    delete window[callback];
+
+                    script.remove();
+
+                    if(data.success){
+                        resolve(data);
+                    }else{
+                        reject(
+                            new Error(
+                                data.message ||
+                                "Error"
+                            )
+                        );
+                    }
+                };
+
+            params.action =
+                action;
+
+            params.studentId =
+                studentId;
+
+            params.callback =
+                callback;
+
+            const query =
+                Object.keys(params)
+                .map(k =>
+                    encodeURIComponent(k) +
+                    "=" +
+                    encodeURIComponent(
+                        params[k]
+                    )
+                )
+                .join("&");
+
+            script.src =
+                API + "?" + query;
+
+            script.onerror =
+                () =>
+                reject(
+                    new Error(
+                        "API connection failed."
+                    )
+                );
+
+            document.body.appendChild(
+                script
+            );
+        }
+    );
+}
+
+
+function postData(data){
+
+    return fetch(
+        API,
+        {
+            method:"POST",
+            headers:{
+                "Content-Type":
+                "text/plain;charset=utf-8"
+            },
+            body:JSON.stringify(data)
+        }
+    )
+    .then(r => r.json());
+}
+
+
+function setStatus(message){
+
+    document.getElementById("status")
+        .textContent = message;
+}
+
+
+document.getElementById("studentId")
+    .textContent =
+    studentId;
 
 loadPaper();
 
