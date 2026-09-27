@@ -1,379 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <meta charset="UTF-8">
+<title>Online Exam - My Results</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f6f9;
+}
 
-    <title>My Results | Online Learning & Examination Portal</title>
+header{
+    background:#1d4ed8;
+    color:white;
+    padding:20px;
+}
+
+.container{
+    width:94%;
+    max-width:1000px;
+    margin:20px auto;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+th,
+td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:left;
+}
+
+th{
+    background:#eef2ff;
+}
+
+.grade{
+    font-weight:bold;
+    color:#1d4ed8;
+}
+
+button{
+    background:#1d4ed8;
+    color:white;
+    border:0;
+    padding:11px 17px;
+    border-radius:6px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="container">
+<h1>Online Exam</h1>
+<p>My Results</p>
+</div>
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Student Result</h2>
+
+<p>
+<strong>Student ID:</strong>
+<span id="studentId"></span>
+</p>
+
+<div id="results">
+Loading results...
+</div>
+
+<br>
+
+<button onclick="
+location.href='student-dashboard.html'
+">
+Back to Dashboard
+</button>
+
+</div>
+
+</div>
 
 
-    <style>
+<script>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+const API =
+"https://script.google.com/macros/s/AKfycbzwMrFz4dBr4h_fp6zFT0mCkXSEw0_cqKgZxWBppnUWNTRoxBa9ee4B7Ljx30n9FCiOiA/exec";
 
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f7fb;
-            color: #222;
-            line-height: 1.6;
-        }
+const studentId =
+    localStorage.getItem(
+        "studentId"
+    );
 
 
-        /* ================= HEADER ================= */
+if(!studentId){
 
-        header {
-            background: #0d47a1;
-            color: white;
-            padding: 15px 5%;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+    location.href =
+        "login.html";
+}
 
 
-        .nav-container {
-            max-width: 1200px;
-            margin: auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+document.getElementById(
+    "studentId"
+).textContent =
+    studentId;
 
 
-        .logo {
-            font-size: 20px;
-            font-weight: bold;
-        }
+function api(action,params={}){
 
+    return new Promise(function(resolve,reject){
 
-        nav {
-            display: flex;
-            gap: 18px;
-            flex-wrap: wrap;
-        }
+        const callback =
+            "cb_" +
+            Date.now() +
+            Math.floor(Math.random()*10000);
 
+        const script =
+            document.createElement("script");
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-        }
+        const query =
+            new URLSearchParams();
 
+        query.append(
+            "action",
+            action
+        );
 
-        nav a:hover {
-            text-decoration: underline;
-        }
+        query.append(
+            "callback",
+            callback
+        );
 
+        Object.keys(params).forEach(function(key){
 
-        /* ================= MAIN ================= */
-
-        .main {
-            max-width: 1200px;
-            margin: auto;
-            padding: 35px 15px 50px;
-        }
-
-
-        /* ================= PAGE HEADER ================= */
-
-        .page-header {
-            background: linear-gradient(
-                135deg,
-                #0d47a1,
-                #1976d2
+            query.append(
+                key,
+                params[key]
             );
 
-            color: white;
+        });
 
-            border-radius: 15px;
+        window[callback] =
+            function(data){
 
-            padding: 30px;
+                delete window[callback];
 
-            margin-bottom: 25px;
+                script.remove();
+
+                resolve(data);
+            };
+
+        script.onerror =
+            function(){
+
+                delete window[callback];
+
+                script.remove();
+
+                reject(
+                    new Error(
+                        "API connection failed"
+                    )
+                );
+            };
+
+        script.src =
+            API + "?" + query.toString();
+
+        document.body.appendChild(
+            script
+        );
+    });
+}
+
+
+async function loadResults(){
+
+    const box =
+        document.getElementById(
+            "results"
+        );
+
+    try{
+
+        const result =
+            await api(
+                "getResults",
+                {
+                    studentId:
+                        studentId
+                }
+            );
+
+        if(!result.success){
+
+            box.innerHTML =
+                "<p>" +
+                escapeHtml(result.message) +
+                "</p>";
+
+            return;
         }
 
+        const results =
+            result.data || [];
 
-        .page-header h1 {
-            font-size: 28px;
-            margin-bottom: 5px;
+        if(results.length === 0){
+
+            box.innerHTML =
+                "<p>No published results are available.</p>";
+
+            return;
         }
 
-
-        .page-header p {
-            font-size: 14px;
-            opacity: 0.95;
-        }
-
-
-        /* ================= STUDENT INFORMATION ================= */
-
-        .student-card {
-            background: white;
-            border-radius: 14px;
-            padding: 22px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
-        }
-
-
-        .card-title {
-            color: #0d47a1;
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 18px;
-        }
-
-
-        .student-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-        }
-
-
-        .student-item {
-            background: #f5f8fc;
-            padding: 14px;
-            border-radius: 8px;
-        }
-
-
-        .student-item small {
-            display: block;
-            color: #777;
-            font-size: 12px;
-            margin-bottom: 3px;
-        }
-
-
-        .student-item strong {
-            color: #333;
-            font-size: 14px;
-        }
-
-
-        /* ================= RESULT SUMMARY ================= */
-
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-
-        .summary-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
-        }
-
-
-        .summary-icon {
-            font-size: 28px;
-            margin-bottom: 5px;
-        }
-
-
-        .summary-number {
-            color: #0d47a1;
-            font-size: 25px;
-            font-weight: bold;
-        }
-
-
-        .summary-label {
-            color: #666;
-            font-size: 13px;
-        }
-
-
-        /* ================= RESULTS TABLE ================= */
-
-        .results-card {
-            background: white;
-            border-radius: 14px;
-            padding: 22px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
-        }
-
-
-        .table-container {
-            overflow-x: auto;
-        }
-
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 800px;
-        }
-
-
-        th {
-            background: #0d47a1;
-            color: white;
-            padding: 12px;
-            text-align: left;
-            font-size: 13px;
-        }
-
-
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
-            font-size: 13px;
-        }
-
-
-        tr:hover td {
-            background: #f8fbff;
-        }
-
-
-        .pass {
-            color: #2e7d32;
-            font-weight: bold;
-        }
-
-
-        .pending {
-            color: #ef6c00;
-            font-weight: bold;
-        }
-
-
-        .failed {
-            color: #c62828;
-            font-weight: bold;
-        }
-
-
-        .view-btn {
-            display: inline-block;
-            background: #0d47a1;
-            color: white;
-            padding: 7px 12px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 12px;
-            border: none;
-            cursor: pointer;
-        }
-
-
-        .view-btn:hover {
-            background: #083579;
-        }
-
-
-        /* ================= RESULT DETAIL ================= */
-
-        .result-detail {
-            display: none;
-            background: #f8fbff;
-            border: 1px solid #dbe8f5;
-            border-radius: 12px;
-            padding: 22px;
-            margin-top: 20px;
-        }
-
-
-        .result-detail h2 {
-            color: #0d47a1;
-            margin-bottom: 15px;
-        }
-
-
-        .detail-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-
-        .detail-item {
-            background: white;
-            border-radius: 8px;
-            padding: 14px;
-        }
-
-
-        .detail-item small {
-            display: block;
-            color: #777;
-            font-size: 12px;
-        }
-
-
-        .detail-item strong {
-            font-size: 16px;
-        }
-
-
-        /* ================= MARKS BOX ================= */
-
-        .marks-box {
-            background: white;
-            border-radius: 10px;
-            padding: 18px;
-            margin-top: 15px;
-        }
-
-
-        .marks-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-            font-size: 14px;
-        }
-
-
-        .marks-row:last-child {
-            border-bottom: none;
-        }
-
-
-        .total-marks {
-            font-size: 18px;
-            color: #0d47a1;
-            font-weight: bold;
-        }
-
-
-        /* ================= BUTTONS ================= */
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-
-
-        .primary-btn {
-            background: #0d47a1;
-            color: white;
-            border: none;
-            padding: 11px 18px;
-            border-radius: 7px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-
-        .primary-btn:hover {
-            background
+        let html =
+            "<table>" +
+            "<tr>" +
+            "<th>Exam</th>" +
+            "<th>Subject</th>" +
+            "<th>Total Marks</th>" +
+            "<th>Marks Obtained</th>" +
+            "<th>Percentage</th>" +
+            "<th>Grade</th>" +
+            "<th>Remarks</th>" +
+            "</tr>";
+
+        results.forEach(function(item){
+
+            html += `
+                <tr>
+                    <td>
+                        ${escapeHtml(item.examName)}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(item.subjectId)}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(item.totalMarks)}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(item.marksObtained)}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(item.percentage)}%
+                    </td>
+
+                    <td class="grade">
+                        ${escapeHtml(item.grade)}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(item.remarks)}
+                    </td>
+                </tr>
+            `;
+        });
+
+        html += "</table>";
+
+        box.innerHTML =
+            html;
+
+    }catch(error){
+
+        box.innerHTML =
+            "<p>" +
+            escapeHtml(error.message) +
+            "</p>";
+    }
+}
+
+
+function escapeHtml(value){
+
+    return String(value || "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+loadResults();
+
+</script>
+
+</body>
+</html>
