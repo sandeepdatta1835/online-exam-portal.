@@ -1,458 +1,479 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Student Login - Online Exam Portal</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Student Login - Online Exam</title>
 
 <style>
+
 *{
     box-sizing:border-box;
 }
 
 body{
+
     margin:0;
+
     font-family:Arial,sans-serif;
-    background:#f4f6f8;
-}
 
-.header{
-    background:#172554;
-    color:white;
-    padding:20px;
-    text-align:center;
-}
+    background:#f2f5f9;
 
-.header h1{
-    margin:0;
-    font-size:24px;
-}
+    min-height:100vh;
 
-.login-container{
-    max-width:420px;
-    margin:50px auto;
-    padding:15px;
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
 }
 
 .login-box{
+
     background:white;
+
+    width:90%;
+
+    max-width:420px;
+
     padding:30px;
+
     border-radius:12px;
-    box-shadow:0 3px 12px rgba(0,0,0,.12);
+
+    box-shadow:
+    0 4px 20px rgba(0,0,0,.12);
+
 }
 
-.login-box h2{
+h1{
+
     text-align:center;
-    color:#172554;
-    margin-top:0;
+
+    color:#173b73;
+
+    margin-bottom:5px;
+
+}
+
+.subtitle{
+
+    text-align:center;
+
+    color:#666;
+
+    margin-bottom:25px;
+
 }
 
 label{
+
     display:block;
-    margin-top:15px;
-    margin-bottom:6px;
+
     font-weight:bold;
+
+    margin-bottom:6px;
+
 }
 
 input{
+
     width:100%;
+
     padding:13px;
+
+    margin-bottom:18px;
+
     border:1px solid #ccc;
+
     border-radius:6px;
+
     font-size:16px;
+
 }
 
 button{
+
     width:100%;
-    margin-top:22px;
+
     padding:13px;
-    border:0;
-    border-radius:6px;
-    background:#172554;
+
+    background:#173b73;
+
     color:white;
+
+    border:none;
+
+    border-radius:6px;
+
     font-size:16px;
+
     cursor:pointer;
+
 }
 
 button:disabled{
-    opacity:.6;
+
+    background:#999;
+
 }
 
 .message{
-    display:none;
-    margin-top:15px;
-    padding:12px;
-    border-radius:6px;
-    text-align:center;
-}
 
-.success{
-    background:#dcfce7;
-    color:#166534;
+    margin-top:15px;
+
+    padding:12px;
+
+    border-radius:6px;
+
+    display:none;
+
 }
 
 .error{
-    background:#fee2e2;
-    color:#991b1b;
+
+    background:#f8d7da;
+
+    color:#842029;
+
 }
 
-.back{
+.success{
+
+    background:#d1e7dd;
+
+    color:#0f5132;
+
+}
+
+.home{
+
+    display:block;
+
     text-align:center;
+
     margin-top:20px;
+
+    color:#173b73;
+
+    text-decoration:none;
+
 }
 
-.back a{
-    color:#172554;
-    text-decoration:none;
-}
 </style>
+
 </head>
 
 <body>
 
-<div class="header">
-    <h1>🎓 Online Exam Portal</h1>
-</div>
 
-<div class="login-container">
+<div class="login-box">
 
-    <div class="login-box">
+    <h1>Online Exam</h1>
 
-        <h2>Student Login</h2>
-
-        <form id="loginForm">
-
-            <label for="studentId">
-                Student ID
-            </label>
-
-            <input
-                type="text"
-                id="studentId"
-                placeholder="Enter Student ID"
-                required
-            >
-
-            <label for="password">
-                Password
-            </label>
-
-            <input
-                type="password"
-                id="password"
-                placeholder="Enter Password"
-                required
-            >
-
-            <button
-                type="submit"
-                id="loginButton"
-            >
-                Login
-            </button>
-
-        </form>
-
-        <div
-            id="message"
-            class="message"
-        ></div>
-
-        <div class="back">
-            <a href="index.html">
-                ← Back to Home
-            </a>
-        </div>
-
+    <div class="subtitle">
+        Student Login
     </div>
+
+
+    <label for="studentId">
+        Student ID
+    </label>
+
+    <input
+        type="text"
+        id="studentId"
+        placeholder="Enter Student ID"
+        autocomplete="username"
+    >
+
+
+    <label for="password">
+        Password
+    </label>
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Enter Password"
+        autocomplete="current-password"
+    >
+
+
+    <button
+        id="loginButton"
+        onclick="studentLogin()"
+    >
+        Login
+    </button>
+
+
+    <div
+        id="message"
+        class="message"
+    ></div>
+
+
+    <a
+        href="index.html"
+        class="home"
+    >
+        ← Back to Home
+    </a>
 
 </div>
 
 
 <script>
 
-/* =========================
-   GOOGLE APPS SCRIPT
-========================= */
-
-const API_URL =
+const API =
 "https://script.google.com/macros/s/AKfycbzwMrFz4dBr4h_fp6zFT0mCkXSEw0_cqKgZxWBppnUWNTRoxBa9ee4B7Ljx30n9FCiOiA/exec";
 
 
-/* =========================
-   MESSAGE
-========================= */
-
-function showMessage(message, success){
+function showMessage(text,type){
 
     const box =
         document.getElementById("message");
 
-    box.textContent =
-        message;
+    box.style.display = "block";
 
     box.className =
-        "message " +
-        (success ? "success" : "error");
+        "message " + type;
 
-    box.style.display =
-        "block";
+    box.innerHTML = text;
+
 }
 
 
-/* =========================
-   STUDENT LOGIN
-========================= */
+async function studentLogin(){
 
-function studentLogin(studentId,password){
+    const studentId =
+        document
+        .getElementById("studentId")
+        .value
+        .trim();
 
-    return new Promise(function(resolve){
-
-        const callbackName =
-            "loginCallback_" +
-            Date.now();
-
-        let script = null;
-        let finished = false;
-
-
-        function cleanup(){
-
-            if(window[callbackName]){
-                delete window[callbackName];
-            }
-
-            if(
-                script &&
-                script.parentNode
-            ){
-                script.parentNode.removeChild(script);
-            }
-        }
+    const password =
+        document
+        .getElementById("password")
+        .value
+        .trim();
 
 
-        window[callbackName] =
-            function(result){
+    if(!studentId){
 
-                if(finished){
-                    return;
-                }
+        showMessage(
+            "Please enter Student ID.",
+            "error"
+        );
 
-                finished = true;
+        return;
 
-                cleanup();
+    }
 
-                resolve(result);
-            };
 
+    if(!password){
+
+        showMessage(
+            "Please enter Password.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document.getElementById("loginButton");
+
+    button.disabled = true;
+
+    button.innerText =
+        "Connecting...";
+
+
+    showMessage(
+        "Checking Student ID and Password...",
+        "success"
+    );
+
+
+    try{
 
         const url =
-            API_URL +
-            "?action=studentLogin" +
-            "&callback=" +
-            encodeURIComponent(callbackName) +
-            "&studentId=" +
-            encodeURIComponent(studentId) +
-            "&password=" +
-            encodeURIComponent(password);
+            new URL(API);
 
 
-        script =
-            document.createElement("script");
+        url.searchParams.set(
+            "action",
+            "studentLogin"
+        );
 
-        script.src = url;
-        script.async = true;
+
+        url.searchParams.set(
+            "studentId",
+            studentId
+        );
 
 
-        script.onerror =
-            function(){
+        url.searchParams.set(
+            "password",
+            password
+        );
 
-                if(finished){
-                    return;
+
+        const response =
+            await fetch(
+                url.toString(),
+                {
+                    method:"GET",
+                    cache:"no-store"
                 }
-
-                finished = true;
-
-                cleanup();
-
-                resolve({
-                    success:false,
-                    message:
-                    "Could not connect to server."
-                });
-            };
-
-
-        document.body.appendChild(script);
-
-
-        setTimeout(function(){
-
-            if(finished){
-                return;
-            }
-
-            finished = true;
-
-            cleanup();
-
-            resolve({
-                success:false,
-                message:
-                "Connection timed out. Please try again."
-            });
-
-        },15000);
-
-    });
-}
-
-
-/* =========================
-   LOGIN FORM
-========================= */
-
-document
-.getElementById("loginForm")
-.addEventListener(
-    "submit",
-    async function(event){
-
-        event.preventDefault();
-
-
-        const button =
-            document.getElementById(
-                "loginButton"
             );
 
 
-        const studentId =
-            document
-            .getElementById(
-                "studentId"
-            )
-            .value
-            .trim();
+        if(!response.ok){
+
+            throw new Error(
+                "Server returned HTTP " +
+                response.status
+            );
+
+        }
 
 
-        const password =
-            document
-            .getElementById(
-                "password"
-            )
-            .value;
+        const text =
+            await response.text();
 
 
-        button.disabled = true;
-        button.textContent = "Logging in...";
-
-
-        showMessage(
-            "Checking login...",
-            true
-        );
+        let result;
 
 
         try{
 
-            const result =
-                await studentLogin(
-                    studentId,
-                    password
-                );
+            result =
+                JSON.parse(text);
 
+        }
+        catch(error){
 
-            if(result.success){
-
-                /* Save student information */
-
-                const data =
-                    result.data || {};
-
-
-                localStorage.setItem(
-                    "studentId",
-                    data.studentId || studentId
-                );
-
-                localStorage.setItem(
-                    "studentName",
-                    data.studentName || ""
-                );
-
-                localStorage.setItem(
-                    "enrollment",
-                    data.enrollment || ""
-                );
-
-                localStorage.setItem(
-                    "mobile",
-                    data.mobile || ""
-                );
-
-                localStorage.setItem(
-                    "email",
-                    data.email || ""
-                );
-
-                localStorage.setItem(
-                    "board",
-                    data.board || ""
-                );
-
-                localStorage.setItem(
-                    "studentClass",
-                    data.studentClass || ""
-                );
-
-                localStorage.setItem(
-                    "studentSubjects",
-                    JSON.stringify(
-                        data.subjects || []
-                    )
-                );
-
-
-                showMessage(
-                    "Login successful. Opening dashboard...",
-                    true
-                );
-
-
-                setTimeout(function(){
-
-                    window.location.href =
-                        "student-dashboard.html";
-
-                },700);
-
-
-            }else{
-
-                showMessage(
-                    result.message ||
-                    "Invalid Student ID or Password.",
-                    false
-                );
-
-            }
-
-
-        }catch(error){
-
-            showMessage(
-                "Login error: " +
-                error.message,
-                false
+            throw new Error(
+                "Invalid response from server."
             );
 
         }
 
 
+        if(result.success){
+
+            localStorage.setItem(
+                "studentId",
+                studentId
+            );
+
+
+            localStorage.setItem(
+                "studentLoggedIn",
+                "true"
+            );
+
+
+            /*
+              Save complete student information
+              if returned by the API.
+            */
+
+            if(result.student){
+
+                localStorage.setItem(
+                    "studentData",
+                    JSON.stringify(result.student)
+                );
+
+            }
+
+
+            showMessage(
+                "✅ Login successful. Opening dashboard...",
+                "success"
+            );
+
+
+            setTimeout(function(){
+
+                window.location.href =
+                    "student-dashboard.html";
+
+            },800);
+
+
+        }
+        else{
+
+            showMessage(
+                "❌ " +
+                (
+                    result.message ||
+                    "Invalid Student ID or Password."
+                ),
+                "error"
+            );
+
+            button.disabled = false;
+
+            button.innerText =
+                "Login";
+
+        }
+
+    }
+    catch(error){
+
+        console.error(error);
+
+
+        showMessage(
+            "❌ Could not connect to server.<br><br>" +
+            "Please check your internet connection and try again.<br><br>" +
+            "<small>" +
+            error.message +
+            "</small>",
+            "error"
+        );
+
+
         button.disabled = false;
-        button.textContent = "Login";
+
+        button.innerText =
+            "Login";
+
+    }
+
+}
+
+
+/*
+   Press Enter to Login
+*/
+
+document
+.getElementById("password")
+.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            studentLogin();
+
+        }
 
     }
 );
@@ -460,4 +481,5 @@ document
 </script>
 
 </body>
+
 </html>
