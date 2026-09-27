@@ -1,316 +1,1097 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0">
 
-<title>Online Exam - My Results</title>
+<title>My Results - Online Exam Portal</title>
 
 <style>
+
+*{
+    box-sizing:border-box;
+}
+
 body{
     margin:0;
     font-family:Arial,sans-serif;
     background:#f4f6f9;
+    color:#222;
 }
 
-header{
-    background:#1d4ed8;
+
+/* HEADER */
+
+.header{
+    background:#17365d;
     color:white;
-    padding:20px;
+    padding:18px 20px;
 }
+
+.header h1{
+    margin:0;
+    font-size:25px;
+}
+
+.header p{
+    margin:6px 0 0;
+    font-size:14px;
+}
+
+
+/* CONTAINER */
 
 .container{
-    width:94%;
-    max-width:1000px;
-    margin:20px auto;
+    max-width:1100px;
+    margin:25px auto;
+    padding:0 15px;
 }
+
+
+/* CARD */
 
 .card{
     background:white;
     padding:20px;
+    margin-bottom:20px;
     border-radius:10px;
-    box-shadow:0 2px 10px rgba(0,0,0,.08);
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:15px;
+.card h2{
+    margin-top:0;
+    color:#17365d;
 }
 
-th,
-td{
+
+/* STUDENT INFORMATION */
+
+.student-info{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(220px,1fr));
+
+    gap:12px;
+}
+
+.info-box{
+    background:#f7f9fc;
+    border:1px solid #e2e5e9;
+    padding:12px;
+    border-radius:7px;
+}
+
+.info-box strong{
+    display:block;
+    color:#666;
+    font-size:12px;
+    margin-bottom:5px;
+}
+
+
+/* RESULT CARD */
+
+.result-card{
     border:1px solid #ddd;
-    padding:10px;
-    text-align:left;
+    border-radius:10px;
+    margin-bottom:18px;
+    overflow:hidden;
+    background:white;
 }
 
-th{
-    background:#eef2ff;
+.result-header{
+    background:#17365d;
+    color:white;
+    padding:15px;
 }
 
-.grade{
+.result-header h3{
+    margin:0;
+}
+
+.result-body{
+    padding:18px;
+}
+
+.result-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(220px,1fr));
+
+    gap:12px;
+}
+
+.result-box{
+    background:#f8f9fa;
+    border:1px solid #e1e1e1;
+    padding:12px;
+    border-radius:7px;
+}
+
+.result-box strong{
+    display:block;
+    font-size:12px;
+    color:#666;
+    margin-bottom:5px;
+}
+
+
+/* MARKS */
+
+.marks-box{
+    margin-top:18px;
+    padding:20px;
+    border-radius:8px;
+    background:#e8f5e9;
+    border:1px solid #c8e6c9;
+    text-align:center;
+}
+
+.marks-label{
+    font-size:14px;
+    color:#555;
+}
+
+.marks{
+    font-size:34px;
     font-weight:bold;
-    color:#1d4ed8;
+    color:#1b5e20;
+    margin-top:5px;
 }
+
+
+/* REMARKS */
+
+.remarks{
+    margin-top:18px;
+    padding:15px;
+    background:#fff8e1;
+    border:1px solid #ffe082;
+    border-radius:8px;
+}
+
+.remarks strong{
+    display:block;
+    margin-bottom:8px;
+}
+
+
+/* STATUS */
+
+.status{
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.status-published{
+    background:#e8f5e9;
+    color:#1b5e20;
+}
+
+.status-pending{
+    background:#fff3e0;
+    color:#e65100;
+}
+
+
+/* BUTTON */
 
 button{
-    background:#1d4ed8;
-    color:white;
     border:0;
-    padding:11px 17px;
+    padding:11px 18px;
     border-radius:6px;
     cursor:pointer;
+    color:white;
+    background:#17365d;
+    font-size:14px;
+    margin:4px;
 }
+
+button:hover{
+    opacity:.9;
+}
+
+.back-btn{
+    background:#777;
+}
+
+
+/* MESSAGE */
+
+.message{
+    padding:12px;
+    border-radius:7px;
+    margin:10px 0;
+}
+
+.success{
+    background:#e8f5e9;
+    color:#1b5e20;
+}
+
+.error{
+    background:#ffebee;
+    color:#b71c1c;
+}
+
+.info{
+    background:#e3f2fd;
+    color:#0d47a1;
+}
+
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    padding:35px 15px;
+    color:#666;
+}
+
+
+/* PRINT */
+
+@media print{
+
+    .header{
+        background:#17365d !important;
+        -webkit-print-color-adjust:exact;
+        print-color-adjust:exact;
+    }
+
+    button{
+        display:none;
+    }
+
+    body{
+        background:white;
+    }
+
+    .card{
+        box-shadow:none;
+        border:1px solid #ddd;
+    }
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
-<header>
-<div class="container">
-<h1>Online Exam</h1>
-<p>My Results</p>
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
+
+<div class="header">
+
+    <h1>Online Exam Portal</h1>
+
+    <p>My Results</p>
+
 </div>
-</header>
+
+
 
 <div class="container">
+
+
+<!-- =====================================================
+     STUDENT INFORMATION
+====================================================== -->
 
 <div class="card">
 
-<h2>Student Result</h2>
+    <h2>👨‍🎓 Student Information</h2>
 
-<p>
-<strong>Student ID:</strong>
-<span id="studentId"></span>
-</p>
 
-<div id="results">
-Loading results...
+    <div class="student-info">
+
+
+        <div class="info-box">
+
+            <strong>Student ID</strong>
+
+            <span id="studentId">
+                Loading...
+            </span>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <strong>Student Name</strong>
+
+            <span id="studentName">
+                Loading...
+            </span>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <strong>Enrollment No.</strong>
+
+            <span id="enrollmentNo">
+                Loading...
+            </span>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <strong>Board</strong>
+
+            <span id="board">
+                Loading...
+            </span>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <strong>Class</strong>
+
+            <span id="className">
+                Loading...
+            </span>
+
+        </div>
+
+
+    </div>
+
 </div>
 
-<br>
 
-<button onclick="
-location.href='student-dashboard.html'
-">
-Back to Dashboard
-</button>
+
+<!-- =====================================================
+     MESSAGE
+====================================================== -->
+
+<div id="message"></div>
+
+
+
+<!-- =====================================================
+     RESULTS
+====================================================== -->
+
+<div class="card">
+
+    <h2>📊 My Published Results</h2>
+
+
+    <button
+        onclick="loadResults()">
+
+        🔄 Refresh Results
+
+    </button>
+
+
+    <button
+        class="back-btn"
+        onclick="goDashboard()">
+
+        ← Back to Dashboard
+
+    </button>
+
+
+    <div id="resultsContainer">
+
+        Loading results...
+
+    </div>
 
 </div>
 
+
 </div>
+
 
 
 <script>
 
-const API =
+
+/* =====================================================
+   API URL
+====================================================== */
+
+const API_URL =
 "https://script.google.com/macros/s/AKfycbzwMrFz4dBr4h_fp6zFT0mCkXSEw0_cqKgZxWBppnUWNTRoxBa9ee4B7Ljx30n9FCiOiA/exec";
 
 
-const studentId =
-    localStorage.getItem(
-        "studentId"
-    );
+/* =====================================================
+   GET STUDENT ID
+====================================================== */
+
+function getStudentId(){
+
+    const keys = [
+
+        "studentId",
+
+        "StudentID",
+
+        "studentID",
+
+        "loggedInStudentId",
+
+        "loggedInStudentID",
+
+        "currentStudentId"
+
+    ];
 
 
-if(!studentId){
+    for(
+        const key of keys
+    ){
 
-    location.href =
-        "login.html";
+        const value =
+            localStorage.getItem(key);
+
+
+        if(
+            value &&
+            value.trim() !== ""
+        ){
+
+            return value.trim();
+
+        }
+
+    }
+
+
+    return "";
+
 }
 
 
-document.getElementById(
-    "studentId"
-).textContent =
-    studentId;
+/* =====================================================
+   ESCAPE HTML
+====================================================== */
+
+function escapeHTML(value){
+
+    if(
+        value === null ||
+        value === undefined
+    ){
+
+        return "";
+
+    }
 
 
-function api(action,params={}){
+    return String(value)
 
-    return new Promise(function(resolve,reject){
+        .replace(/&/g,"&amp;")
 
-        const callback =
-            "cb_" +
-            Date.now() +
-            Math.floor(Math.random()*10000);
+        .replace(/</g,"&lt;")
 
-        const script =
-            document.createElement("script");
+        .replace(/>/g,"&gt;")
 
-        const query =
-            new URLSearchParams();
+        .replace(/"/g,"&quot;")
 
-        query.append(
-            "action",
-            action
-        );
+        .replace(/'/g,"&#039;");
 
-        query.append(
-            "callback",
-            callback
-        );
+}
 
-        Object.keys(params).forEach(function(key){
 
-            query.append(
-                key,
-                params[key]
-            );
+/* =====================================================
+   API GET
+====================================================== */
+
+async function apiGet(
+    action,
+    params={}
+){
+
+    let url =
+        API_URL +
+        "?action=" +
+        encodeURIComponent(action);
+
+
+    Object.keys(params)
+        .forEach(function(key){
+
+            const value =
+                params[key];
+
+
+            if(
+                value !== undefined &&
+                value !== null &&
+                value !== ""
+            ){
+
+                url +=
+                    "&" +
+                    encodeURIComponent(key) +
+                    "=" +
+                    encodeURIComponent(value);
+
+            }
 
         });
 
-        window[callback] =
-            function(data){
 
-                delete window[callback];
+    const response =
+        await fetch(url);
 
-                script.remove();
 
-                resolve(data);
-            };
+    return await response.json();
 
-        script.onerror =
-            function(){
-
-                delete window[callback];
-
-                script.remove();
-
-                reject(
-                    new Error(
-                        "API connection failed"
-                    )
-                );
-            };
-
-        script.src =
-            API + "?" + query.toString();
-
-        document.body.appendChild(
-            script
-        );
-    });
 }
 
 
-async function loadResults(){
+/* =====================================================
+   LOAD STUDENT INFORMATION
+====================================================== */
 
-    const box =
+async function loadStudent(){
+
+    const studentId =
+        getStudentId();
+
+
+    if(!studentId){
+
         document.getElementById(
-            "results"
-        );
+            "studentId"
+        ).textContent =
+            "Not found";
+
+
+        document.getElementById(
+            "message"
+        ).innerHTML =
+            '<div class="message error">' +
+            '❌ Student ID not found. Please login again.' +
+            '</div>';
+
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "studentId"
+    ).textContent =
+        studentId;
+
 
     try{
 
-        const result =
-            await api(
-                "getResults",
+        const data =
+            await apiGet(
+                "getStudent",
                 {
-                    studentId:
-                        studentId
+                    studentId:studentId
                 }
             );
 
-        if(!result.success){
 
-            box.innerHTML =
-                "<p>" +
-                escapeHtml(result.message) +
-                "</p>";
+        if(!data.success){
 
             return;
+
         }
 
-        const results =
-            result.data || [];
 
-        if(results.length === 0){
+        const student =
+            data.student ||
+            data.data ||
+            data;
 
-            box.innerHTML =
-                "<p>No published results are available.</p>";
 
-            return;
-        }
+        document.getElementById(
+            "studentName"
+        ).textContent =
 
-        let html =
-            "<table>" +
-            "<tr>" +
-            "<th>Exam</th>" +
-            "<th>Subject</th>" +
-            "<th>Total Marks</th>" +
-            "<th>Marks Obtained</th>" +
-            "<th>Percentage</th>" +
-            "<th>Grade</th>" +
-            "<th>Remarks</th>" +
-            "</tr>";
+            student.StudentName ||
+            student.studentName ||
+            "";
 
-        results.forEach(function(item){
 
-            html += `
-                <tr>
-                    <td>
-                        ${escapeHtml(item.examName)}
-                    </td>
+        document.getElementById(
+            "enrollmentNo"
+        ).textContent =
 
-                    <td>
-                        ${escapeHtml(item.subjectId)}
-                    </td>
+            student.EnrollmentNo ||
+            student.enrollmentNo ||
+            "";
 
-                    <td>
-                        ${escapeHtml(item.totalMarks)}
-                    </td>
 
-                    <td>
-                        ${escapeHtml(item.marksObtained)}
-                    </td>
+        document.getElementById(
+            "board"
+        ).textContent =
 
-                    <td>
-                        ${escapeHtml(item.percentage)}%
-                    </td>
+            student.Board ||
+            student.board ||
+            "";
 
-                    <td class="grade">
-                        ${escapeHtml(item.grade)}
-                    </td>
 
-                    <td>
-                        ${escapeHtml(item.remarks)}
-                    </td>
-                </tr>
-            `;
-        });
+        document.getElementById(
+            "className"
+        ).textContent =
 
-        html += "</table>";
+            student.Class ||
+            student.class ||
+            "";
 
-        box.innerHTML =
-            html;
 
     }catch(error){
 
-        box.innerHTML =
-            "<p>" +
-            escapeHtml(error.message) +
-            "</p>";
+        console.error(error);
+
     }
+
 }
 
 
-function escapeHtml(value){
+/* =====================================================
+   LOAD RESULTS
+====================================================== */
 
-    return String(value || "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+async function loadResults(){
+
+    const container =
+        document.getElementById(
+            "resultsContainer"
+        );
+
+
+    const studentId =
+        getStudentId();
+
+
+    if(!studentId){
+
+        container.innerHTML =
+            '<div class="message error">' +
+            '❌ Student ID is required.' +
+            '</div>';
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        "Loading results...";
+
+
+    try{
+
+        /*
+         Send Student ID to Apps Script.
+        */
+
+        const data =
+            await apiGet(
+                "getResults",
+                {
+                    studentId:studentId
+                }
+            );
+
+
+        console.log(
+            "RESULT RESPONSE:",
+            data
+        );
+
+
+        if(!data.success){
+
+            container.innerHTML =
+                '<div class="message error">' +
+                escapeHTML(
+                    data.message ||
+                    "Unable to load results."
+                ) +
+                '</div>';
+
+            return;
+
+        }
+
+
+        let results =
+            data.results ||
+            data.data ||
+            [];
+
+
+        if(!Array.isArray(results)){
+
+            results=[];
+
+        }
+
+
+        /*
+         IMPORTANT:
+         Student should only see
+         PUBLISHED results.
+        */
+
+        results =
+            results.filter(function(result){
+
+                const status =
+                    String(
+                        result.Status ||
+                        result.status ||
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase();
+
+
+                return status === "published";
+
+            });
+
+
+        if(results.length===0){
+
+            container.innerHTML = `
+
+                <div class="empty">
+
+                    <h3>📋 No Published Results</h3>
+
+                    <p>
+                        Your result has not been published yet.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML="";
+
+
+        results.forEach(function(result){
+
+            renderResult(
+                result,
+                container
+            );
+
+        });
+
+
+    }catch(error){
+
+        console.error(
+            "RESULT ERROR:",
+            error
+        );
+
+
+        container.innerHTML =
+            '<div class="message error">' +
+            '❌ Unable to load results.<br>' +
+            escapeHTML(
+                error.message
+            ) +
+            '</div>';
+
+    }
+
 }
 
+
+/* =====================================================
+   RENDER RESULT
+====================================================== */
+
+function renderResult(
+    result,
+    container
+){
+
+    const questionPaperId =
+        result.QuestionPaperID ||
+        result.questionPaperId ||
+        "";
+
+
+    const subjectId =
+        result.SubjectID ||
+        result.subjectId ||
+        "";
+
+
+    const subjectCode =
+        result.SubjectCode ||
+        result.subjectCode ||
+        "";
+
+
+    const subjectName =
+        result.SubjectName ||
+        result.subjectName ||
+        "";
+
+
+    const examName =
+        result.ExamName ||
+        result.examName ||
+        "";
+
+
+    const marks =
+        result.MarksObtained ??
+        result.marksObtained ??
+        "";
+
+
+    const totalMarks =
+        result.TotalMarks ??
+        result.totalMarks ??
+        "";
+
+
+    const remarks =
+        result.EvaluatorRemarks ||
+        result.evaluatorRemarks ||
+        "";
+
+
+    const publishedDate =
+        result.PublishedDate ||
+        result.publishedDate ||
+        result.CreatedDate ||
+        result.createdDate ||
+        "";
+
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+
+    card.className =
+        "result-card";
+
+
+    card.innerHTML = `
+
+        <div class="result-header">
+
+            <h3>
+                📊
+                ${escapeHTML(
+                    subjectName ||
+                    subjectCode ||
+                    examName ||
+                    "Examination Result"
+                )}
+            </h3>
+
+        </div>
+
+
+        <div class="result-body">
+
+
+            <div class="result-grid">
+
+
+                <div class="result-box">
+
+                    <strong>
+                        Question Paper ID
+                    </strong>
+
+                    ${escapeHTML(
+                        questionPaperId
+                    )}
+
+                </div>
+
+
+                <div class="result-box">
+
+                    <strong>
+                        Subject ID
+                    </strong>
+
+                    ${escapeHTML(
+                        subjectId
+                    )}
+
+                </div>
+
+
+                <div class="result-box">
+
+                    <strong>
+                        Subject Code
+                    </strong>
+
+                    ${escapeHTML(
+                        subjectCode
+                    )}
+
+                </div>
+
+
+                <div class="result-box">
+
+                    <strong>
+                        Examination
+                    </strong>
+
+                    ${escapeHTML(
+                        examName
+                    )}
+
+                </div>
+
+
+                <div class="result-box">
+
+                    <strong>
+                        Published Date
+                    </strong>
+
+                    ${escapeHTML(
+                        publishedDate
+                    )}
+
+                </div>
+
+
+                <div class="result-box">
+
+                    <strong>
+                        Result Status
+                    </strong>
+
+                    <span class="status status-published">
+
+                        Published
+
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="marks-box">
+
+                <div class="marks-label">
+
+                    Marks Obtained
+
+                </div>
+
+
+                <div class="marks">
+
+                    ${escapeHTML(marks)}
+
+                    ${
+                        totalMarks !== ""
+                        ?
+                        " / " +
+                        escapeHTML(totalMarks)
+                        :
+                        ""
+                    }
+
+                </div>
+
+            </div>
+
+
+            <div class="remarks">
+
+                <strong>
+                    📝 Evaluator Remarks
+                </strong>
+
+
+                ${
+                    remarks
+                    ?
+                    escapeHTML(remarks)
+                    :
+                    "No remarks provided."
+                }
+
+            </div>
+
+
+        </div>
+
+    `;
+
+
+    container.appendChild(
+        card
+    );
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+====================================================== */
+
+function goDashboard(){
+
+    window.location.href =
+        "student-dashboard.html";
+
+}
+
+
+/* =====================================================
+   START
+====================================================== */
+
+loadStudent();
 
 loadResults();
 
+
 </script>
 
+
 </body>
+
 </html>
