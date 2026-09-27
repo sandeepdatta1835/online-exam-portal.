@@ -1,1373 +1,1409 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Submit Answer Sheet</title>
 
 <style>
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f1f5f9;
-  color: #111827;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    color: #222;
+}
+
+.header {
+    background: #1f4e79;
+    color: white;
+    padding: 18px 20px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.header p {
+    margin: 5px 0 0;
+    font-size: 14px;
 }
 
 .container {
-  max-width: 800px;
-  margin: auto;
-  padding: 20px;
+    max-width: 900px;
+    margin: 25px auto;
+    padding: 15px;
 }
 
 .card {
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.10);
+    background: white;
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
-h1 {
-  text-align: center;
+.card h2 {
+    margin-top: 0;
+    color: #1f4e79;
 }
 
 .info {
-  background: #eff6ff;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 20px;
-  line-height: 1.6;
+    background: #eef5ff;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
-.warning {
-  background: #fff7ed;
-  color: #9a3412;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 20px;
-  line-height: 1.6;
+.info p {
+    margin: 7px 0;
 }
 
 input[type="file"] {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  background: white;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: white;
 }
 
-.photo-count {
-  margin-top: 10px;
-  font-weight: bold;
+.note {
+    background: #fff8e1;
+    border-left: 5px solid #f0ad4e;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 5px;
 }
 
 .preview-grid {
-  display: grid;
-  grid-template-columns:
-    repeat(2, 1fr);
-  gap: 12px;
-  margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
 }
 
-.photo-card {
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  padding: 8px;
-  background: #f8fafc;
+.preview-item {
+    position: relative;
+    background: #f1f1f1;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #ddd;
 }
 
-.photo-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: contain;
-  border-radius: 8px;
-  background: #e5e7eb;
+.preview-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
 }
 
-.photo-number {
-  text-align: center;
-  font-weight: bold;
-  margin-top: 5px;
+.page-number {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 4px 7px;
+    border-radius: 5px;
+    font-size: 12px;
 }
 
 button {
-  width: 100%;
-  padding: 14px;
-  border: 0;
-  border-radius: 10px;
-  margin-top: 14px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
+    border: none;
+    padding: 13px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 7px 5px 7px 0;
 }
 
-.live-button {
-  background: #7c3aed;
-  color: white;
-}
-
-.submit-button {
-  background: #059669;
-  color: white;
-}
-
-.back-button {
-  background: #64748b;
-  color: white;
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.message {
-  margin-top: 15px;
-  padding: 12px;
-  border-radius: 10px;
-  display: none;
-  line-height: 1.5;
+.primary {
+    background: #1f4e79;
+    color: white;
 }
 
 .success {
-  background: #dcfce7;
-  color: #166534;
+    background: #198754;
+    color: white;
 }
 
-.error {
-  background: #fee2e2;
-  color: #991b1b;
+.secondary {
+    background: #6c757d;
+    color: white;
 }
 
-.info-message {
-  background: #dbeafe;
-  color: #1e40af;
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
-.hidden {
-  display: none !important;
+.status {
+    padding: 14px;
+    border-radius: 8px;
+    margin-top: 15px;
+    display: none;
 }
 
-.verification {
-  margin-top: 20px;
-  padding: 15px;
-  border-radius: 10px;
-  background: #f8fafc;
+.status.success-box {
+    display: block;
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.status.error-box {
+    display: block;
+    background: #f8d7da;
+    color: #842029;
+}
+
+.status.info-box {
+    display: block;
+    background: #cff4fc;
+    color: #055160;
+}
+
+.loading {
+    text-align: center;
+    padding: 30px;
+}
+
+.success-page {
+    display: none;
+    text-align: center;
+}
+
+.success-page h2 {
+    color: #198754;
+}
+
+.success-icon {
+    font-size: 65px;
+}
+
+@media(max-width:600px) {
+
+    .container {
+        margin: 10px auto;
+        padding: 10px;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    .header h1 {
+        font-size: 20px;
+    }
+
+    .preview-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
 }
 
 </style>
-
 </head>
 
 <body>
 
+<div class="header">
+
+    <h1>Student Answer Submission</h1>
+
+    <p>Online Exam Portal</p>
+
+</div>
+
+
 <div class="container">
 
-<div class="card">
+    <!-- LOADING -->
 
-<h1>Submit Answer Sheet</h1>
+    <div id="loadingCard" class="card loading">
 
+        <h2>Loading...</h2>
 
-<div
-  id="paperInfo"
-  class="info"
->
-Loading question paper information...
-</div>
+        <p>Please wait while we load your question paper.</p>
+
+    </div>
 
 
-<div class="warning">
+    <!-- MAIN SUBMISSION -->
 
-<strong>Important:</strong>
-
-<ul>
-
-<li>Select your answer-sheet photos in page order.</li>
-
-<li>You can upload a maximum of 20 photos.</li>
-
-<li>Make sure every page is clear and readable.</li>
-
-<li>You must complete a NEW live-photo step before final submission.</li>
-
-<li>The live photo is checked only in your browser and is NOT stored in Google Drive.</li>
-
-</ul>
-
-</div>
+    <div id="mainContent" style="display:none;">
 
 
-<label>
-<strong>Select Answer Sheet Photos</strong>
-</label>
+        <!-- QUESTION PAPER INFORMATION -->
 
-<br><br>
+        <div class="card">
 
-<input
-  type="file"
-  id="answerFiles"
-  accept="image/*"
-  multiple
-  onchange="handleFiles()"
->
+            <h2>Question Paper</h2>
 
+            <div class="info">
 
-<div
-  id="photoCount"
-  class="photo-count"
->
-No photos selected.
-</div>
+                <p>
+                    <strong>Student ID:</strong>
+                    <span id="studentIdText"></span>
+                </p>
 
+                <p>
+                    <strong>Question Paper ID:</strong>
+                    <span id="questionPaperIdText"></span>
+                </p>
 
-<div
-  id="previewGrid"
-  class="preview-grid"
-></div>
+                <p>
+                    <strong>Paper Name:</strong>
+                    <span id="paperName"></span>
+                </p>
 
+                <p>
+                    <strong>Subject:</strong>
+                    <span id="subjectName"></span>
+                </p>
 
-<div class="verification">
+                <p>
+                    <strong>Subject Code:</strong>
+                    <span id="subjectCode"></span>
+                </p>
 
-<strong>
-Live Photo Verification
-</strong>
+                <p>
+                    <strong>Board:</strong>
+                    <span id="board"></span>
+                </p>
 
-<div
-  id="verificationStatus"
-  style="margin-top:10px;"
->
-❌ Not completed
-</div>
+                <p>
+                    <strong>Class:</strong>
+                    <span id="className"></span>
+                </p>
 
+            </div>
 
-<button
-  id="liveButton"
-  class="live-button"
-  onclick="startLiveVerification()"
-  disabled
->
-📷 Take New Live Photo
-</button>
-
-</div>
+        </div>
 
 
-<button
-  id="submitButton"
-  class="submit-button"
-  onclick="submitAnswers()"
-  disabled
->
-📤 Submit Answer Sheet
-</button>
+        <!-- ANSWER PHOTO UPLOAD -->
+
+        <div class="card">
+
+            <h2>1. Upload Answer Sheet</h2>
+
+            <p>
+                Select photographs of your completed answer sheet.
+            </p>
+
+            <input
+                type="file"
+                id="answerFiles"
+                accept="image/*"
+                multiple
+            >
+
+            <div class="note">
+
+                <strong>Important:</strong>
+
+                You can upload a maximum of
+                <strong>20 photos</strong>.
+
+                Please select the photos in the correct page order.
+
+            </div>
+
+            <p id="photoCount">
+                No photos selected.
+            </p>
+
+            <div id="previewGrid" class="preview-grid"></div>
+
+        </div>
 
 
-<button
-  class="back-button"
-  onclick="goBack()"
->
-← Back
-</button>
+        <!-- LIVE PHOTO -->
+
+        <div class="card">
+
+            <h2>2. Live Photo Verification</h2>
+
+            <p>
+                Before submitting your answer sheet, you must take a new live photo.
+            </p>
+
+            <button
+                id="livePhotoButton"
+                class="primary"
+                onclick="startLiveVerification()"
+            >
+                Take New Live Photo
+            </button>
+
+            <div
+                id="liveStatus"
+                class="status info-box"
+            >
+                Live photo verification is required before submission.
+            </div>
+
+        </div>
 
 
-<div
-  id="message"
-  class="message"
-></div>
+        <!-- SUBMIT -->
 
-</div>
+        <div class="card">
+
+            <h2>3. Submit Answer Sheet</h2>
+
+            <p>
+                Please check all pages before submitting.
+            </p>
+
+            <button
+                id="submitButton"
+                class="success"
+                onclick="submitAnswers()"
+                disabled
+            >
+                Submit Answer Sheet
+            </button>
+
+            <button
+                class="secondary"
+                onclick="goBack()"
+            >
+                ← Back
+            </button>
+
+            <div
+                id="submitStatus"
+                class="status"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUCCESS -->
+
+    <div
+        id="successPage"
+        class="card success-page"
+    >
+
+        <div class="success-icon">
+            ✅
+        </div>
+
+        <h2>Answer Sheet Submitted Successfully</h2>
+
+        <p>
+            Your answer sheet has been submitted successfully.
+        </p>
+
+        <p>
+            Please keep your Submission ID for your records.
+        </p>
+
+        <h3>
+            Submission ID:
+            <span id="submissionId"></span>
+        </h3>
+
+        <button
+            class="primary"
+            onclick="goDashboard()"
+        >
+            Back to Student Dashboard
+        </button>
+
+    </div>
 
 </div>
 
 
 <script>
 
-/*******************************************************
- * CONFIG
- *******************************************************/
+
+/* =====================================================
+   API
+===================================================== */
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbzwMrFz4dBr4h_fp6zFT0mCkXSEw0_cqKgZxWBppnUWNTRoxBa9ee4B7Ljx30n9FCiOiA/exec";
+"https://script.google.com/macros/s/AKfycbzwMrFz4dBr4h_fp6zFT0mCkXSEw0_cqKgZxWBppnUWNTRoxBa9ee4B7Ljx30n9FCiOiA/exec";
 
 
-/*******************************************************
- * URL
- *******************************************************/
+/* =====================================================
+   GET DATA
+===================================================== */
 
 const params =
-  new URLSearchParams(
-    window.location.search
-  );
-
+new URLSearchParams(window.location.search);
 
 const questionPaperId =
-  params.get(
-    "questionPaperId"
-  ) || "";
-
+params.get("questionPaperId") || "";
 
 const studentId =
-  localStorage.getItem(
-    "studentId"
-  ) ||
-  localStorage.getItem(
-    "StudentID"
-  ) ||
-  "";
+localStorage.getItem("studentId") || "";
 
 
-/*******************************************************
- * ELEMENTS
- *******************************************************/
-
-const answerFiles =
-  document.getElementById(
-    "answerFiles"
-  );
-
-
-const photoCount =
-  document.getElementById(
-    "photoCount"
-  );
-
-
-const previewGrid =
-  document.getElementById(
-    "previewGrid"
-  );
-
-
-const liveButton =
-  document.getElementById(
-    "liveButton"
-  );
-
-
-const submitButton =
-  document.getElementById(
-    "submitButton"
-  );
-
-
-const verificationStatus =
-  document.getElementById(
-    "verificationStatus"
-  );
-
-
-const message =
-  document.getElementById(
-    "message"
-  );
-
-
-const paperInfo =
-  document.getElementById(
-    "paperInfo"
-  );
-
-
-/*******************************************************
- * VARIABLES
- *******************************************************/
-
-let selectedFiles = [];
+let paperData = null;
 
 let compressedPhotos = [];
 
+let livePhotoVerified = false;
 
-/*******************************************************
- * MESSAGE
- *******************************************************/
-
-function showMessage(
-  text,
-  typeName
-) {
-
-  message.textContent =
-    text;
-
-  message.className =
-    "message " +
-    typeName;
-
-  message.style.display =
-    "block";
-}
+let isSubmitting = false;
 
 
-/*******************************************************
- * LOAD PAPER INFORMATION
- *******************************************************/
+/* =====================================================
+   INITIAL CHECK
+===================================================== */
 
-async function loadPaperInfo() {
+window.addEventListener("load", function() {
 
-  try {
+    document.getElementById("studentIdText").textContent =
+        studentId || "Not found";
 
-    if (
-      !questionPaperId
-    ) {
+    document.getElementById("questionPaperIdText").textContent =
+        questionPaperId || "Not found";
 
-      paperInfo.textContent =
-        "Question Paper ID is missing.";
 
-      return;
+    if (!studentId) {
+
+        showError(
+            "Student login information was not found. Please login again."
+        );
+
+        return;
+
     }
 
 
-    const url =
-      API_URL +
-      "?action=getQuestionPapers";
+    if (!questionPaperId) {
 
+        showError(
+            "Question paper ID is missing."
+        );
 
-    const response =
-      await fetch(
-        url
-      );
+        return;
 
-
-    const data =
-      await response.json();
-
-
-    if (
-      !data.success
-    ) {
-
-      throw new Error(
-        data.message ||
-        "Unable to load question paper."
-      );
     }
 
 
-    const papers =
-      data.papers || [];
+    loadQuestionPaper();
 
+});
 
-    const paper =
-      papers.find(
-        function(p) {
 
-          return (
+/* =====================================================
+   LOAD QUESTION PAPER
+===================================================== */
 
-            String(
-              p.QuestionPaperID
-            ).trim() ===
-
-            String(
-              questionPaperId
-            ).trim()
-
-          );
-
-        }
-      );
-
-
-    if (!paper) {
-
-      paperInfo.textContent =
-        "Question paper not found.";
-
-      return;
-    }
-
-
-    paperInfo.innerHTML =
-
-      "<strong>Question Paper:</strong> " +
-      escapeHtml(
-        paper.PaperName || ""
-      ) +
-
-      "<br><strong>Subject:</strong> " +
-      escapeHtml(
-        paper.SubjectName || ""
-      ) +
-
-      "<br><strong>Subject Code:</strong> " +
-      escapeHtml(
-        paper.SubjectCode || ""
-      );
-
-
-  } catch (error) {
-
-    paperInfo.textContent =
-      "Could not load paper information.";
-  }
-}
-
-
-/*******************************************************
- * ESCAPE HTML
- *******************************************************/
-
-function escapeHtml(text) {
-
-  return String(
-    text
-  )
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-}
-
-
-/*******************************************************
- * HANDLE FILES
- *******************************************************/
-
-function handleFiles() {
-
-  const files =
-    Array.from(
-      answerFiles.files || []
-    );
-
-
-  if (
-    files.length === 0
-  ) {
-
-    selectedFiles = [];
-
-    compressedPhotos = [];
-
-    photoCount.textContent =
-      "No photos selected.";
-
-    previewGrid.innerHTML =
-      "";
-
-    liveButton.disabled =
-      true;
-
-    submitButton.disabled =
-      true;
-
-    return;
-  }
-
-
-  if (
-    files.length > 20
-  ) {
-
-    showMessage(
-      "Maximum 20 answer photos are allowed.",
-      "error"
-    );
-
-
-    answerFiles.value =
-      "";
-
-    selectedFiles = [];
-
-    compressedPhotos = [];
-
-    photoCount.textContent =
-      "No photos selected.";
-
-    previewGrid.innerHTML =
-      "";
-
-    liveButton.disabled =
-      true;
-
-    return;
-  }
-
-
-  selectedFiles =
-    files;
-
-
-  compressedPhotos =
-    [];
-
-
-  photoCount.textContent =
-    files.length +
-    " answer photo(s) selected.";
-
-
-  previewGrid.innerHTML =
-    "";
-
-
-  /*
-   * Reset previous verification.
-   *
-   * New answer photos mean a new
-   * live verification is required.
-   */
-  localStorage.removeItem(
-
-    "submissionLivePhotoCaptured_" +
-    studentId +
-    "_" +
-    questionPaperId
-
-  );
-
-
-  verificationStatus.innerHTML =
-    "❌ Not completed";
-
-
-  submitButton.disabled =
-    true;
-
-
-  liveButton.disabled =
-    false;
-
-
-  /*
-   * Compress and preview.
-   */
-  processAllFiles(
-    files
-  );
-}
-
-
-/*******************************************************
- * PROCESS ALL FILES
- *******************************************************/
-
-async function processAllFiles(
-  files
-) {
-
-  showMessage(
-    "Preparing answer photos...",
-    "info-message"
-  );
-
-
-  for (
-    let i = 0;
-    i < files.length;
-    i++
-  ) {
+async function loadQuestionPaper() {
 
     try {
 
-      const compressed =
-        await compressImage(
-          files[i]
+        const response = await fetch(
+            API_URL +
+            "?action=getQuestionPapers"
         );
 
+        const data =
+            await response.json();
 
-      compressedPhotos[i] =
-        compressed;
+
+        if (!data.success) {
+
+            throw new Error(
+                data.message ||
+                "Unable to load question papers."
+            );
+
+        }
 
 
-      addPreview(
-        compressed,
-        i + 1
-      );
+        const papers =
+            data.questionPapers ||
+            data.papers ||
+            [];
+
+
+        paperData =
+            papers.find(function(paper) {
+
+                const id =
+                    paper.QuestionPaperID ||
+                    paper.questionPaperId ||
+                    paper.id ||
+                    "";
+
+                return String(id) ===
+                       String(questionPaperId);
+
+            });
+
+
+        if (!paperData) {
+
+            throw new Error(
+                "Question paper was not found."
+            );
+
+        }
+
+
+        document.getElementById("paperName").textContent =
+            paperData.PaperName ||
+            paperData.paperName ||
+            "";
+
+        document.getElementById("subjectName").textContent =
+            paperData.SubjectName ||
+            paperData.subjectName ||
+            "";
+
+        document.getElementById("subjectCode").textContent =
+            paperData.SubjectCode ||
+            paperData.subjectCode ||
+            "";
+
+        document.getElementById("board").textContent =
+            paperData.Board ||
+            paperData.board ||
+            "";
+
+        document.getElementById("className").textContent =
+            paperData.Class ||
+            paperData.className ||
+            "";
+
+
+        document.getElementById("loadingCard").style.display =
+            "none";
+
+        document.getElementById("mainContent").style.display =
+            "block";
+
+
+        checkExistingLiveVerification();
 
 
     } catch (error) {
 
-      console.error(
-        error
-      );
+        console.error(error);
+
+        showError(
+            error.message ||
+            "Unable to load question paper."
+        );
+
     }
-  }
 
-
-  showMessage(
-    "Answer photos are ready. Now complete the new live photo verification.",
-    "success"
-  );
 }
 
 
-/*******************************************************
- * COMPRESS IMAGE
- *******************************************************/
+/* =====================================================
+   SELECT ANSWER PHOTOS
+===================================================== */
 
-function compressImage(
-  file
-) {
-
-  return new Promise(
-    function(resolve, reject) {
-
-      const reader =
-        new FileReader();
+document
+.getElementById("answerFiles")
+.addEventListener(
+    "change",
+    handleFileSelection
+);
 
 
-      reader.onload =
-        function(event) {
+async function handleFileSelection(event) {
 
-          const img =
-            new Image();
-
-
-          img.onload =
-            function() {
-
-              const maxWidth =
-                1200;
+    const files =
+        Array.from(event.target.files || []);
 
 
-              let width =
-                img.width;
+    if (files.length === 0) {
+
+        compressedPhotos = [];
+
+        document.getElementById("photoCount").textContent =
+            "No photos selected.";
+
+        document.getElementById("previewGrid").innerHTML =
+            "";
+
+        updateSubmitButton();
+
+        return;
+
+    }
 
 
-              let height =
-                img.height;
+    if (files.length > 20) {
+
+        alert(
+            "Maximum 20 answer-sheet photos are allowed."
+        );
+
+        event.target.value = "";
+
+        compressedPhotos = [];
+
+        document.getElementById("photoCount").textContent =
+            "No photos selected.";
+
+        document.getElementById("previewGrid").innerHTML =
+            "";
+
+        updateSubmitButton();
+
+        return;
+
+    }
 
 
-              if (
-                width > maxWidth
-              ) {
-
-                height =
-                  Math.round(
-                    height *
-                    maxWidth /
-                    width
-                  );
-
-                width =
-                  maxWidth;
-              }
+    showInfo(
+        "Preparing answer photos. Please wait..."
+    );
 
 
-              const canvas =
-                document.createElement(
-                  "canvas"
+    compressedPhotos = [];
+
+
+    const previewGrid =
+        document.getElementById("previewGrid");
+
+    previewGrid.innerHTML = "";
+
+
+    for (
+        let i = 0;
+        i < files.length;
+        i++
+    ) {
+
+        try {
+
+            const compressed =
+                await compressImage(files[i]);
+
+
+            compressedPhotos.push(compressed);
+
+
+            const previewItem =
+                document.createElement("div");
+
+            previewItem.className =
+                "preview-item";
+
+
+            const img =
+                document.createElement("img");
+
+            img.src =
+                compressed;
+
+
+            const pageNumber =
+                document.createElement("div");
+
+            pageNumber.className =
+                "page-number";
+
+            pageNumber.textContent =
+                "Page " + (i + 1);
+
+
+            previewItem.appendChild(img);
+
+            previewItem.appendChild(pageNumber);
+
+            previewGrid.appendChild(
+                previewItem
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+
+    }
+
+
+    document.getElementById("photoCount").textContent =
+        compressedPhotos.length +
+        " photo(s) selected.";
+
+
+    showInfo(
+        "Answer photos are ready. Now take a new live photo."
+    );
+
+
+    updateSubmitButton();
+
+}
+
+
+/* =====================================================
+   COMPRESS IMAGE
+===================================================== */
+
+function compressImage(file) {
+
+    return new Promise(function(resolve, reject) {
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload = function(event) {
+
+            const img =
+                new Image();
+
+
+            img.onload = function() {
+
+                let width =
+                    img.width;
+
+                let height =
+                    img.height;
+
+
+                const maxWidth =
+                    1200;
+
+
+                if (width > maxWidth) {
+
+                    height =
+                        Math.round(
+                            height *
+                            maxWidth /
+                            width
+                        );
+
+                    width =
+                        maxWidth;
+
+                }
+
+
+                const canvas =
+                    document.createElement(
+                        "canvas"
+                    );
+
+
+                canvas.width =
+                    width;
+
+                canvas.height =
+                    height;
+
+
+                const ctx =
+                    canvas.getContext(
+                        "2d"
+                    );
+
+
+                ctx.drawImage(
+                    img,
+                    0,
+                    0,
+                    width,
+                    height
                 );
 
 
-              canvas.width =
-                width;
+                const result =
+                    canvas.toDataURL(
+                        "image/jpeg",
+                        0.65
+                    );
 
 
-              canvas.height =
-                height;
-
-
-              const ctx =
-                canvas.getContext(
-                  "2d"
-                );
-
-
-              ctx.drawImage(
-
-                img,
-
-                0,
-
-                0,
-
-                width,
-
-                height
-
-              );
-
-
-              resolve(
-
-                canvas.toDataURL(
-
-                  "image/jpeg",
-
-                  0.65
-
-                )
-
-              );
+                resolve(result);
 
             };
 
 
-          img.onerror =
-            reject;
+            img.onerror =
+                reject;
 
 
-          img.src =
-            event.target.result;
+            img.src =
+                event.target.result;
+
         };
 
 
-      reader.onerror =
-        reject;
+        reader.onerror =
+            reject;
 
 
-      reader.readAsDataURL(
-        file
-      );
+        reader.readAsDataURL(file);
 
-    }
-  );
+    });
+
 }
 
 
-/*******************************************************
- * ADD PREVIEW
- *******************************************************/
-
-function addPreview(
-  src,
-  number
-) {
-
-  const card =
-    document.createElement(
-      "div"
-    );
-
-
-  card.className =
-    "photo-card";
-
-
-  card.innerHTML =
-
-    '<img src="' +
-    src +
-    '" alt="Answer Page ' +
-    number +
-    '">' +
-
-    '<div class="photo-number">' +
-    "Page " +
-    number +
-    "</div>";
-
-
-  previewGrid.appendChild(
-    card
-  );
-}
-
-
-/*******************************************************
- * START LIVE VERIFICATION
- *******************************************************/
+/* =====================================================
+   LIVE PHOTO VERIFICATION
+===================================================== */
 
 function startLiveVerification() {
 
-  if (
-    compressedPhotos.length === 0
-  ) {
+    if (!questionPaperId) {
 
-    showMessage(
-      "Please select answer photos first.",
-      "error"
-    );
+        alert(
+            "Question paper ID is missing."
+        );
 
-    return;
-  }
+        return;
+
+    }
 
 
-  /*
-   * Clear previous verification.
-   */
-  localStorage.removeItem(
-
-    "submissionLivePhotoCaptured_" +
-    studentId +
-    "_" +
-    questionPaperId
-
-  );
+    const url =
+        "live-photo.html?questionPaperId=" +
+        encodeURIComponent(questionPaperId) +
+        "&type=submission";
 
 
-  /*
-   * Open live photo in NEW TAB.
-   *
-   * This is important because the selected
-   * answer files stay on this page.
-   */
-  const liveUrl =
-
-    "live-photo.html" +
-
-    "?questionPaperId=" +
-
-    encodeURIComponent(
-      questionPaperId
-    ) +
-
-    "&type=submission";
-
-
-  const newWindow =
     window.open(
-      liveUrl,
-      "_blank"
+        url,
+        "_blank"
     );
 
 
-  if (
-    !newWindow
-  ) {
-
-    showMessage(
-
-      "The browser blocked the new window. Please allow pop-ups for this website and try again.",
-
-      "error"
-
+    showInfo(
+        "A new page has opened. Take a new live photo there."
     );
 
-    return;
-  }
 
+    startVerificationCheck();
 
-  showMessage(
-
-    "Live photo page opened. Complete the photo verification there and return to this page.",
-
-    "info-message"
-
-  );
 }
 
 
-/*******************************************************
- * CHECK LIVE PHOTO STATUS
- *******************************************************/
+/* =====================================================
+   CHECK LIVE PHOTO
+===================================================== */
+
+let verificationTimer = null;
+
+
+function startVerificationCheck() {
+
+    if (verificationTimer) {
+
+        clearInterval(
+            verificationTimer
+        );
+
+    }
+
+
+    verificationTimer =
+        setInterval(
+            checkLiveVerification,
+            1000
+        );
+
+}
+
 
 function checkLiveVerification() {
 
-  const key =
+    const key =
+        "submissionLivePhotoCaptured_" +
+        studentId +
+        "_" +
+        questionPaperId;
 
-    "submissionLivePhotoCaptured_" +
 
-    studentId +
+    const verified =
+        localStorage.getItem(key);
 
-    "_" +
 
-    questionPaperId;
+    if (verified === "yes") {
 
+        livePhotoVerified =
+            true;
 
-  const verified =
-    localStorage.getItem(
-      key
-    );
 
+        if (verificationTimer) {
 
-  if (
-    verified === "yes"
-  ) {
+            clearInterval(
+                verificationTimer
+            );
 
-    verificationStatus.innerHTML =
-      "✅ New live photo completed";
-
-
-    submitButton.disabled =
-      false;
-
-
-    liveButton.textContent =
-      "📷 Retake Live Photo";
-
-
-    showMessage(
-
-      "✅ Live photo verification completed. You can now submit your answer sheet.",
-
-      "success"
-
-    );
-
-  }
-}
-
-
-/*******************************************************
- * SUBMIT ANSWERS
- *******************************************************/
-
-async function submitAnswers() {
-
-  if (
-    compressedPhotos.length === 0
-  ) {
-
-    showMessage(
-      "Please select answer photos.",
-      "error"
-    );
-
-    return;
-  }
-
-
-  const verificationKey =
-
-    "submissionLivePhotoCaptured_" +
-
-    studentId +
-
-    "_" +
-
-    questionPaperId;
-
-
-  const verified =
-    localStorage.getItem(
-      verificationKey
-    );
-
-
-  if (
-    verified !== "yes"
-  ) {
-
-    showMessage(
-
-      "Please complete the new live photo verification first.",
-
-      "error"
-
-    );
-
-    return;
-  }
-
-
-  if (
-    compressedPhotos.length > 20
-  ) {
-
-    showMessage(
-
-      "Maximum 20 answer photos are allowed.",
-
-      "error"
-
-    );
-
-    return;
-  }
-
-
-  submitButton.disabled =
-    true;
-
-
-  liveButton.disabled =
-    true;
-
-
-  showMessage(
-
-    "Uploading answer sheet. Please wait and do not close this page...",
-
-    "info-message"
-
-  );
-
-
-  try {
-
-    /*
-     * IMPORTANT:
-     *
-     * We DO NOT send a live-photo image.
-     *
-     * Only send:
-     *
-     * livePhotoCaptured = yes
-     */
-    const payload = {
-
-      action:
-        "submitAnswer",
-
-      studentId:
-        studentId,
-
-      questionPaperId:
-        questionPaperId,
-
-      livePhotoCaptured:
-        "yes",
-
-      answerPhotos:
-        compressedPhotos
-
-    };
-
-
-    const response =
-      await fetch(
-
-        API_URL,
-
-        {
-
-          method:
-            "POST",
-
-          headers: {
-
-            "Content-Type":
-              "text/plain;charset=utf-8"
-
-          },
-
-          body:
-            JSON.stringify(
-              payload
-            )
+            verificationTimer =
+                null;
 
         }
 
-      );
+
+        document.getElementById(
+            "livePhotoButton"
+        ).textContent =
+            "✓ Live Photo Verified";
 
 
-    const data =
-      await response.json();
+        document.getElementById(
+            "livePhotoButton"
+        ).disabled =
+            true;
+
+
+        const liveStatus =
+            document.getElementById(
+                "liveStatus"
+            );
+
+
+        liveStatus.className =
+            "status success-box";
+
+
+        liveStatus.style.display =
+            "block";
+
+
+        liveStatus.textContent =
+            "✓ Live photo verification completed.";
+
+
+        updateSubmitButton();
+
+    }
+
+}
+
+
+/* =====================================================
+   CHECK EXISTING VERIFICATION
+===================================================== */
+
+function checkExistingLiveVerification() {
+
+    const key =
+        "submissionLivePhotoCaptured_" +
+        studentId +
+        "_" +
+        questionPaperId;
 
 
     if (
-      !data.success
+        localStorage.getItem(key) ===
+        "yes"
     ) {
 
-      throw new Error(
+        localStorage.removeItem(key);
 
-        data.message ||
-        "Answer submission failed."
-
-      );
     }
 
 
-    showMessage(
-
-      "✅ Answer sheet submitted successfully. " +
-      data.answerPhotoCount +
-      " photo(s) uploaded.",
-
-      "success"
-
-    );
+    livePhotoVerified =
+        false;
 
 
-    submitButton.textContent =
-      "✅ Submitted";
+    updateSubmitButton();
+
+}
 
 
-    /*
-     * Clear verification after successful submission.
-     */
-    localStorage.removeItem(
-      verificationKey
-    );
+/* =====================================================
+   UPDATE SUBMIT BUTTON
+===================================================== */
+
+function updateSubmitButton() {
+
+    const submitButton =
+        document.getElementById(
+            "submitButton"
+        );
 
 
-    localStorage.removeItem(
-      "submissionLivePhotoLocal"
-    );
-
-
-    answerFiles.value =
-      "";
-
-
-    selectedFiles =
-      [];
-
-
-    compressedPhotos =
-      [];
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    showMessage(
-
-      "❌ Submission failed: " +
-      error.message,
-
-      "error"
-
-    );
+    const photosReady =
+        compressedPhotos.length > 0;
 
 
     submitButton.disabled =
-      false;
+        !photosReady ||
+        !livePhotoVerified ||
+        isSubmitting;
 
-
-    liveButton.disabled =
-      false;
-  }
 }
 
 
-/*******************************************************
- * BACK
- *******************************************************/
+/* =====================================================
+   SUBMIT ANSWERS
+===================================================== */
+
+async function submitAnswers() {
+
+    if (isSubmitting) {
+
+        return;
+
+    }
+
+
+    if (!studentId) {
+
+        alert(
+            "Student login not found."
+        );
+
+        return;
+
+    }
+
+
+    if (!questionPaperId) {
+
+        alert(
+            "Question paper ID is missing."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        compressedPhotos.length === 0
+    ) {
+
+        alert(
+            "Please select your answer-sheet photos."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        compressedPhotos.length > 20
+    ) {
+
+        alert(
+            "Maximum 20 photos are allowed."
+        );
+
+        return;
+
+    }
+
+
+    if (!livePhotoVerified) {
+
+        alert(
+            "Please complete the new live photo verification first."
+        );
+
+        return;
+
+    }
+
+
+    const confirmation =
+        confirm(
+            "Are you sure you want to submit your answer sheet?\n\nAfter submission, you cannot change the uploaded pages."
+        );
+
+
+    if (!confirmation) {
+
+        return;
+
+    }
+
+
+    isSubmitting =
+        true;
+
+
+    updateSubmitButton();
+
+
+    showSubmitStatus(
+        "Uploading answer sheet. Please wait. Do not close this page...",
+        "info"
+    );
+
+
+    try {
+
+        const submissionId =
+            "SUB-" +
+            Date.now() +
+            "-" +
+            Math.floor(
+                Math.random() *
+                10000
+            );
+
+
+        const payload = {
+
+            action:
+                "submitAnswer",
+
+            submissionId:
+                submissionId,
+
+            studentId:
+                studentId,
+
+            questionPaperId:
+                questionPaperId,
+
+            livePhotoCaptured:
+                "yes",
+
+            answerPhotos:
+                compressedPhotos
+
+        };
+
+
+        const response =
+            await fetch(
+                API_URL,
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+
+                    },
+
+                    body:
+                        JSON.stringify(
+                            payload
+                        )
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            throw new Error(
+                data.message ||
+                "Answer sheet submission failed."
+            );
+
+        }
+
+
+        /* Clear verification */
+
+        const verificationKey =
+            "submissionLivePhotoCaptured_" +
+            studentId +
+            "_" +
+            questionPaperId;
+
+
+        localStorage.removeItem(
+            verificationKey
+        );
+
+
+        localStorage.removeItem(
+            "submissionLivePhotoLocal"
+        );
+
+
+        /* Show success */
+
+        document.getElementById(
+            "mainContent"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "successPage"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "submissionId"
+        ).textContent =
+            data.submissionId ||
+            submissionId;
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        isSubmitting =
+            false;
+
+
+        updateSubmitButton();
+
+
+        showSubmitStatus(
+            error.message ||
+            "Submission failed. Please try again.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   STATUS FUNCTIONS
+===================================================== */
+
+function showInfo(message) {
+
+    const element =
+        document.getElementById(
+            "submitStatus"
+        );
+
+
+    element.className =
+        "status info-box";
+
+
+    element.style.display =
+        "block";
+
+
+    element.textContent =
+        message;
+
+}
+
+
+function showSubmitStatus(
+    message,
+    type
+) {
+
+    const element =
+        document.getElementById(
+            "submitStatus"
+        );
+
+
+    element.style.display =
+        "block";
+
+
+    if (type === "error") {
+
+        element.className =
+            "status error-box";
+
+    } else {
+
+        element.className =
+            "status info-box";
+
+    }
+
+
+    element.textContent =
+        message;
+
+}
+
+
+function showError(message) {
+
+    const loading =
+        document.getElementById(
+            "loadingCard"
+        );
+
+
+    loading.innerHTML =
+        `
+        <h2 style="color:#b02a37;">
+        Unable to Load
+        </h2>
+
+        <p>
+        ${escapeHtml(message)}
+        </p>
+
+        <button
+            class="secondary"
+            onclick="goBack()"
+        >
+        ← Back
+        </button>
+        `;
+
+}
+
+
+function escapeHtml(text) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+    div.textContent =
+        text;
+
+    return div.innerHTML;
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
 
 function goBack() {
 
-  window.location.href =
-    "question-papers.html";
+    window.location.href =
+        "student-dashboard.html";
+
 }
 
 
-/*******************************************************
- * PERIODIC CHECK
- *
- * Detects when the new live photo
- * is completed in another tab.
- *******************************************************/
+function goDashboard() {
 
-setInterval(
+    window.location.href =
+        "student-dashboard.html";
 
-  checkLiveVerification,
-
-  1000
-
-);
-
-
-/*******************************************************
- * STORAGE EVENT
- *
- * Fires when localStorage changes
- * in another tab.
- *******************************************************/
-
-window.addEventListener(
-
-  "storage",
-
-  function(event) {
-
-    if (
-      event.key ===
-
-      "submissionLivePhotoCaptured_" +
-
-      studentId +
-
-      "_" +
-
-      questionPaperId
-    ) {
-
-      checkLiveVerification();
-
-    }
-
-  }
-
-);
-
-
-/*******************************************************
- * PAGE VISIBILITY
- *******************************************************/
-
-document.addEventListener(
-
-  "visibilitychange",
-
-  function() {
-
-    if (
-      !document.hidden
-    ) {
-
-      checkLiveVerification();
-
-    }
-
-  }
-
-);
-
-
-/*******************************************************
- * INITIAL LOAD
- *******************************************************/
-
-if (
-  !studentId
-) {
-
-  showMessage(
-
-    "Student login information was not found. Please login again.",
-
-    "error"
-
-  );
 }
-
-
-if (
-  !questionPaperId
-) {
-
-  showMessage(
-
-    "Question Paper ID is missing.",
-
-    "error"
-
-  );
-}
-
-
-loadPaperInfo();
-
-checkLiveVerification();
 
 </script>
 
