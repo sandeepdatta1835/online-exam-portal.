@@ -125,6 +125,65 @@ button:hover{
     color:#c62828;
 }
 
+
+/* =========================================================
+   ASSIGNED SUBJECTS SECTION
+========================================================= */
+
+.subject-section{
+    display:none;
+    background:white;
+    margin-top:20px;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.subject-section h2{
+    margin-top:0;
+    color:#17365d;
+}
+
+.subject-list{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+    margin-top:15px;
+}
+
+.subject-card{
+    border:1px solid #ddd;
+    padding:16px;
+    border-radius:8px;
+    background:#fafafa;
+}
+
+.subject-card h3{
+    margin:0 0 8px;
+    color:#17365d;
+}
+
+.subject-card p{
+    margin:5px 0;
+    color:#555;
+}
+
+.subject-code{
+    font-size:18px;
+    font-weight:bold;
+    color:#198754;
+}
+
+.close-btn{
+    background:#777;
+    margin-top:15px;
+}
+
+
+/* =========================================================
+   SUBMISSION SECTION
+========================================================= */
+
 .paper-section{
     display:none;
     background:white;
@@ -161,21 +220,26 @@ button:hover{
     margin-top:10px;
 }
 
-.close-btn{
-    background:#777;
-    margin-top:10px;
-}
 </style>
 </head>
 
 <body>
 
 <div class="header">
+
     <h1>Online Exam Portal</h1>
+
     <p>Student Dashboard</p>
+
 </div>
 
+
 <div class="container">
+
+
+    <!-- =====================================================
+         STUDENT INFORMATION
+    ====================================================== -->
 
     <div class="student-box">
 
@@ -221,24 +285,36 @@ button:hover{
     <div id="message"></div>
 
 
+    <!-- =====================================================
+         DASHBOARD CARDS
+    ====================================================== -->
+
     <div class="cards">
 
+
         <!-- SUBJECTS -->
+
         <div class="card">
+
             <h3>📚 My Subjects</h3>
 
             <p>
-                View subjects assigned to your student account.
+                View only the subjects assigned to your student account.
             </p>
 
             <button onclick="openSubjects()">
-                View Subjects
+
+                View Assigned Subjects
+
             </button>
+
         </div>
 
 
         <!-- QUESTION PAPERS -->
+
         <div class="card">
+
             <h3>📄 Question Papers</h3>
 
             <p>
@@ -246,13 +322,18 @@ button:hover{
             </p>
 
             <button onclick="openQuestionPapers()">
+
                 Question Papers
+
             </button>
+
         </div>
 
 
         <!-- SUBMISSIONS -->
+
         <div class="card">
+
             <h3>📤 My Submissions</h3>
 
             <p>
@@ -260,13 +341,18 @@ button:hover{
             </p>
 
             <button onclick="openSubmissions()">
+
                 Submit Answer Sheet
+
             </button>
+
         </div>
 
 
         <!-- RESULTS -->
+
         <div class="card">
+
             <h3>📊 My Results</h3>
 
             <p>
@@ -274,32 +360,82 @@ button:hover{
             </p>
 
             <button onclick="openResults()">
+
                 View Results
+
             </button>
+
         </div>
 
 
         <!-- LOGOUT -->
+
         <div class="card">
+
             <h3>🚪 Logout</h3>
 
             <p>
                 Logout from your student account.
             </p>
 
-            <button class="logout" onclick="logout()">
+            <button
+                class="logout"
+                onclick="logout()">
+
                 Logout
+
             </button>
+
         </div>
 
     </div>
 
 
-    <!-- SUBMISSION PAPER SELECTION -->
+    <!-- =====================================================
+         ASSIGNED SUBJECTS
+    ====================================================== -->
 
-    <div id="submissionSection" class="paper-section">
+    <div
+        id="subjectSection"
+        class="subject-section">
 
-        <h2>📤 Select Question Paper for Submission</h2>
+        <h2>📚 My Assigned Subjects</h2>
+
+        <p>
+            These are the subjects assigned to your student account.
+        </p>
+
+        <div id="subjectMessage">
+            Loading assigned subjects...
+        </div>
+
+        <div
+            id="subjectList"
+            class="subject-list">
+        </div>
+
+        <button
+            class="close-btn"
+            onclick="closeSubjects()">
+
+            Close
+
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUBMISSION PAPER SELECTION
+    ====================================================== -->
+
+    <div
+        id="submissionSection"
+        class="paper-section">
+
+        <h2>
+            📤 Select Question Paper for Submission
+        </h2>
 
         <p>
             Select the question paper for which you want to submit your answer sheet.
@@ -311,16 +447,26 @@ button:hover{
 
         <div id="paperList"></div>
 
-        <button class="close-btn" onclick="closeSubmissions()">
+        <button
+            class="close-btn"
+            onclick="closeSubmissions()">
+
             Close
+
         </button>
 
     </div>
+
 
 </div>
 
 
 <script>
+
+
+/* =========================================================
+   API
+========================================================= */
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbzwMrFz4dBr4h_fp6zFT0mCkXSEw0_cqKgZxWBppnUWNTRoxBa9ee4B7Ljx30n9FCiOiA/exec";
@@ -333,22 +479,30 @@ const API_URL =
 function getStudentId(){
 
     const possibleKeys = [
+
         "studentId",
         "StudentID",
         "studentID",
         "loggedInStudentId",
         "loggedInStudentID",
         "currentStudentId"
+
     ];
+
 
     for(const key of possibleKeys){
 
-        const value = localStorage.getItem(key);
+        const value =
+            localStorage.getItem(key);
 
-        if(value && value.trim() !== ""){
+
+        if(value &&
+           value.trim() !== ""){
+
             return value.trim();
         }
     }
+
 
     return "";
 }
@@ -360,89 +514,395 @@ function getStudentId(){
 
 async function loadStudent(){
 
-    const studentId = getStudentId();
+    const studentId =
+        getStudentId();
+
 
     if(!studentId){
 
         document.getElementById("message").innerHTML =
-            '<div class="error">❌ Student ID not found. Please login again.</div>';
+
+            '<div class="error">' +
+            '❌ Student ID not found. Please login again.' +
+            '</div>';
 
         return;
     }
 
-    document.getElementById("studentId").textContent =
-        studentId;
+
+    document.getElementById(
+        "studentId"
+    ).textContent = studentId;
+
 
     try{
 
         const url =
+
             API_URL +
             "?action=getStudent" +
             "&studentId=" +
             encodeURIComponent(studentId);
 
+
         const response =
             await fetch(url);
+
 
         const data =
             await response.json();
 
+
         if(!data.success){
 
-            document.getElementById("message").innerHTML =
+            document.getElementById(
+                "message"
+            ).innerHTML =
+
                 '<div class="error">❌ ' +
-                (data.message || "Unable to load student details.") +
+                escapeHTML(
+                    data.message ||
+                    "Unable to load student details."
+                ) +
                 '</div>';
 
             return;
         }
 
-        const student =
-            data.student || data.data || data;
 
-        document.getElementById("studentName").textContent =
+        const student =
+            data.student ||
+            data.data ||
+            data;
+
+
+        document.getElementById(
+            "studentName"
+        ).textContent =
+
             student.StudentName ||
             student.studentName ||
             "";
 
-        document.getElementById("enrollmentNo").textContent =
+
+        document.getElementById(
+            "enrollmentNo"
+        ).textContent =
+
             student.EnrollmentNo ||
             student.enrollmentNo ||
             "";
 
-        document.getElementById("board").textContent =
+
+        document.getElementById(
+            "board"
+        ).textContent =
+
             student.Board ||
             student.board ||
             "";
 
-        document.getElementById("className").textContent =
+
+        document.getElementById(
+            "className"
+        ).textContent =
+
             student.Class ||
             student.class ||
             "";
 
-        document.getElementById("mobile").textContent =
+
+        document.getElementById(
+            "mobile"
+        ).textContent =
+
             student.Mobile ||
             student.mobile ||
             "";
+
 
     }catch(error){
 
         console.error(error);
 
-        document.getElementById("message").innerHTML =
-            '<div class="error">❌ Unable to load student information.</div>';
+
+        document.getElementById(
+            "message"
+        ).innerHTML =
+
+            '<div class="error">' +
+            '❌ Unable to load student information.' +
+            '</div>';
     }
 }
 
 
 /* =========================================================
-   SUBJECTS
+   ASSIGNED SUBJECTS
 ========================================================= */
 
-function openSubjects(){
+async function openSubjects(){
 
-    window.location.href =
-        "subjects.html";
+    const section =
+        document.getElementById(
+            "subjectSection"
+        );
+
+    const message =
+        document.getElementById(
+            "subjectMessage"
+        );
+
+    const subjectList =
+        document.getElementById(
+            "subjectList"
+        );
+
+
+    section.style.display =
+        "block";
+
+
+    message.innerHTML =
+        "Loading assigned subjects...";
+
+
+    subjectList.innerHTML =
+        "";
+
+
+    const studentId =
+        getStudentId();
+
+
+    if(!studentId){
+
+        message.innerHTML =
+            '<div class="error">' +
+            '❌ Student ID is required. Please login again.' +
+            '</div>';
+
+        return;
+    }
+
+
+    try{
+
+        /*
+         * IMPORTANT:
+         * Get subjects only for this student.
+         */
+
+        const url =
+
+            API_URL +
+            "?action=getStudentSubjects" +
+            "&studentId=" +
+            encodeURIComponent(studentId);
+
+
+        const response =
+            await fetch(url);
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Assigned subjects response:",
+            data
+        );
+
+
+        if(!data.success){
+
+            message.innerHTML =
+                '<div class="error">❌ ' +
+                escapeHTML(
+                    data.message ||
+                    "Unable to load assigned subjects."
+                ) +
+                '</div>';
+
+            return;
+        }
+
+
+        /*
+         * Support different response property names.
+         */
+
+        let subjects =
+
+            data.subjects ||
+            data.Subjects ||
+            data.data ||
+            data.studentSubjects ||
+            [];
+
+
+        if(!Array.isArray(subjects)){
+
+            subjects = [];
+        }
+
+
+        if(subjects.length === 0){
+
+            message.innerHTML =
+
+                '<div class="error">' +
+                '❌ No subjects have been assigned to your account yet.' +
+                '</div>';
+
+            return;
+        }
+
+
+        message.innerHTML =
+
+            '<div class="success">' +
+            '✅ Your assigned subjects are shown below.' +
+            '</div>';
+
+
+        subjects.forEach(function(subject){
+
+            /*
+             * Support both:
+             * subject object
+             * and simple subject values.
+             */
+
+            const subjectId =
+
+                subject.SubjectID ||
+                subject.subjectId ||
+                subject.id ||
+                "";
+
+
+            const subjectCode =
+
+                subject.SubjectCode ||
+                subject.subjectCode ||
+                subject.code ||
+                "";
+
+
+            const subjectName =
+
+                subject.SubjectName ||
+                subject.subjectName ||
+                subject.name ||
+                subject.Subject ||
+                "";
+
+
+            const board =
+
+                subject.Board ||
+                subject.board ||
+                "";
+
+
+            const className =
+
+                subject.Class ||
+                subject.class ||
+                "";
+
+
+            const div =
+                document.createElement("div");
+
+
+            div.className =
+                "subject-card";
+
+
+            div.innerHTML = `
+
+                <h3>
+                    📚 ${escapeHTML(
+                        subjectName ||
+                        "Assigned Subject"
+                    )}
+                </h3>
+
+                <p class="subject-code">
+                    ${escapeHTML(
+                        subjectCode
+                    )}
+                </p>
+
+                <p>
+                    <strong>Subject ID:</strong>
+                    ${escapeHTML(
+                        subjectId
+                    )}
+                </p>
+
+                ${
+                    board
+                    ?
+                    `
+                    <p>
+                        <strong>Board:</strong>
+                        ${escapeHTML(board)}
+                    </p>
+                    `
+                    :
+                    ""
+                }
+
+                ${
+                    className
+                    ?
+                    `
+                    <p>
+                        <strong>Class:</strong>
+                        ${escapeHTML(className)}
+                    </p>
+                    `
+                    :
+                    ""
+                }
+
+            `;
+
+
+            subjectList.appendChild(div);
+
+        });
+
+
+    }catch(error){
+
+        console.error(error);
+
+
+        message.innerHTML =
+
+            '<div class="error">' +
+            '❌ Unable to load assigned subjects.' +
+            '<br><br>' +
+            'Please try again.' +
+            '</div>';
+    }
+}
+
+
+/* =========================================================
+   CLOSE SUBJECTS
+========================================================= */
+
+function closeSubjects(){
+
+    document.getElementById(
+        "subjectSection"
+    ).style.display = "none";
 }
 
 
@@ -464,35 +924,43 @@ function openQuestionPapers(){
 async function openSubmissions(){
 
     const section =
-        document.getElementById("submissionSection");
+        document.getElementById(
+            "submissionSection"
+        );
 
     const message =
-        document.getElementById("submissionMessage");
+        document.getElementById(
+            "submissionMessage"
+        );
 
     const paperList =
-        document.getElementById("paperList");
+        document.getElementById(
+            "paperList"
+        );
 
-    section.style.display = "block";
+
+    section.style.display =
+        "block";
+
 
     message.innerHTML =
         "Loading question papers...";
 
-    paperList.innerHTML = "";
+
+    paperList.innerHTML =
+        "";
 
 
     const studentId =
         getStudentId();
 
 
-    /*
-       IMPORTANT:
-       Student ID is now sent to Apps Script.
-    */
-
     if(!studentId){
 
         message.innerHTML =
-            '<div class="error">❌ Student ID is required. Please login again.</div>';
+            '<div class="error">' +
+            '❌ Student ID is required. Please login again.' +
+            '</div>';
 
         return;
     }
@@ -501,6 +969,7 @@ async function openSubmissions(){
     try{
 
         const url =
+
             API_URL +
             "?action=getPublishedQuestionPapers" +
             "&studentId=" +
@@ -525,8 +994,10 @@ async function openSubmissions(){
 
             message.innerHTML =
                 '<div class="error">❌ ' +
-                (data.message ||
-                 "Unable to load question papers.") +
+                escapeHTML(
+                    data.message ||
+                    "Unable to load question papers."
+                ) +
                 '</div>';
 
             return;
@@ -534,6 +1005,7 @@ async function openSubmissions(){
 
 
         let papers =
+
             data.questionPapers ||
             data.papers ||
             data.data ||
@@ -549,6 +1021,7 @@ async function openSubmissions(){
         if(papers.length === 0){
 
             message.innerHTML =
+
                 '<div class="error">' +
                 '❌ No published question papers are available for submission.' +
                 '</div>';
@@ -558,6 +1031,7 @@ async function openSubmissions(){
 
 
         message.innerHTML =
+
             '<div class="success">' +
             'Select a question paper below.' +
             '</div>';
@@ -566,6 +1040,7 @@ async function openSubmissions(){
         papers.forEach(function(paper){
 
             const paperId =
+
                 paper.QuestionPaperID ||
                 paper.questionPaperId ||
                 paper.id ||
@@ -573,30 +1048,35 @@ async function openSubmissions(){
 
 
             const paperName =
+
                 paper.PaperName ||
                 paper.paperName ||
                 "Question Paper";
 
 
             const subjectCode =
+
                 paper.SubjectCode ||
                 paper.subjectCode ||
                 "";
 
 
             const subjectName =
+
                 paper.SubjectName ||
                 paper.subjectName ||
                 "";
 
 
             const board =
+
                 paper.Board ||
                 paper.board ||
                 "";
 
 
             const className =
+
                 paper.Class ||
                 paper.class ||
                 "";
@@ -610,13 +1090,16 @@ async function openSubmissions(){
             const div =
                 document.createElement("div");
 
+
             div.className =
                 "paper-card";
 
 
             div.innerHTML = `
 
-                <h3>📄 ${escapeHTML(paperName)}</h3>
+                <h3>
+                    📄 ${escapeHTML(paperName)}
+                </h3>
 
                 <p>
                     <strong>Subject Code:</strong>
@@ -658,7 +1141,9 @@ async function openSubmissions(){
 
         console.error(error);
 
+
         message.innerHTML =
+
             '<div class="error">' +
             '❌ Unable to load question papers.<br>' +
             'Please check your internet connection and try again.' +
@@ -690,15 +1175,15 @@ function startSubmission(questionPaperId){
 
 
 /* =========================================================
-   CLOSE SUBMISSION SECTION
+   CLOSE SUBMISSIONS
 ========================================================= */
 
 function closeSubmissions(){
 
     document.getElementById(
         "submissionSection"
-    ).style.display = "none";
-
+    ).style.display =
+        "none";
 }
 
 
@@ -718,10 +1203,6 @@ function openResults(){
 ========================================================= */
 
 function logout(){
-
-    /*
-       Remove login-related information.
-    */
 
     const keysToRemove = [
 
@@ -759,35 +1240,71 @@ function logout(){
 
 function escapeHTML(value){
 
-    if(value === null ||
-       value === undefined){
+    if(
+        value === null ||
+        value === undefined
+    ){
 
         return "";
     }
 
 
     return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 }
 
 
 function escapeJS(value){
 
-    if(value === null ||
-       value === undefined){
+    if(
+        value === null ||
+        value === undefined
+    ){
 
         return "";
     }
 
 
     return String(value)
-        .replace(/\\/g, "\\\\")
-        .replace(/'/g, "\\'")
-        .replace(/"/g, '\\"');
+
+        .replace(
+            /\\/g,
+            "\\\\"
+        )
+
+        .replace(
+            /'/g,
+            "\\'"
+        )
+
+        .replace(
+            /"/g,
+            '\\"'
+        );
 }
 
 
