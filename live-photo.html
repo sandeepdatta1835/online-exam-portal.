@@ -1,18 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Live Photo Verification</title>
 
 <style>
-
 * {
   box-sizing: border-box;
 }
@@ -20,97 +13,65 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #f1f5f9;
-  color: #111827;
+  background: #f4f7fb;
+  color: #222;
 }
 
 .container {
   max-width: 700px;
-  margin: auto;
+  margin: 30px auto;
   padding: 20px;
 }
 
 .card {
   background: white;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.10);
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.10);
+  text-align: center;
 }
 
 h1 {
-  text-align: center;
   margin-top: 0;
+  color: #1f4e79;
 }
 
-.mode {
-  text-align: center;
-  padding: 12px;
-  border-radius: 10px;
-  background: #eef2ff;
-  margin-bottom: 20px;
-  font-weight: bold;
-}
-
-.instructions {
-  background: #f8fafc;
-  padding: 15px;
-  border-radius: 10px;
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-
-.camera-box {
+video,
+canvas,
+#preview {
   width: 100%;
-  background: #111827;
+  max-width: 500px;
   border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-}
-
-video {
-  width: 100%;
+  margin: 15px auto;
   display: block;
-  background: black;
+  background: #111;
 }
 
-canvas {
+#preview {
   display: none;
-}
-
-.preview {
-  width: 100%;
-  display: none;
-  border-radius: 12px;
 }
 
 button {
-  width: 100%;
-  padding: 14px;
-  border: 0;
-  border-radius: 10px;
+  border: none;
+  padding: 13px 20px;
+  margin: 7px;
+  border-radius: 8px;
   font-size: 16px;
-  font-weight: bold;
   cursor: pointer;
-  margin-top: 12px;
 }
 
-.start {
-  background: #2563eb;
+.primary {
+  background: #1f4e79;
   color: white;
 }
 
-.capture {
-  background: #059669;
+.success {
+  background: #198754;
   color: white;
 }
 
-.continue {
-  background: #7c3aed;
-  color: white;
-}
-
-.back {
-  background: #64748b;
+.secondary {
+  background: #6c757d;
   color: white;
 }
 
@@ -122,32 +83,14 @@ button:disabled {
 .message {
   margin-top: 15px;
   padding: 12px;
-  border-radius: 10px;
-  display: none;
-  line-height: 1.5;
-}
-
-.success {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.error {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.info {
-  background: #dbeafe;
-  color: #1e40af;
+  border-radius: 8px;
+  background: #eef4ff;
 }
 
 .hidden {
   display: none !important;
 }
-
 </style>
-
 </head>
 
 <body>
@@ -158,806 +101,419 @@ button:disabled {
 
     <h1>Live Photo Verification</h1>
 
-    <div
-      id="modeBox"
-      class="mode"
-    >
-      Loading...
+    <p>Please take a new live photo to continue.</p>
+
+    <video id="camera" autoplay playsinline></video>
+
+    <canvas id="canvas" class="hidden"></canvas>
+
+    <img id="preview" alt="Live Photo Preview">
+
+    <div>
+      <button id="startCameraBtn" class="primary" onclick="startCamera()">
+        Start Camera
+      </button>
+
+      <button id="captureBtn" class="success" onclick="capturePhoto()" disabled>
+        Take Live Photo
+      </button>
+
+      <button id="continueBtn" class="primary" onclick="continueProcess()" disabled>
+        Continue
+      </button>
+
+      <button class="secondary" onclick="goBack()">
+        ← Back
+      </button>
     </div>
 
-    <div class="instructions">
-
-      <strong>Please follow these instructions:</strong>
-
-      <ul>
-
-        <li>Allow camera permission.</li>
-
-        <li>Keep your face clearly visible.</li>
-
-        <li>Make sure the photo is clear.</li>
-
-        <li>Take a new live photo.</li>
-
-        <li>The live photo is checked only in this browser.</li>
-
-        <li>The live photo is NOT uploaded to Google Drive.</li>
-
-      </ul>
-
+    <div id="message" class="message">
+      Camera is ready to start.
     </div>
-
-
-    <div class="camera-box">
-
-      <video
-        id="video"
-        autoplay
-        playsinline
-        muted
-      ></video>
-
-      <canvas
-        id="canvas"
-      ></canvas>
-
-      <img
-        id="preview"
-        class="preview"
-        alt="Live Photo Preview"
-      >
-
-    </div>
-
-
-    <button
-      id="startButton"
-      class="start"
-      onclick="startCamera()"
-    >
-      📷 Start Camera
-    </button>
-
-
-    <button
-      id="captureButton"
-      class="capture hidden"
-      onclick="capturePhoto()"
-    >
-      📸 Take Live Photo
-    </button>
-
-
-    <button
-      id="continueButton"
-      class="continue hidden"
-      onclick="continueProcess()"
-    >
-      Continue
-    </button>
-
-
-    <button
-      id="backButton"
-      class="back"
-      onclick="goBack()"
-    >
-      ← Back
-    </button>
-
-
-    <div
-      id="message"
-      class="message"
-    ></div>
 
   </div>
 
 </div>
 
-
 <script>
 
-/*******************************************************
- * READ URL
- *******************************************************/
+const API_URL =
+"https://script.google.com/macros/s/AKfycbzwMrFz4dBr4h_fp6zFT0mCkXSEw0_cqKgZxWBppnUWNTRoxBa9ee4B7Ljx30n9FCiOiA/exec";
 
-const params =
-  new URLSearchParams(
-    window.location.search
-  );
+const params = new URLSearchParams(window.location.search);
 
+const questionPaperId = params.get("questionPaperId") || "";
 
-const questionPaperId =
-  params.get(
-    "questionPaperId"
-  ) || "";
+const type = params.get("type") || "download";
 
+const camera = document.getElementById("camera");
+const canvas = document.getElementById("canvas");
+const preview = document.getElementById("preview");
 
-const type =
-  (
-    params.get(
-      "type"
-    ) || "download"
-  )
-  .toLowerCase();
+const startCameraBtn =
+document.getElementById("startCameraBtn");
 
+const captureBtn =
+document.getElementById("captureBtn");
 
-const studentId =
-  localStorage.getItem(
-    "studentId"
-  ) ||
-  localStorage.getItem(
-    "StudentID"
-  ) ||
-  "";
-
-
-/*******************************************************
- * ELEMENTS
- *******************************************************/
-
-const video =
-  document.getElementById(
-    "video"
-  );
-
-
-const canvas =
-  document.getElementById(
-    "canvas"
-  );
-
-
-const preview =
-  document.getElementById(
-    "preview"
-  );
-
-
-const startButton =
-  document.getElementById(
-    "startButton"
-  );
-
-
-const captureButton =
-  document.getElementById(
-    "captureButton"
-  );
-
-
-const continueButton =
-  document.getElementById(
-    "continueButton"
-  );
-
+const continueBtn =
+document.getElementById("continueBtn");
 
 const message =
-  document.getElementById(
-    "message"
-  );
-
-
-const modeBox =
-  document.getElementById(
-    "modeBox"
-  );
-
-
-/*******************************************************
- * CAMERA
- *******************************************************/
+document.getElementById("message");
 
 let stream = null;
-
 let capturedPhoto = "";
 
 
-/*******************************************************
- * MODE
- *******************************************************/
+/* ================================
+   MESSAGE
+================================ */
 
-if (
-  type === "submission"
-) {
-
-  modeBox.textContent =
-    "Answer Sheet Submission – New Live Photo";
-
-} else {
-
-  modeBox.textContent =
-    "Question Paper Download – Live Photo";
-
+function showMessage(text) {
+  message.textContent = text;
 }
 
 
-/*******************************************************
- * MESSAGE
- *******************************************************/
-
-function showMessage(
-  text,
-  typeName
-) {
-
-  message.textContent =
-    text;
-
-  message.className =
-    "message " +
-    typeName;
-
-  message.style.display =
-    "block";
-}
-
-
-/*******************************************************
- * START CAMERA
- *******************************************************/
+/* ================================
+   START CAMERA
+================================ */
 
 async function startCamera() {
 
   try {
 
-    stopCamera();
+    if (stream) {
+      stopCamera();
+    }
 
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: "user",
+        width: { ideal: 650 },
+        height: { ideal: 650 }
+      },
+      audio: false
+    });
 
-    showMessage(
-      "Starting camera...",
-      "info"
-    );
+    camera.srcObject = stream;
 
+    captureBtn.disabled = false;
 
-    stream =
-      await navigator.mediaDevices.getUserMedia({
+    startCameraBtn.disabled = true;
 
-        video: {
-
-          facingMode:
-            "user",
-
-          width: {
-            ideal: 720
-          },
-
-          height: {
-            ideal: 720
-          }
-
-        },
-
-        audio: false
-
-      });
-
-
-    video.srcObject =
-      stream;
-
-
-    await video.play();
-
-
-    startButton.classList.add(
-      "hidden"
-    );
-
-
-    captureButton.classList.remove(
-      "hidden"
-    );
-
-
-    preview.style.display =
-      "none";
-
-
-    showMessage(
-      "Camera is ready. Please take your live photo.",
-      "info"
-    );
-
+    showMessage("Camera started. Please take your live photo.");
 
   } catch (error) {
 
-    console.error(
-      error
-    );
-
+    console.error(error);
 
     showMessage(
-
-      "Camera could not be started. " +
-      "Please allow camera permission and make sure no other application is using the camera.",
-
-      "error"
-
+      "Camera could not be started. Please allow camera permission and try again."
     );
+
   }
 }
 
 
-/*******************************************************
- * CAPTURE PHOTO
- *******************************************************/
+/* ================================
+   CAPTURE PHOTO
+================================ */
 
 function capturePhoto() {
 
-  if (
-    !stream
-  ) {
-
-    showMessage(
-      "Please start the camera first.",
-      "error"
-    );
-
+  if (!stream) {
+    showMessage("Please start the camera first.");
     return;
   }
 
+  const videoWidth = camera.videoWidth;
+  const videoHeight = camera.videoHeight;
 
-  const width =
-    video.videoWidth || 640;
-
-
-  const height =
-    video.videoHeight || 640;
-
-
-  const maxWidth =
-    650;
-
-
-  let targetWidth =
-    width;
-
-
-  let targetHeight =
-    height;
-
-
-  if (
-    width > maxWidth
-  ) {
-
-    targetWidth =
-      maxWidth;
-
-
-    targetHeight =
-      Math.round(
-        height *
-        maxWidth /
-        width
-      );
+  if (!videoWidth || !videoHeight) {
+    showMessage("Camera is not ready. Please wait a moment.");
+    return;
   }
 
+  let width = videoWidth;
+  let height = videoHeight;
 
-  canvas.width =
-    targetWidth;
+  const maxWidth = 650;
 
+  if (width > maxWidth) {
 
-  canvas.height =
-    targetHeight;
+    height = Math.round(height * maxWidth / width);
 
+    width = maxWidth;
 
-  const ctx =
-    canvas.getContext(
-      "2d"
-    );
+  }
 
+  canvas.width = width;
+  canvas.height = height;
 
-  ctx.drawImage(
+  const context = canvas.getContext("2d");
 
-    video,
-
+  context.drawImage(
+    camera,
     0,
-
     0,
-
-    targetWidth,
-
-    targetHeight
-
+    width,
+    height
   );
 
+  capturedPhoto = canvas.toDataURL(
+    "image/jpeg",
+    0.60
+  );
 
-  capturedPhoto =
-    canvas.toDataURL(
-      "image/jpeg",
-      0.60
-    );
+  preview.src = capturedPhoto;
 
+  preview.style.display = "block";
 
-  preview.src =
-    capturedPhoto;
+  camera.style.display = "none";
 
+  continueBtn.disabled = false;
 
-  preview.style.display =
-    "block";
-
+  captureBtn.disabled = true;
 
   stopCamera();
 
-
-  captureButton.classList.add(
-    "hidden"
-  );
-
-
-  continueButton.classList.remove(
-    "hidden"
-  );
-
-
   showMessage(
-
-    "✅ Live photo captured. Click Continue.",
-
-    "success"
-
+    "Live photo captured. Click Continue to verify the photo."
   );
 }
 
 
-/*******************************************************
- * CONTINUE
- *******************************************************/
+/* ================================
+   CONTINUE
+================================ */
 
 function continueProcess() {
 
-  if (
-    !capturedPhoto
-  ) {
+  if (!capturedPhoto) {
+
+    showMessage("Please take a live photo first.");
+
+    return;
+  }
+
+  const studentId =
+    localStorage.getItem("studentId") || "";
+
+  if (!studentId) {
 
     showMessage(
-      "Please take a live photo first.",
-      "error"
+      "Student login information was not found. Please login again."
     );
 
     return;
   }
 
 
-  /*
-   * LIVE PHOTO IS STORED ONLY IN BROWSER.
-   *
-   * No Google Drive.
-   * No Apps Script.
-   */
+  /* ================================
+     SUBMISSION MODE
+  ================================ */
 
+  if (type === "submission") {
 
-  if (
-    type === "submission"
-  ) {
-
-    /*
-     * Mark submission verification.
-     */
-    localStorage.setItem(
-
+    const key =
       "submissionLivePhotoCaptured_" +
       studentId +
       "_" +
-      questionPaperId,
+      questionPaperId;
 
-      "yes"
+    localStorage.setItem(key, "yes");
 
-    );
-
-
-    /*
-     * Store a small browser copy.
-     * This is not uploaded anywhere.
-     */
     localStorage.setItem(
-
       "submissionLivePhotoLocal",
-
       capturedPhoto
-
     );
-
 
     showMessage(
-
-      "✅ Live photo completed. Returning to answer sheet...",
-
-      "success"
-
+      "Live photo verified successfully."
     );
 
+    setTimeout(function() {
 
-    setTimeout(
-      function() {
+      if (window.opener) {
 
-        /*
-         * If this page was opened in a new tab,
-         * close it and return to original page.
-         */
-        if (
-          window.opener &&
-          !window.opener.closed
-        ) {
+        window.close();
 
-          window.close();
+      } else {
 
-          return;
-        }
-
-
-        /*
-         * Fallback.
-         */
         window.location.href =
-          "submit-answer.html" +
-          "?questionPaperId=" +
-          encodeURIComponent(
-            questionPaperId
-          );
+          "submit-answer.html?questionPaperId=" +
+          encodeURIComponent(questionPaperId);
 
-      },
-      900
-    );
+      }
 
+    }, 700);
 
-  } else {
-
-    /*
-     * DOWNLOAD VERIFICATION
-     */
-    localStorage.setItem(
-
-      "downloadLivePhotoCaptured_" +
-      studentId +
-      "_" +
-      questionPaperId,
-
-      "yes"
-
-    );
-
-
-    localStorage.setItem(
-
-      "downloadLivePhotoLocal",
-
-      capturedPhoto
-
-    );
-
-
-    showMessage(
-
-      "✅ Live photo completed. Opening question paper...",
-
-      "success"
-
-    );
-
-
-    setTimeout(
-      function() {
-
-        openQuestionPaper();
-
-      },
-      900
-    );
+    return;
   }
+
+
+  /* ================================
+     DOWNLOAD MODE
+  ================================ */
+
+  const key =
+    "downloadLivePhotoCaptured_" +
+    studentId +
+    "_" +
+    questionPaperId;
+
+  localStorage.setItem(key, "yes");
+
+  localStorage.setItem(
+    "downloadLivePhotoLocal",
+    capturedPhoto
+  );
+
+  showMessage(
+    "Live photo verified successfully."
+  );
+
+  setTimeout(function() {
+
+    openQuestionPaper();
+
+  }, 500);
 }
 
 
-/*******************************************************
- * OPEN QUESTION PAPER
- *******************************************************/
+/* ================================
+   OPEN QUESTION PAPER
+================================ */
 
 async function openQuestionPaper() {
 
   try {
 
-    if (
-      !questionPaperId
-    ) {
+    if (!questionPaperId) {
 
-      throw new Error(
-        "Question Paper ID is missing."
+      showMessage(
+        "Question paper ID is missing."
       );
+
+      return;
     }
 
+    const response = await fetch(
+      API_URL +
+      "?action=getQuestionPapers"
+    );
 
-    const apiUrl =
-      "https://script.google.com/macros/s/AKfycbzwMrFz4dBr4h_fp6zFT0mCkXSEw0_cqKgZxWBppnUWNTRoxBa9ee4B7Ljx30n9FCiOiA/exec";
+    const data = await response.json();
 
+    if (!data.success) {
 
-    const url =
-      apiUrl +
-      "?action=getQuestionPapers";
-
-
-    const response =
-      await fetch(
-        url
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if (
-      !data.success
-    ) {
-
-      throw new Error(
+      showMessage(
         data.message ||
-        "Could not load question papers."
+        "Unable to load question paper."
       );
-    }
 
+      return;
+    }
 
     const papers =
-      data.papers || [];
-
+      data.questionPapers ||
+      data.papers ||
+      [];
 
     const paper =
-      papers.find(
-        function(p) {
+      papers.find(function(item) {
 
-          return (
+        return String(
+          item.QuestionPaperID ||
+          item.questionPaperId ||
+          item.id ||
+          ""
+        ) === String(questionPaperId);
 
-            String(
-              p.QuestionPaperID
-            ).trim() ===
+      });
 
-            String(
-              questionPaperId
-            ).trim()
+    if (!paper) {
 
-          );
-
-        }
+      showMessage(
+        "Question paper was not found."
       );
 
-
-    if (
-      !paper
-    ) {
-
-      throw new Error(
-        "Question paper not found."
-      );
+      return;
     }
 
+    const fileURL =
+      paper.FileURL ||
+      paper.fileURL ||
+      paper.FileUrl ||
+      "";
 
-    const fileUrl =
-      String(
-        paper.FileURL || ""
-      ).trim();
+    if (!fileURL) {
 
-
-    if (
-      !fileUrl
-    ) {
-
-      throw new Error(
-        "Question paper file URL is missing."
+      showMessage(
+        "Question paper file is not available."
       );
+
+      return;
     }
 
-
-    window.location.href =
-      fileUrl;
-
+    window.location.href = fileURL;
 
   } catch (error) {
 
-    console.error(
-      error
-    );
-
+    console.error(error);
 
     showMessage(
-
-      "Question paper could not be opened: " +
-      error.message,
-
-      "error"
-
+      "Unable to open question paper. Please try again."
     );
   }
 }
 
 
-/*******************************************************
- * STOP CAMERA
- *******************************************************/
+/* ================================
+   STOP CAMERA
+================================ */
 
 function stopCamera() {
 
-  if (
-    stream
-  ) {
+  if (stream) {
 
-    stream
-      .getTracks()
-      .forEach(
-        function(track) {
+    stream.getTracks().forEach(function(track) {
 
-          track.stop();
+      track.stop();
 
-        }
-      );
+    });
 
-
-    stream =
-      null;
+    stream = null;
   }
 
-
-  if (
-    video
-  ) {
-
-    video.srcObject =
-      null;
-  }
+  camera.srcObject = null;
 }
 
 
-/*******************************************************
- * BACK
- *******************************************************/
+/* ================================
+   BACK
+================================ */
 
 function goBack() {
 
   stopCamera();
 
+  if (window.opener) {
 
-  if (
-    type === "submission"
-  ) {
-
-    window.location.href =
-      "submit-answer.html" +
-      "?questionPaperId=" +
-      encodeURIComponent(
-        questionPaperId
-      );
+    window.close();
 
   } else {
 
-    window.location.href =
-      "question-papers.html";
+    history.back();
+
   }
 }
 
 
-/*******************************************************
- * PAGE HIDE
- *******************************************************/
-
-document.addEventListener(
-  "visibilitychange",
-  function() {
-
-    if (
-      document.hidden
-    ) {
-
-      stopCamera();
-    }
-
-  }
-);
-
-
-/*******************************************************
- * PAGE LEAVE
- *******************************************************/
+/* ================================
+   PAGE CLOSE / HIDE
+================================ */
 
 window.addEventListener(
   "pagehide",
@@ -968,37 +524,18 @@ window.addEventListener(
   }
 );
 
+document.addEventListener(
+  "visibilitychange",
+  function() {
 
-/*******************************************************
- * INITIAL CHECK
- *******************************************************/
+    if (document.hidden) {
 
-if (
-  !studentId
-) {
+      stopCamera();
 
-  showMessage(
+    }
 
-    "Student login information was not found. Please login again.",
-
-    "error"
-
-  );
-}
-
-
-if (
-  !questionPaperId
-) {
-
-  showMessage(
-
-    "Question Paper ID is missing.",
-
-    "error"
-
-  );
-}
+  }
+);
 
 </script>
 
