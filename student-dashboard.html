@@ -215,6 +215,38 @@ button{
     padding:20px;
 }
 
+/* PAPER SELECTION */
+
+.paper-selection{
+    display:none;
+    margin-top:20px;
+    padding:18px;
+    background:#f8f9fa;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+.paper-item{
+    background:white;
+    border:1px solid #ddd;
+    border-radius:8px;
+    padding:15px;
+    margin-bottom:12px;
+}
+
+.paper-title{
+    font-size:17px;
+    font-weight:bold;
+    color:#173b73;
+    margin-bottom:8px;
+}
+
+.paper-details{
+    font-size:13px;
+    color:#555;
+    margin-bottom:10px;
+}
+
 /* MOBILE */
 
 @media(max-width:700px){
@@ -408,6 +440,8 @@ button{
 
     <div class="actions">
 
+        <!-- QUESTION PAPERS -->
+
         <div class="action">
 
             <h3>
@@ -430,6 +464,8 @@ button{
         </div>
 
 
+        <!-- RESULTS -->
+
         <div class="action">
 
             <h3>
@@ -451,6 +487,8 @@ button{
         </div>
 
 
+        <!-- SUBMISSIONS -->
+
         <div class="action">
 
             <h3>
@@ -458,7 +496,8 @@ button{
             </h3>
 
             <p>
-                Check your submitted answer papers.
+                Submit your completed answer paper
+                and check your submission.
             </p>
 
             <button
@@ -468,6 +507,29 @@ button{
                 Submissions
 
             </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- PAPER SELECTION -->
+
+    <div
+        id="paperSelection"
+        class="paper-selection">
+
+        <h3>
+            Select Question Paper for Submission
+        </h3>
+
+        <p>
+            Select the question paper for which
+            you want to submit your answer sheet.
+        </p>
+
+        <div
+            id="paperList">
 
         </div>
 
@@ -865,22 +927,12 @@ async function loadAssignedSubjects(){
         }
 
 
-        /*
-          Different versions of the Apps Script
-          may return subjects under different names.
-        */
-
         let subjects =
             result.subjects ||
             result.data ||
             result.rows ||
             [];
 
-
-        /*
-          If API returns a single string:
-          SUB001,SUB002
-        */
 
         if(typeof subjects === "string"){
 
@@ -933,21 +985,6 @@ async function loadAssignedSubjects(){
 
         subjects.forEach(
             function(subject){
-
-                /*
-                  Subject may be returned as:
-                  SUB001
-
-                  OR:
-
-                  {
-                    SubjectID,
-                    SubjectCode,
-                    SubjectName,
-                    Board,
-                    Class
-                  }
-                */
 
                 if(
                     typeof subject ===
@@ -1155,15 +1192,288 @@ function openResults(){
    OPEN SUBMISSIONS
 ===================================================== */
 
-function openSubmissions(){
+async function openSubmissions(){
+
+    const selection =
+        document.getElementById(
+            "paperSelection"
+        );
+
+    const list =
+        document.getElementById(
+            "paperList"
+        );
+
 
     /*
-      If you create a separate student submission
-      page later, change this link.
+       If the selection box is already open,
+       close it.
+    */
+
+    if(
+        selection.style.display ===
+        "block"
+    ){
+
+        selection.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    selection.style.display =
+        "block";
+
+
+    list.innerHTML =
+        `<div class="empty">
+            Loading published question papers...
+        </div>`;
+
+
+    try{
+
+        const result =
+            await apiGet(
+                "getPublishedQuestionPapers"
+            );
+
+
+        if(!result.success){
+
+            throw new Error(
+                result.message ||
+                "Unable to load question papers."
+            );
+
+        }
+
+
+        let papers =
+            result.questionPapers ||
+            result.papers ||
+            result.data ||
+            result.rows ||
+            [];
+
+
+        if(!Array.isArray(papers)){
+
+            papers=[];
+
+        }
+
+
+        if(papers.length === 0){
+
+            list.innerHTML =
+                `<div class="empty">
+
+                    No published question papers
+                    are currently available.
+
+                </div>`;
+
+            return;
+
+        }
+
+
+        list.innerHTML = "";
+
+
+        papers.forEach(
+            function(paper){
+
+                const id =
+                    value(
+                        paper,
+                        [
+                            "QuestionPaperID",
+                            "questionPaperId",
+                            "id"
+                        ]
+                    );
+
+
+                const paperName =
+                    value(
+                        paper,
+                        [
+                            "PaperName",
+                            "paperName"
+                        ]
+                    );
+
+
+                const subjectCode =
+                    value(
+                        paper,
+                        [
+                            "SubjectCode",
+                            "subjectCode"
+                        ]
+                    );
+
+
+                const subjectName =
+                    value(
+                        paper,
+                        [
+                            "SubjectName",
+                            "subjectName"
+                        ]
+                    );
+
+
+                const board =
+                    value(
+                        paper,
+                        [
+                            "Board",
+                            "board"
+                        ]
+                    );
+
+
+                const className =
+                    value(
+                        paper,
+                        [
+                            "Class",
+                            "className"
+                        ]
+                    );
+
+
+                list.innerHTML += `
+
+                <div class="paper-item">
+
+                    <div class="paper-title">
+
+                        ${esc(
+                            paperName ||
+                            "Question Paper"
+                        )}
+
+                    </div>
+
+
+                    <div class="paper-details">
+
+                        ${
+                            subjectCode
+                            ?
+                            "Subject Code: " +
+                            esc(subjectCode)
+                            :
+                            ""
+                        }
+
+                        ${
+                            subjectName
+                            ?
+                            "<br>Subject: " +
+                            esc(subjectName)
+                            :
+                            ""
+                        }
+
+                        ${
+                            board
+                            ?
+                            "<br>Board: " +
+                            esc(board)
+                            :
+                            ""
+                        }
+
+                        ${
+                            className
+                            ?
+                            "<br>Class: " +
+                            esc(className)
+                            :
+                            ""
+                        }
+
+                    </div>
+
+
+                    <button
+                        class="secondary"
+                        onclick="startSubmission('${esc(id)}')">
+
+                        Submit Answer Sheet
+
+                    </button>
+
+                </div>
+
+                `;
+
+            }
+        );
+
+
+    }
+    catch(error){
+
+        console.error(
+            "Submission paper error:",
+            error
+        );
+
+
+        list.innerHTML =
+            `<div class="empty">
+
+                ❌ Unable to load question papers.
+
+                <br><br>
+
+                ${esc(error.message)}
+
+            </div>`;
+
+    }
+
+}
+
+
+/* =====================================================
+   START SUBMISSION
+===================================================== */
+
+function startSubmission(
+    questionPaperId
+){
+
+    if(!questionPaperId){
+
+        alert(
+            "Question Paper ID is missing."
+        );
+
+        return;
+
+    }
+
+
+    /*
+       IMPORTANT:
+       This is the submission page.
+       It does NOT open question-papers.html.
     */
 
     window.location.href =
-        "question-papers.html";
+        "submit-answer.html?questionPaperId=" +
+        encodeURIComponent(
+            questionPaperId
+        );
 
 }
 
