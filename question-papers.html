@@ -1,58 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Online Exam - Question Papers</title>
 
 <style>
 body{
-    margin:0;
     font-family:Arial,sans-serif;
-    background:#f4f6f9;
+    background:#f4f6f8;
+    margin:0;
 }
-
 header{
-    background:#1d4ed8;
+    background:#1f2937;
     color:white;
+    padding:18px;
+}
+.container{
+    max-width:900px;
+    margin:auto;
     padding:20px;
 }
-
-.container{
-    width:94%;
-    max-width:1000px;
-    margin:20px auto;
-}
-
 .card{
     background:white;
-    padding:20px;
+    padding:18px;
     margin-bottom:15px;
     border-radius:10px;
     box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
-
 button{
-    background:#1d4ed8;
-    color:white;
     border:0;
-    padding:11px 17px;
-    border-radius:6px;
+    padding:12px 16px;
+    border-radius:7px;
     cursor:pointer;
+    margin-top:8px;
 }
-
-.paper{
-    border:1px solid #ddd;
-    padding:16px;
-    margin:12px 0;
-    border-radius:8px;
+.primary{
+    background:#2563eb;
+    color:white;
 }
-
-.student{
-    color:#1d4ed8;
-    font-weight:bold;
+.success{
+    background:#16a34a;
+    color:white;
+}
+.warning{
+    background:#f59e0b;
+    color:white;
+}
+.logout{
+    background:#dc2626;
+    color:white;
 }
 </style>
 </head>
@@ -60,242 +57,181 @@ button{
 <body>
 
 <header>
-<div class="container">
-<h1>Online Exam</h1>
-<p>Question Papers</p>
-</div>
+    <h2>Online Exam</h2>
+    <div>Question Papers</div>
 </header>
 
 <div class="container">
 
-<div class="card">
+    <div class="card">
+        <b>Student ID:</b>
+        <span id="studentId"></span>
+    </div>
 
-<p>
-Student ID:
-<span class="student"
-      id="studentId"></span>
-</p>
+    <div id="message"></div>
 
-<button onclick="
-location.href='student-dashboard.html'
-">
-Back to Dashboard
-</button>
+    <div id="papers"></div>
+
+    <button class="logout" onclick="logout()">Logout</button>
 
 </div>
-
-
-<div class="card">
-
-<h2>Published Question Papers</h2>
-
-<div id="paperList">
-Loading...
-</div>
-
-</div>
-
-</div>
-
 
 <script>
 
 const API =
 "https://script.google.com/macros/s/AKfycbzwMrFz4dBr4h_fp6zFT0mCkXSEw0_cqKgZxWBppnUWNTRoxBa9ee4B7Ljx30n9FCiOiA/exec";
 
-
 const studentId =
-    localStorage.getItem("studentId");
+localStorage.getItem("studentId");
 
+document.getElementById("studentId").textContent =
+studentId || "Not logged in";
 
 if(!studentId){
-
-    location.href =
-        "login.html";
+    window.location.href="login.html";
 }
 
-
-document.getElementById(
-    "studentId"
-).textContent =
-    studentId;
-
-
-function api(action,params={}){
-
-    return new Promise(function(resolve,reject){
+function api(action, params={}){
+    return new Promise((resolve,reject)=>{
 
         const callback =
-            "cb_" +
-            Date.now() +
+            "cb_" + Date.now() + "_" +
             Math.floor(Math.random()*10000);
 
         const script =
             document.createElement("script");
 
-        const query =
-            new URLSearchParams();
+        window[callback] = function(data){
 
-        query.append("action",action);
-        query.append("callback",callback);
+            delete window[callback];
 
-        Object.keys(params).forEach(function(key){
+            script.remove();
 
-            query.append(
-                key,
-                params[key]
-            );
-
-        });
-
-        window[callback] =
-            function(data){
-
-                delete window[callback];
-
-                script.remove();
-
+            if(data.success){
                 resolve(data);
-            };
-
-        script.onerror =
-            function(){
-
-                delete window[callback];
-
-                script.remove();
-
+            }else{
                 reject(
-                    new Error("API connection failed")
+                    new Error(data.message || "Error")
                 );
-            };
+            }
+        };
+
+        params.action = action;
+        params.studentId = studentId;
+        params.callback = callback;
+
+        const query =
+            Object.keys(params)
+            .map(k =>
+                encodeURIComponent(k) +
+                "=" +
+                encodeURIComponent(params[k])
+            )
+            .join("&");
 
         script.src =
-            API + "?" + query.toString();
+            API + "?" + query;
+
+        script.onerror = () => {
+            reject(new Error("API connection failed."));
+        };
 
         document.body.appendChild(script);
     });
 }
 
-
 async function loadPapers(){
 
     const box =
-        document.getElementById(
-            "paperList"
-        );
+        document.getElementById("papers");
+
+    box.innerHTML =
+        "<div class='card'>Loading...</div>";
 
     try{
 
-        const result =
+        const data =
             await api(
-                "getPublishedQuestionPapers",
-                {
-                    studentId:
-                        studentId
-                }
+                "getPublishedQuestionPapers"
             );
 
-        if(!result.success){
+        if(!data.papers.length){
 
             box.innerHTML =
-                "<p>" +
-                escapeHtml(result.message) +
-                "</p>";
+                "<div class='card'>No published question papers are available for your assigned subjects.</div>";
 
             return;
         }
-
-        const papers =
-            result.data || [];
-
-        if(papers.length === 0){
-
-            box.innerHTML =
-                "<p>No published question papers are available for your Student ID.</p>";
-
-            return;
-        }
-
-        box.innerHTML = "";
-
-        papers.forEach(function(paper){
-
-            const div =
-                document.createElement("div");
-
-            div.className =
-                "paper";
-
-            div.innerHTML = `
-                <h3>
-                    ${escapeHtml(paper.paperName)}
-                </h3>
-
-                <p>
-                    <strong>Student ID:</strong>
-                    ${escapeHtml(paper.studentId)}
-                </p>
-
-                <p>
-                    <strong>Subject:</strong>
-                    ${escapeHtml(paper.subjectCode)}
-                    -
-                    ${escapeHtml(paper.subjectName)}
-                </p>
-
-                <p>
-                    <strong>Board:</strong>
-                    ${escapeHtml(paper.board)}
-                </p>
-
-                <p>
-                    <strong>Class:</strong>
-                    ${escapeHtml(paper.studentClass)}
-                </p>
-
-                <p>
-                    <strong>Exam Type:</strong>
-                    ${escapeHtml(paper.examType)}
-                </p>
-
-                <p>
-                    <strong>Year:</strong>
-                    ${escapeHtml(paper.year)}
-                </p>
-
-                ${
-                    paper.fileUrl
-                    ?
-                    `<p>
-                        <a href="${escapeHtml(paper.fileUrl)}"
-                           target="_blank">
-                           Open Question Paper
-                        </a>
-                    </p>`
-                    :
-                    "<p>Question paper file not available.</p>"
-                }
-
-                <button onclick="
-                    location.href =
-                    'submit-answer.html?questionPaperId=${encodeURIComponent(paper.questionPaperId)}&subjectId=${encodeURIComponent(paper.subjectId)}'
-                ">
-                    Submit Answer
-                </button>
-            `;
-
-            box.appendChild(div);
-
-        });
-
-    }catch(error){
 
         box.innerHTML =
-            "<p>" +
-            escapeHtml(error.message) +
-            "</p>";
+            data.papers.map(p => `
+
+                <div class="card">
+
+                    <h3>${escapeHtml(p.paperName)}</h3>
+
+                    <p>
+                        <b>Subject:</b>
+                        ${escapeHtml(p.subjectCode)}
+                        -
+                        ${escapeHtml(p.subjectName)}
+                    </p>
+
+                    <p>
+                        <b>Board:</b>
+                        ${escapeHtml(p.board)}
+                    </p>
+
+                    <p>
+                        <b>Class:</b>
+                        ${escapeHtml(p.className)}
+                    </p>
+
+                    <p>
+                        <b>Exam Type:</b>
+                        ${escapeHtml(p.examType)}
+                    </p>
+
+                    <p>
+                        <b>Status:</b>
+                        Published
+                    </p>
+
+                    <button
+                        class="primary"
+                        onclick="openPaper('${escapeJs(p.questionPaperId)}')">
+                        Download Question Paper
+                    </button>
+
+                </div>
+
+            `).join("");
+
+    }catch(err){
+
+        box.innerHTML =
+            "<div class='card'>" +
+            escapeHtml(err.message) +
+            "</div>";
     }
+}
+
+
+function openPaper(questionPaperId){
+
+    window.location.href =
+        "live-photo.html?questionPaperId=" +
+        encodeURIComponent(questionPaperId);
+}
+
+
+function logout(){
+
+    localStorage.removeItem("studentId");
+    localStorage.removeItem("studentName");
+
+    window.location.href =
+        "login.html";
 }
 
 
@@ -307,6 +243,14 @@ function escapeHtml(value){
         .replace(/>/g,"&gt;")
         .replace(/"/g,"&quot;")
         .replace(/'/g,"&#039;");
+}
+
+
+function escapeJs(value){
+
+    return String(value || "")
+        .replace(/\\/g,"\\\\")
+        .replace(/'/g,"\\'");
 }
 
 
